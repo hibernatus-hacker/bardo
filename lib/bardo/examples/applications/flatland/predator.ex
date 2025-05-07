@@ -7,11 +7,13 @@ defmodule Bardo.Examples.Applications.Flatland.Predator do
   """
   
   alias Bardo.PopulationManager.Morphology
+  alias Bardo.PopulationManager.ExtendedMorphology
   alias Bardo.Examples.Applications.Flatland.FlatlandSensor
   alias Bardo.Examples.Applications.Flatland.FlatlandActuator
   alias Bardo.Models
   
   @behaviour Morphology
+  @behaviour ExtendedMorphology
   
   @doc """
   List of sensors available to the predator agent.
@@ -72,6 +74,7 @@ defmodule Bardo.Examples.Applications.Flatland.Predator do
   
   Returns the sensor and actuator configuration for predator agents.
   """
+  @impl ExtendedMorphology
   def get_phys_config(_owner, cortex_id, scape_name) do
     # Define sensor configurations
     sensors = [
@@ -99,6 +102,7 @@ defmodule Bardo.Examples.Applications.Flatland.Predator do
   
   For predator agents, we specify the type as :predator.
   """
+  @impl ExtendedMorphology
   def get_scape_params(_owner, _agent_id, _cortex_id, _scape_name) do
     %{
       type: :predator
@@ -110,6 +114,7 @@ defmodule Bardo.Examples.Applications.Flatland.Predator do
   
   Returns a template for the neural network architecture.
   """
+  @impl ExtendedMorphology
   def neuron_pattern(_owner, _agent_id, _cortex_id, _neural_interface) do
     # Define the basic features for constructing the neural network
     # These can be expanded based on the needs of the predator's behavior

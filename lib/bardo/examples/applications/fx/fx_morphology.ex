@@ -7,10 +7,12 @@ defmodule Bardo.Examples.Applications.Fx.FxMorphology do
   """
   
   alias Bardo.PopulationManager.Morphology
+  alias Bardo.PopulationManager.ExtendedMorphology
   alias Bardo.Examples.Applications.Fx.{FxSensor, FxActuator}
   alias Bardo.Models
   
   @behaviour Morphology
+  @behaviour ExtendedMorphology
   
   @doc """
   List of sensors available to the FX agents.
@@ -87,6 +89,7 @@ defmodule Bardo.Examples.Applications.Fx.FxMorphology do
   
   Returns a map with :sensors and :actuators keys.
   """
+  @impl ExtendedMorphology
   def get_phys_config(_owner, cortex_id, scape_name) do
     %{
       sensors: sensors(cortex_id, scape_name),
@@ -99,6 +102,7 @@ defmodule Bardo.Examples.Applications.Fx.FxMorphology do
   
   Returns a map with parameters for connecting to the FX scape.
   """
+  @impl ExtendedMorphology
   def get_scape_params(_owner, _agent_id, _cortex_id, _scape_name) do
     # Currently, no specific parameters are needed for the FX scape
     %{}
@@ -109,6 +113,7 @@ defmodule Bardo.Examples.Applications.Fx.FxMorphology do
   
   This function specifies how sensors and actuators connect to the neural network.
   """
+  @impl ExtendedMorphology
   def neuron_pattern(_owner, _agent_id, _cortex_id, neural_interface) do
     # Extract fanout and fanin from neural interface
     sensors = neural_interface.sensors

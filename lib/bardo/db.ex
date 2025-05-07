@@ -103,6 +103,14 @@ defmodule Bardo.DB do
   def terminate(_reason, %{table: table}) do
     :ets.delete(table)
   end
+  
+  @doc """
+  Back up the database to disk. For our examples, this is a no-op.
+  """
+  def backup do
+    Logger.info("[DB] Backup requested (simulated backup only)")
+    :ok
+  end
 
   # Private Functions
 

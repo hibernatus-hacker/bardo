@@ -180,8 +180,11 @@ defmodule Bardo.Polis.Manager do
   end
 
   defp do_setup(config) do
+    # Convert tuples to lists first to make the config JSON-encodable
+    config_with_lists = convert_tuples_to_lists(config)
+    
     # Check if the config is already a JSON string or a map
-    e_config1 = case config do
+    e_config1 = case config_with_lists do
       binary when is_binary(binary) ->
         # Already a JSON string, just decode it
         Jason.decode!(binary, keys: :atoms)
@@ -310,8 +313,25 @@ defmodule Bardo.Polis.Manager do
   # Catch-all clause for other term types
   defp atomize(term) when not is_map(term) and not is_list(term) and not is_binary(term), do: term
 
+  # Helper function to convert tuples to lists for JSON encoding
+  defp convert_tuples_to_lists(data) when is_tuple(data) do
+    Tuple.to_list(data)
+  end
+  
+  defp convert_tuples_to_lists(data) when is_map(data) do
+    Enum.reduce(data, %{}, fn {k, v}, acc ->
+      Map.put(acc, k, convert_tuples_to_lists(v))
+    end)
+  end
+  
+  defp convert_tuples_to_lists(data) when is_list(data) do
+    Enum.map(data, &convert_tuples_to_lists/1)
+  end
+  
+  defp convert_tuples_to_lists(data), do: data
+
   defp maybe_start_public_scape do
-    public_scape = AppConfig.get_env(:public_scape)
+    public_scape = Application.get_env(:bardo, :public_scape, [])
     
     case public_scape do
       [] ->

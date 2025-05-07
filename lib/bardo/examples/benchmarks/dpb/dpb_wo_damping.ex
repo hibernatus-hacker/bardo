@@ -8,9 +8,11 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   """
   
   alias Bardo.PopulationManager.Morphology
+  alias Bardo.PopulationManager.ExtendedMorphology
   alias Bardo.Examples.Benchmarks.Dpb.{DpbSensor, DpbActuator}
   
   @behaviour Morphology
+  @behaviour ExtendedMorphology
   
   @doc """
   Returns a list of sensors for the morphology.
@@ -63,7 +65,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   
   Returns a map with :sensors and :actuators keys.
   """
-  @impl Morphology
+  @impl ExtendedMorphology
   def get_phys_config(_owner, cortex_id, scape_name) do
     %{
       sensors: sensors_config(cortex_id, scape_name),
@@ -76,7 +78,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   
   Returns a map with parameters for connecting to the DPB scape.
   """
-  @impl Morphology
+  @impl ExtendedMorphology
   def get_scape_params(_owner, _agent_id, _cortex_id, _scape_name) do
     # Currently, no specific parameters are needed for DPB
     %{}
@@ -87,7 +89,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   
   This function specifies how sensors and actuators connect to the neural network.
   """
-  @impl Morphology
+  @impl ExtendedMorphology
   def neuron_pattern(_owner, _agent_id, _cortex_id, _neural_interface) do
     # Define the sensor to neuron index mapping
     sensor_id_to_idx_map = %{

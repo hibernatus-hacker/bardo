@@ -226,4 +226,95 @@ defmodule Bardo.Models do
   """
   @spec specie(map()) :: map()
   def specie(data), do: %{data: data}
+  
+  # Database operations
+  
+  @doc """
+  Read a model from storage by ID and type.
+  
+  ## Parameters
+    * `id` - The ID of the model to read
+    * `type` - The type of the model (e.g. :experiment, :population, etc.)
+    
+  ## Returns
+    * `{:ok, model}` - If the model was found
+    * `{:error, reason}` - If the model was not found or there was an error
+  """
+  @spec read(atom() | binary(), atom()) :: {:ok, map()} | {:error, term()}
+  def read(id, type) do
+    try do
+      case DB.get({id, type}) do
+        nil -> {:error, "Model not found"}
+        model -> {:ok, model}
+      end
+    rescue
+      e -> 
+        {:error, "Error reading model: #{inspect(e)}"}
+    end
+  end
+  
+  @doc """
+  Write a model to storage.
+  
+  ## Parameters
+    * `id` - The ID of the model
+    * `type` - The type of the model (e.g. :experiment, :population, etc.)
+    * `model` - The model to write
+    
+  ## Returns
+    * `:ok` - If the model was written successfully
+    * `{:error, reason}` - If there was an error writing the model
+  """
+  @spec write(atom() | binary(), atom(), map()) :: :ok | {:error, term()}
+  def write(id, type, model) do
+    try do
+      DB.put({id, type}, model)
+      :ok
+    rescue
+      e -> 
+        {:error, "Error writing model: #{inspect(e)}"}
+    end
+  end
+  
+  @doc """
+  Delete a model from storage.
+  
+  ## Parameters
+    * `id` - The ID of the model to delete
+    * `type` - The type of the model (e.g. :experiment, :population, etc.)
+    
+  ## Returns
+    * `:ok` - If the model was deleted successfully
+    * `{:error, reason}` - If there was an error deleting the model
+  """
+  @spec delete(atom() | binary(), atom()) :: :ok | {:error, term()}
+  def delete(id, type) do
+    try do
+      DB.delete({id, type})
+      :ok
+    rescue
+      e -> 
+        {:error, "Error deleting model: #{inspect(e)}"}
+    end
+  end
+  
+  @doc """
+  Check if a model exists in storage.
+  
+  ## Parameters
+    * `id` - The ID of the model to check
+    * `type` - The type of the model (e.g. :experiment, :population, etc.)
+    
+  ## Returns
+    * `true` - If the model exists
+    * `false` - If the model does not exist
+  """
+  @spec exists?(atom() | binary(), atom()) :: boolean()
+  def exists?(id, type) do
+    try do
+      DB.get({id, type}) != nil
+    rescue
+      _ -> false
+    end
+  end
 end

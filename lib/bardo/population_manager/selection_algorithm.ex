@@ -282,12 +282,12 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
   end
 
   defp choose_winner(_specie_id, [{_portion_size, agent_id}], _index, _acc) do
-    re_entry_probability = AppConfig.get_env(:re_entry_probability)
+    re_entry_probability = Application.get_env(:bardo, :re_entry_probability, 0.01)
     new_winner(re_entry_probability, agent_id)
   end
   
   defp choose_winner(specie_id, [{portion_size, agent_id} | allotments], index, acc) do
-    re_entry_probability = AppConfig.get_env(:re_entry_probability)
+    re_entry_probability = Application.get_env(:bardo, :re_entry_probability, 0.01)
     
     if index >= acc and index <= (acc + portion_size) do
       new_winner(re_entry_probability, agent_id)

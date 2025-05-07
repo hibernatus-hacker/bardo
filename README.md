@@ -87,7 +87,7 @@ best_neural_network = Bardo.ExperimentManager.get_best_solution(experiment)
 
 ### Development Status
 
-The library is currently under active development. The Simple XOR example is fully functional, while the more complex examples (DPB, Flatland, FX) may require additional implementation of framework components like `PolisMgr` and `Models` modules.
+The library has been updated to support running all examples. The simple XOR example is a good starting point, but the more complex examples (DPB, Flatland, FX) are now fully functional as well, providing more advanced neuroevolution scenarios.
 
 ## Examples
 
@@ -142,10 +142,15 @@ A classic control problem where a neural network learns to balance two poles of 
 
 ```elixir
 # Run the double pole balancing example with damping
-mix run -e "Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_example, 100, 50)"
+# Parameters: experiment_id, population_size, generations, max_steps
+iex -S mix
+iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_example, 20, 10, 10000)
+
+# For a longer run with more agents
+iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_example, 100, 50, 100000)
 
 # Run without damping (more challenging)
-mix run -e "Bardo.Examples.Benchmarks.Dpb.run_without_damping(:dpb_wo_damping_example, 100, 50)"
+iex> Bardo.Examples.Benchmarks.Dpb.run_without_damping(:dpb_wo_damping_example, 20, 10, 10000)
 ```
 
 ### 3. Flatland Predator-Prey Simulation
@@ -153,11 +158,16 @@ mix run -e "Bardo.Examples.Benchmarks.Dpb.run_without_damping(:dpb_wo_damping_ex
 A more complex simulation where predator and prey agents co-evolve in a 2D world.
 
 ```elixir
-# Run with default settings
-mix run -e "Bardo.Examples.Applications.Flatland.run(:flatland_example)"
+# Run with small populations for quick testing
+# Parameters: experiment_id, predator_population, prey_population, plant_quantity, simulation_steps, generations
+iex -S mix
+iex> Bardo.Examples.Applications.Flatland.run(:flatland_example, 5, 5, 20, 500, 5)
 
-# Run with custom settings (predator population, prey population, plants, steps, generations)
-mix run -e "Bardo.Examples.Applications.Flatland.run(:flatland_example, 20, 20, 40, 1000, 50)"
+# Run with default settings
+iex> Bardo.Examples.Applications.Flatland.run(:flatland_example)
+
+# Run with custom settings for a more complex simulation
+iex> Bardo.Examples.Applications.Flatland.run(:flatland_example, 20, 20, 40, 1000, 50)
 ```
 
 ### 4. Forex (FX) Trading
@@ -165,11 +175,19 @@ mix run -e "Bardo.Examples.Applications.Flatland.run(:flatland_example, 20, 20, 
 Evolves a trading strategy for foreign exchange markets using historical price data.
 
 ```elixir
-# Run with default settings
-mix run -e "Bardo.Examples.Applications.Fx.run(:fx_example)"
+# Run with small parameters for quick testing
+# Parameters: experiment_id, population_size, data_window, generations
+iex -S mix
+iex> Bardo.Examples.Applications.Fx.run(:fx_example, 5, 500, 5)
 
-# Run with custom settings (population size, data window, generations)
-mix run -e "Bardo.Examples.Applications.Fx.run(:fx_example, 50, 5000, 50)"
+# Run with default settings
+iex> Bardo.Examples.Applications.Fx.run(:fx_example)
+
+# Run with custom settings for a more thorough exploration
+iex> Bardo.Examples.Applications.Fx.run(:fx_example, 50, 5000, 50)
+
+# After running an experiment, you can test the best agent on out-of-sample data
+iex> Bardo.Examples.Applications.Fx.test_best_agent(:fx_example)
 ```
 
 See the [examples documentation](docs/examples.md) for more details on these examples, their configurations, and what to expect when running them.
@@ -178,15 +196,36 @@ See the [examples documentation](docs/examples.md) for more details on these exa
 
 When running the examples, you might encounter some issues:
 
-1. **Undefined module errors**: The more complex examples require modules like `PolisMgr` or `Models` that may not be fully implemented yet. Use the Simple XOR example while the library is under development.
+1. **Warning messages during compilation**: There are several warnings about unused variables and implementation conflicts that you can safely ignore. These are planned to be addressed in future versions but don't affect the functionality of the examples.
 
-2. **Function name conflicts**: If you see errors about function naming conflicts, check for duplicate function names in the modules. An example fix might be renaming functions with distinct names.
+2. **Recommend using IEx**: We recommend running the examples within an interactive Elixir shell (`iex -S mix`) rather than using `mix run -e`. This allows you to examine the state of the system during and after the experiments.
 
-3. **Missing behavior callbacks**: Some modules may implement behaviours but not define all required callbacks. Add missing callback implementations to fix these errors.
+3. **Start with small parameters**: The examples can be resource-intensive with large populations or many generations. Start with the small parameter sets we provide and increase them as needed.
 
-4. **Warnings about unused variables**: Add underscores to variable names that are intentionally unused (e.g., `_unused_var`).
+4. **Memory usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
 
-**Note on Complex Examples**: The Double Pole Balancing, Flatland, and FX examples require the full machinery of the Bardo framework, including the population manager, experiment manager, and other components. If you're getting errors with these examples, stick with the Simple XOR example instead, which is self-contained and doesn't depend on the full framework.
+**Note on Complex Examples**: 
+- All examples (DPB, Flatland, and FX) are now fully functional.
+- They showcase different aspects of the neuroevolution framework:
+  - DPB: Control problem with continuous state and action spaces
+  - Flatland: Multi-agent co-evolution in a 2D environment
+  - FX: Time series prediction and decision making
+
+Begin with the examples with reduced parameters to verify functionality before attempting longer evolutionary runs.
+
+### Key Implementation Modules
+
+The following modules have been implemented or enhanced to enable the complex examples:
+
+1. **Bardo.PolisMgr**: A facade for the Polis.Manager module, providing a simplified interface for setting up and running experiments.
+
+2. **Bardo.PopulationManager.ExtendedMorphology**: A behavior that extends the basic Morphology behavior with additional callbacks needed for complex examples.
+
+3. **Bardo.Models**: Extended with additional functions for data persistence, including `read/2`, `write/3`, `delete/2`, and `exists?/2`.
+
+4. **Bardo.DB**: Enhanced with a `backup/0` function to support experiment persistence.
+
+5. **Example-specific modules**: Each example (DPB, Flatland, FX) has dedicated sensor, actuator, and morphology modules that implement the required behaviors.
 
 ## Core Concepts
 
