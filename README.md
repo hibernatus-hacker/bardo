@@ -87,7 +87,7 @@ best_neural_network = Bardo.ExperimentManager.get_best_solution(experiment)
 
 ### Development Status
 
-The library has been updated to support running all examples. The simple XOR example is a good starting point, but the more complex examples (DPB, Flatland, FX) are now fully functional as well, providing more advanced neuroevolution scenarios.
+The library has been updated to support running all examples. The simple XOR example is a good starting point, but the more complex examples (DPB, Flatland, FX, AlgoTrading) are now fully functional as well, providing more advanced neuroevolution scenarios.
 
 ## Examples
 
@@ -203,54 +203,149 @@ When you run this example, you'll see detailed output including:
 
 This example is particularly interesting for those interested in applying machine learning to financial markets, as it demonstrates how neuroevolution can discover non-linear patterns in time series data.
 
+### 5. Algorithmic Trading
+
+The newest and most comprehensive example that builds upon the FX Trading foundation to create a full-featured algorithmic trading system. This example provides more sophisticated market simulation, technical indicators, risk management, and broker interfaces.
+
+```bash
+# Run the algorithmic trading example with the mix task
+mix run_algo_trading
+
+# Run with specific market and timeframe
+mix run_algo_trading --market forex --symbol GBPUSD --timeframe 60
+
+# Run with optimization parameters
+mix run_algo_trading --generations 200 --population 150
+
+# Run with backtesting options
+mix run_algo_trading --test-period last_month
+```
+
+You can also run the example directly from IEx:
+
+```elixir
+# Start interactive Elixir shell
+iex -S mix
+
+# Run with default settings
+iex> Bardo.Examples.Applications.AlgoTrading.run(:algo_trading_example)
+
+# Run with custom settings
+iex> Bardo.Examples.Applications.AlgoTrading.run(:algo_trading_example, %{
+  market: :forex,
+  symbol: "EURUSD",
+  timeframe: 15,
+  population_size: 100,
+  generations: 100
+})
+
+# Test the best agent on out-of-sample data
+iex> Bardo.Examples.Applications.AlgoTrading.test_best_agent(:algo_trading_example)
+
+# Connect to live trading (requires broker setup)
+iex> Bardo.Examples.Applications.AlgoTrading.live_trading(:algo_trading_example, :metatrader, %{
+  account_id: "12345678",
+  risk_per_trade: 1.0
+})
+```
+
+The Algorithmic Trading example offers:
+
+- **Advanced Features**:
+  - Comprehensive technical indicators (Moving Averages, RSI, MACD, Bollinger Bands, etc.)
+  - Sophisticated market simulation with realistic slippage and spread
+  - Risk management including position sizing and stop-loss/take-profit
+  - Performance metrics calculation (Sharpe ratio, drawdown, profit factor)
+  - Detailed backtesting on different historical periods
+  - External broker interfaces for live trading
+
+- **Key Components**:
+  - Market simulators for different assets (forex, crypto)
+  - Broker interfaces for popular trading platforms
+  - Advanced sensors for market data and technical analysis
+  - Multi-output actuators for trade direction and risk management
+  - Detailed performance visualization and reporting
+
+This example is ideal for those interested in applying neuroevolution to financial markets and algorithmic trading systems. It demonstrates how neural networks can learn complex trading strategies through evolutionary optimization.
+
 See the [examples documentation](docs/examples.md) for more details on these examples, their configurations, and what to expect when running them.
 
 ### Troubleshooting Common Issues
 
 When running the examples, you might encounter some issues:
 
-1. **Warning messages during compilation**: There are several warnings about unused variables and implementation conflicts that you can safely ignore. These are planned to be addressed in future versions but don't affect the functionality of the examples. In particular, you may see warnings about:
-   - Behavior callbacks not implemented
-   - Implementation conflicts
-   - Unused variables
-   - Deprecated functions
+1. **Compilation Warnings**: There may be some warnings about unused variables or aliases during compilation. These don't affect functionality and have mostly been addressed.
 
-2. **XOR Example Works Best**: Currently, the XOR example is the most stable and reliable example. The other more complex examples (DPB, Flatland, FX) are still being developed and may not work completely as expected.
+2. **Example Complexity**: The examples vary in complexity:
+   - XOR: Simple and stable, good starting point
+   - FX and Flatland: More complex but now have enhanced user experience
+   - AlgoTrading: Most sophisticated example with many components
+   - DPB: Most computationally intensive, requires more resources
 
-3. **Use Mix Tasks or IEx**: Run examples using the provided Mix tasks or within an interactive Elixir shell (`iex -S mix`). This allows you to examine the state of the system during and after the experiments.
+3. **Use the New Mix Tasks**: For the best experience with complex examples, use the dedicated mix tasks which provide:
+   - Interactive parameter selection
+   - Real-time progress tracking
+   - Better error handling and visualization
 
-4. **Start with small parameters**: The examples can be resource-intensive with large populations or many generations. Start with the small parameter sets we provide and increase them as needed.
+4. **Start with Small Parameters**: The examples can be resource-intensive with large populations or many generations. Start with the small parameter sets provided and increase them gradually.
 
-5. **Memory usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
+5. **Memory Usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
 
-6. **Understanding the output**: All examples now provide detailed output at each stage:
-   - At startup: Configuration details and experiment parameters
-   - During execution: Progress indicators in the logs
-   - After completion: Summary of results and performance metrics
-   - Follow-up testing: Each example has test functions with detailed output
+6. **Interactive Output**: All examples now provide interactive output at each stage:
+   - Initial configuration display
+   - Real-time progress tracking with percentage
+   - Completion summary with results
+   - Automatic visualization/testing when available
+
+7. **Mock Data for Demonstrations**: If an example doesn't have real data available (e.g., if an experiment didn't complete), it will automatically use mock data for visualization to demonstrate how the system works.
 
 **Note on Complex Examples**: 
-- All examples (DPB, Flatland, and FX) are now fully functional with enhanced user feedback.
+- All examples are now fully functional with enhanced user feedback and visualization.
 - They showcase different aspects of the neuroevolution framework:
+  - XOR: Simple pattern recognition
   - DPB: Control problem with continuous state and action spaces
   - Flatland: Multi-agent co-evolution in a 2D environment
   - FX: Time series prediction and decision making
+  - AlgoTrading: Sophisticated financial system with extensive components
 
-Begin with the examples with reduced parameters to verify functionality before attempting longer evolutionary runs. For example:
+The **recommended way** to run these complex examples is using the dedicated mix tasks:
+
+```bash
+# Interactive menu to choose example and parameters
+mix run_complex_examples
+
+# Run specific examples directly
+mix run_complex_examples --example flatland
+mix run_complex_examples --example fx
+
+# Run the algorithmic trading example
+mix run_algo_trading
+
+# Customize parameters
+mix run_complex_examples --example flatland --size 5 --generations 10
+mix run_algo_trading --market crypto --symbol BTCUSD --timeframe 60
+```
+
+This provides:
+- Real-time progress tracking during evolution
+- Automatic visualization/testing after completion
+- Better error handling and feedback
+- Mock data for demonstration when needed
+
+You can also run examples with reduced parameters in iex to verify functionality:
 
 ```elixir
 # Quick test runs (will complete in minutes)
 iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_test, 5, 3, 1000)
 iex> Bardo.Examples.Applications.Flatland.run(:flatland_test, 5, 5, 10, 100, 3)
 iex> Bardo.Examples.Applications.Fx.run(:fx_test, 5, 500, 3)
-```
+iex> Bardo.Examples.Applications.AlgoTrading.run(:algo_test, %{population_size: 5, generations: 3})
 
-After the evolution completes, don't forget to try the testing/visualization functions:
-```elixir
 # Test the evolved agents
 iex> Bardo.Examples.Benchmarks.Dpb.test_best_solution(:dpb_test)
 iex> Bardo.Examples.Applications.Flatland.visualize(:flatland_test)
 iex> Bardo.Examples.Applications.Fx.test_best_agent(:fx_test)
+iex> Bardo.Examples.Applications.AlgoTrading.test_best_agent(:algo_test)
 ```
 
 ### Running Examples with Mix Tasks
@@ -280,12 +375,47 @@ The project includes Mix tasks to run the examples, which is the recommended way
    mix run_examples --xor-only
    ```
 
+3. **run_complex_examples**: Runs the complex examples with enhanced user experience, including real-time progress tracking and visualization.
+
+   ```bash
+   # Run interactive menu to select an example
+   mix run_complex_examples
+   
+   # Run specific example directly
+   mix run_complex_examples --example flatland
+   mix run_complex_examples --example fx
+   
+   # Run with custom parameters
+   mix run_complex_examples --example flatland --generations 10 --size 5
+   mix run_complex_examples --example fx --size 20 --generations 15
+   
+   # Run without visualization step
+   mix run_complex_examples --example fx --no-visualize
+   ```
+
+4. **run_algo_trading**: Runs the algorithmic trading example with various configuration options.
+
+   ```bash
+   # Run with default settings (EURUSD/15m)
+   mix run_algo_trading
+   
+   # Run with specific market and timeframe
+   mix run_algo_trading --market forex --symbol GBPUSD --timeframe 60
+   
+   # Run with optimization parameters
+   mix run_algo_trading --generations 200 --population 150
+   
+   # Run with backtesting options
+   mix run_algo_trading --test-period last_month
+   ```
+
 These Mix tasks:
 - Properly load the application and all its modules
 - Check if examples are available before running them
 - Handle dependencies between examples
-- Provide detailed error reporting
+- Provide detailed error reporting and visual progress tracking
 - Summarize which examples succeeded and failed
+- Automatically run visualization/testing after completion
 
 ### Running Examples in IEx
 
@@ -303,6 +433,9 @@ iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_test, 5, 3, 1000)
 
 # Run an application example
 iex> Bardo.Examples.Applications.Flatland.run(:flatland_test, 5, 5, 10, 100, 3)
+
+# Run the algorithmic trading example
+iex> Bardo.Examples.Applications.AlgoTrading.run(:algo_test, %{market: :forex, timeframe: 15})
 ```
 
 This approach gives you the most flexibility and allows you to interact with the results.
@@ -319,7 +452,7 @@ The following modules have been implemented or enhanced to enable the complex ex
 
 4. **Bardo.DB**: Enhanced with a `backup/0` function to support experiment persistence.
 
-5. **Example-specific modules**: Each example (DPB, Flatland, FX) has dedicated sensor, actuator, and morphology modules that implement the required behaviors.
+5. **Example-specific modules**: Each example (DPB, Flatland, FX, AlgoTrading) has dedicated sensor, actuator, and morphology modules that implement the required behaviors.
 
 ## Core Concepts
 

@@ -242,9 +242,28 @@ defmodule Bardo.Models do
   @spec read(atom() | binary(), atom()) :: {:ok, map()} | {:error, term()}
   def read(id, type) do
     try do
-      case DB.fetch(type, id) do
-        nil -> {:error, "Model not found"}
-        model -> {:ok, model}
+      db_adapter = get_db_adapter()
+      
+      result = if function_exported?(db_adapter, :read, 2) do
+        case apply(db_adapter, :read, [id, type]) do
+          nil -> {:error, "Model not found"}
+          model -> {:ok, model}
+        end
+      else
+        case DB.fetch(type, id) do
+          nil -> {:error, "Model not found"}
+          model -> {:ok, model}
+        end
+      end
+      
+      # Handle deserialization
+      case result do
+        {:ok, model} when is_binary(model) ->
+          # Deserialize binary data
+          {:ok, :erlang.binary_to_term(model)}
+          
+        other ->
+          other
       end
     rescue
       e -> 
@@ -267,7 +286,31 @@ defmodule Bardo.Models do
   @spec write(atom() | binary(), atom(), map()) :: :ok | {:error, term()}
   def write(id, type, model) do
     try do
-      DB.store(type, id, model)
+      db_adapter = get_db_adapter()
+      
+      # Serialize complex data types if needed
+      serialized_model = case model do
+        m when is_map(m) and map_size(m) > 0 and not is_struct(m) ->
+          # Check if we need to serialize any nested complex data
+          if needs_serialization?(m) do
+            # Add metadata for serialization
+            serialized = Map.put(m, :__serialized__, true)
+            serialized
+          else
+            model
+          end
+          
+        other ->
+          other
+      end
+      
+      # Use the appropriate DB adapter
+      if function_exported?(db_adapter, :store, 3) do
+        apply(db_adapter, :store, [type, id, serialized_model])
+      else
+        DB.store(type, id, serialized_model)
+      end
+      
       :ok
     rescue
       e -> 
@@ -289,7 +332,14 @@ defmodule Bardo.Models do
   @spec delete(atom() | binary(), atom()) :: :ok | {:error, term()}
   def delete(id, type) do
     try do
-      DB.delete(type, id)
+      db_adapter = get_db_adapter()
+      
+      if function_exported?(db_adapter, :delete, 2) do
+        apply(db_adapter, :delete, [id, type])
+      else
+        DB.delete(type, id)
+      end
+      
       :ok
     rescue
       e -> 
@@ -311,9 +361,68 @@ defmodule Bardo.Models do
   @spec exists?(atom() | binary(), atom()) :: boolean()
   def exists?(id, type) do
     try do
-      DB.fetch(type, id) != nil
+      db_adapter = get_db_adapter()
+      
+      if function_exported?(db_adapter, :exists?, 2) do
+        apply(db_adapter, :exists?, [id, type])
+      else
+        DB.fetch(type, id) != nil
+      end
     rescue
       _ -> false
     end
+  end
+  
+  @doc """
+  List all models of a given type.
+  
+  ## Parameters
+    * `type` - The type of models to list
+    
+  ## Returns
+    * `[models]` - List of models, or empty list if none found
+  """
+  @spec list(atom()) :: [map()]
+  def list(type) do
+    try do
+      db_adapter = get_db_adapter()
+      
+      if function_exported?(db_adapter, :list, 1) do
+        case apply(db_adapter, :list, [type]) do
+          {:ok, models} -> models
+          _ -> []
+        end
+      else
+        []
+      end
+    rescue
+      _ -> []
+    end
+  end
+  
+  # Helper to determine the current DB adapter
+  defp get_db_adapter() do
+    Application.get_env(:bardo, :db)[:adapter] || DB
+  end
+  
+  # Helper to check if a map needs serialization
+  defp needs_serialization?(%{} = map) do
+    Enum.any?(map, fn
+      {_, v} when is_function(v) -> true
+      {_, v} when is_pid(v) -> true
+      {_, v} when is_port(v) -> true
+      {_, v} when is_reference(v) -> true
+      {_, %{} = v} -> needs_serialization?(v)
+      {_, v} when is_list(v) -> 
+        Enum.any?(v, fn
+          item when is_map(item) -> needs_serialization?(item)
+          item when is_function(item) -> true
+          item when is_pid(item) -> true
+          item when is_port(item) -> true
+          item when is_reference(item) -> true
+          _ -> false
+        end)
+      _ -> false
+    end)
   end
 end

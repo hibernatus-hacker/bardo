@@ -4,6 +4,9 @@ defmodule Bardo.Examples.Benchmarks.DpbTest do
   alias Bardo.Examples.Benchmarks.Dpb
   alias Bardo.Examples.Benchmarks.Dpb.DpbWDamping
   alias Bardo.Examples.Benchmarks.Dpb.DpbWoDamping
+  alias Bardo.TestSupport.TestPolisMgr
+  alias Bardo.TestSupport.TestExperimentManagerClient
+  alias Bardo.TestSupport.MockHelper
   
   describe "configure_with_damping/4" do
     test "creates a valid experiment configuration with damping" do
@@ -71,62 +74,11 @@ defmodule Bardo.Examples.Benchmarks.DpbTest do
     end
   end
   
-  # Mock PolisMgr and ExperimentManagerClient for run tests
-  defmodule MockPolisMgr do
-    def setup(config) do
-      send(self(), {:setup_called, config.id})
-      {:ok, %{id: config.id}}
-    end
-  end
-  
-  defmodule MockExperimentManagerClient do
-    def start(experiment_id) do
-      send(self(), {:start_called, experiment_id})
-      :ok
-    end
-  end
-  
   describe "run functions using mocks" do
     setup do
-      # Save original modules
-      _original_polis_mgr = Bardo.PolisMgr
-      _original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
-      
-      # Replace with mocks
-      :code.unstick_mod(Bardo.PolisMgr)
-      :code.purge(Bardo.PolisMgr)
-      :code.delete(Bardo.PolisMgr)
-      Code.eval_string("""
-        defmodule Bardo.PolisMgr do
-          def setup(config) do
-            send(self(), {:setup_called, config.id})
-            {:ok, %{id: config.id}}
-          end
-        end
-      """)
-      
-      :code.unstick_mod(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.purge(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.delete(Bardo.ExperimentManager.ExperimentManagerClient)
-      Code.eval_string("""
-        defmodule Bardo.ExperimentManager.ExperimentManagerClient do
-          def start(experiment_id) do
-            send(self(), {:start_called, experiment_id})
-            :ok
-          end
-        end
-      """)
-      
-      on_exit(fn -> 
-        # Cleanup (restore modules)
-        :code.unstick_mod(Bardo.PolisMgr)
-        :code.purge(Bardo.PolisMgr)
-        :code.delete(Bardo.PolisMgr)
-        :code.unstick_mod(Bardo.ExperimentManager.ExperimentManagerClient)
-        :code.purge(Bardo.ExperimentManager.ExperimentManagerClient)
-        :code.delete(Bardo.ExperimentManager.ExperimentManagerClient)
-      end)
-      
+      # Use the MockHelper to redirect calls to the test modules
+      MockHelper.redirect_module(Bardo.PolisMgr, TestPolisMgr)
+      MockHelper.redirect_module(Bardo.ExperimentManager.ExperimentManagerClient, TestExperimentManagerClient)
       :ok
     end
     

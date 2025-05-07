@@ -1,47 +1,26 @@
-# Define dummy module to be used instead of mocking
-defmodule DummyNeuron do
-  def forward(_, _, _), do: :ok
-end
-
 defmodule Bardo.AgentManager.SubstrateCPPTest do
   use ExUnit.Case
   
   alias Bardo.AgentManager.SubstrateCPP
-  
-  # Save original module to restore in on_exit
-  @original_module Bardo.AgentManager.Neuron
+  alias Bardo.TestSupport.TestNeuron
+  alias Bardo.TestSupport.TestFunctions
+  alias Bardo.TestSupport.MockHelper
   
   setup do
-    # Save the original module implementation
-    original_module = @original_module
-
-    # Override Neuron module with our dummy implementation
-    :code.purge(original_module)
-    :code.delete(original_module)
+    # Use our improved mock helper to redirect calls
+    MockHelper.redirect_module(Bardo.AgentManager.Neuron, TestNeuron)
     
-    # Redefine module for testing with expected arguments
-    Module.create(Bardo.AgentManager.Neuron, quote do
-      def forward(:from_pid, _, [3.14, 6.28]), do: :ok
-      def forward(:from_pid, _, [1.3, 2.4, 1.3, 3.14, 6.28]), do: :ok
-      def forward(_, _, _), do: :ok
-    end, __ENV__)
-    
-    # Add Functions module implementation needed for cartesian operation
-    unless Code.ensure_loaded?(Bardo.Functions) do
-      Module.create(Bardo.Functions, quote do
-        def cartesian([px], [py]), do: [px, py]
-        def cartesian([px], [py], [a, b, c]), do: [a, b, c, px, py]
-      end, __ENV__)
+    # Redirect calls to Functions if needed
+    if Code.ensure_loaded?(Bardo.Functions) do
+      MockHelper.redirect_module(Bardo.Functions, TestFunctions)
+    else
+      # If Functions module doesn't exist yet, we need to override specific functions
+      MockHelper.setup_mocks([Bardo.Functions])
+      :meck.expect(Bardo.Functions, :cartesian, fn
+        [px], [py] -> TestFunctions.cartesian([px], [py])
+        [px], [py], [a, b, c] -> TestFunctions.cartesian([px], [py], [a, b, c])
+      end)
     end
-    
-    on_exit(fn ->
-      # Clean up modified module
-      :code.purge(Bardo.AgentManager.Neuron)
-      :code.delete(Bardo.AgentManager.Neuron)
-      
-      # Note: In a real test environment, we would reload the original module here
-      # but for our tests this is enough to avoid conflicts
-    end)
     
     :ok
   end

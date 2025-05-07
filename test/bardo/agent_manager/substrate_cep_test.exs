@@ -1,41 +1,13 @@
-# Define dummy module to be used instead of mocking
-defmodule DummySubstrate do
-  def set_weight(_, _, _), do: :ok
-  def set_abcn(_, _, _), do: :ok
-  def set_iterative(_, _, _), do: :ok
-end
-
 defmodule Bardo.AgentManager.SubstrateCEPTest do
   use ExUnit.Case
   
   alias Bardo.AgentManager.SubstrateCEP
-  
-  # Save original module to restore in on_exit
-  @original_module Bardo.AgentManager.Substrate
+  alias Bardo.TestSupport.TestSubstrate
+  alias Bardo.TestSupport.MockHelper
   
   setup do
-    # Save the original module implementation
-    original_module = @original_module
-
-    # Override Substrate module with our dummy implementation
-    :code.purge(original_module)
-    :code.delete(original_module)
-    
-    # Redefine module for testing
-    Module.create(Bardo.AgentManager.Substrate, quote do
-      def set_weight(:substrate_pid, _, [4.1940298507462686]), do: :ok
-      def set_abcn(:substrate_pid, _, [3.14]), do: :ok
-      def set_iterative(:substrate_pid, _, [4.1940298507462686]), do: :ok
-    end, __ENV__)
-    
-    on_exit(fn ->
-      # Clean up modified module
-      :code.purge(Bardo.AgentManager.Substrate)
-      :code.delete(Bardo.AgentManager.Substrate)
-      
-      # Note: In a real test environment, we would reload the original module here
-      # but for our tests this is enough to avoid conflicts
-    end)
+    # Use our improved mock helper to redirect calls to Substrate to our test module
+    MockHelper.redirect_module(Bardo.AgentManager.Substrate, TestSubstrate)
     
     :ok
   end

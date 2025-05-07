@@ -3,6 +3,9 @@ defmodule Bardo.Examples.Applications.FxTest do
   
   alias Bardo.Examples.Applications.Fx
   alias Bardo.Examples.Applications.Fx.FxMorphology
+  alias Bardo.TestSupport.TestPolisMgr
+  alias Bardo.TestSupport.TestExperimentManagerClient
+  alias Bardo.TestSupport.MockHelper
   
   describe "configure/4" do
     test "creates a valid experiment configuration" do
@@ -64,66 +67,21 @@ defmodule Bardo.Examples.Applications.FxTest do
     end
   end
   
-  # Mock PolisMgr and ExperimentManagerClient for run tests
-  defmodule MockPolisMgr do
-    def setup(config) do
-      send(self(), {:setup_called, config.id})
-      {:ok, %{id: config.id}}
-    end
-  end
-  
-  defmodule MockExperimentManagerClient do
-    def start(experiment_id) do
-      send(self(), {:start_called, experiment_id})
+  describe "run/4 using mocks" do
+    setup do
+      # Use the MockHelper to redirect calls to the test modules
+      MockHelper.redirect_module(Bardo.PolisMgr, TestPolisMgr)
+      MockHelper.redirect_module(Bardo.ExperimentManager.ExperimentManagerClient, TestExperimentManagerClient)
       :ok
     end
-  end
-  
-  describe "run/4 using mocks" do
+    
     test "sets up and starts the experiment" do
-      # Save original modules
-      _original_polis_mgr = Bardo.PolisMgr
-      _original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
-      
-      # Replace with mocks
-      :code.unstick_mod(Bardo.PolisMgr)
-      :code.purge(Bardo.PolisMgr)
-      :code.delete(Bardo.PolisMgr)
-      Code.eval_string("""
-        defmodule Bardo.PolisMgr do
-          def setup(config) do
-            send(self(), {:setup_called, config.id})
-            {:ok, %{id: config.id}}
-          end
-        end
-      """)
-      
-      :code.unstick_mod(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.purge(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.delete(Bardo.ExperimentManager.ExperimentManagerClient)
-      Code.eval_string("""
-        defmodule Bardo.ExperimentManager.ExperimentManagerClient do
-          def start(experiment_id) do
-            send(self(), {:start_called, experiment_id})
-            :ok
-          end
-        end
-      """)
-      
       # Run the test
       Fx.run(:fx_run_test, 20, 1000, 10)
       
       # Check if the right functions were called
       assert_received {:setup_called, :fx_run_test}
       assert_received {:start_called, :fx_run_test}
-      
-      # Restore original modules (cleanup)
-      :code.unstick_mod(Bardo.PolisMgr)
-      :code.purge(Bardo.PolisMgr)
-      :code.delete(Bardo.PolisMgr)
-      :code.unstick_mod(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.purge(Bardo.ExperimentManager.ExperimentManagerClient)
-      :code.delete(Bardo.ExperimentManager.ExperimentManagerClient)
     end
   end
   

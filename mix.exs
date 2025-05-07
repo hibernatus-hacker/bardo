@@ -36,6 +36,9 @@ defmodule Bardo.MixProject do
     [
       # JSON parsing
       {:jason, "~> 1.4"},
+      # Ecto and PostgreSQL
+      {:ecto_sql, "~> 3.9"},
+      {:postgrex, "~> 0.16.0"},
       # Similar to meck for mocking in tests
       {:mock, "~> 0.3.0", only: :test},
       # CLI observer

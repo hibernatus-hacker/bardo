@@ -1,0 +1,52 @@
+app = "bardo"
+kill_signal = "SIGTERM"
+kill_timeout = 60
+processes = []
+
+[env]
+  # Adjust these for your deployment
+  DATABASE_URL = "postgres://postgres:postgres@bardo-db.internal:5432/bardo"
+  NODE_COOKIE = "your-secure-cookie-here"
+  POOL_SIZE = "10"
+  DB_SSL = "true"
+  MIX_ENV = "prod"
+
+# Connect to fly.io's private networking
+[mounts]
+  source = "bardo_data"
+  destination = "/data"
+
+# Optional metrics
+[metrics]
+  port = 9091
+  path = "/metrics"
+
+[deploy]
+  strategy = "canary"
+  release_command = "mix ecto.migrate"
+
+[services]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  script_checks = []
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "30s"
+    interval = "15s"
+    restart_limit = 6
+    timeout = "2s"

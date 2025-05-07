@@ -3,11 +3,11 @@ defmodule Bardo.ExperimentManager.ExperimentManagerClientTest do
   
   alias Bardo.ExperimentManager.ExperimentManagerClient
   alias Bardo.ExperimentManager.ExperimentManager
-  alias Bardo.TestHelper.Mocks
+  alias Bardo.TestSupport.MockHelper
   
   setup do
-    # Create mock modules using our helper
-    Mocks.setup_mocks([Bardo.ExperimentManager.ExperimentManager])
+    # Set up mock for the ExperimentManager
+    MockHelper.setup_mocks([ExperimentManager])
     :ok
   end
   
