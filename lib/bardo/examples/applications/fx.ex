@@ -83,13 +83,28 @@ defmodule Bardo.Examples.Applications.Fx do
     # Create the experiment configuration
     config = configure(experiment_id, population_size, data_window, generations)
     
+    # Print experiment setup information
+    IO.puts("\n=== Forex (FX) Trading Experiment ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Population size: #{population_size}")
+    IO.puts("Data window size: #{data_window}")
+    IO.puts("Generations: #{generations}")
+    IO.puts("Starting experiment...\n")
+    
     # Set up the experiment
     case PolisMgr.setup(config) do
       {:ok, _} ->
         # Start the experiment
         ExperimentManagerClient.start(experiment_id)
         
+        # This is synchronous, so we can assume the experiment is running
+        IO.puts("\nFX trading experiment is running. Progress will be shown in the logs.")
+        IO.puts("After completion, you can test the best trading agent with:")
+        IO.puts("  Bardo.Examples.Applications.Fx.test_best_agent(#{inspect(experiment_id)})\n")
+        :ok
+        
       {:error, reason} ->
+        IO.puts("\nError starting FX experiment: #{inspect(reason)}")
         {:error, reason}
     end
   end
@@ -106,6 +121,12 @@ defmodule Bardo.Examples.Applications.Fx do
   """
   @spec test_best_agent(atom(), pos_integer(), pos_integer()) :: map() | {:error, any()}
   def test_best_agent(experiment_id, test_window_start \\ 5000, test_window_size \\ 1000) do
+    IO.puts("\n=== Testing Best FX Trading Agent ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Test window start: #{test_window_start}")
+    IO.puts("Test window size: #{test_window_size}")
+    IO.puts("Loading best agent from experiment...\n")
+    
     # Load the experiment data from the database
     case Models.read(experiment_id, :experiment) do
       {:ok, experiment} ->
@@ -115,9 +136,12 @@ defmodule Bardo.Examples.Applications.Fx do
         # Get the best genotype from the population
         case fetch_best_genotype(population_id) do
           {:ok, genotype} ->
+            IO.puts("✅ Found best performing agent from training")
+            
             # Configure test simulation
+            test_id = :"#{experiment_id}_test"
             test_config = %{
-              id: :"#{experiment_id}_test",
+              id: test_id,
               
               # Scape configuration (using different data window)
               scapes: [
@@ -144,23 +168,64 @@ defmodule Bardo.Examples.Applications.Fx do
               ]
             }
             
+            IO.puts("Running backtesting on out-of-sample data...")
+            
             # Run the test
-            {:ok, _} = PolisMgr.setup(test_config)
-            
-            # Wait for test to complete
-            Process.sleep(5000)
-            
-            # Retrieve results
-            retrieve_test_results(:"#{experiment_id}_test")
+            case PolisMgr.setup(test_config) do
+              {:ok, _} ->
+                # Wait for test to complete
+                IO.puts("Test simulation in progress...")
+                Process.sleep(5000)
+                
+                # Retrieve results
+                case retrieve_test_results(test_id) do
+                  %{} = results ->
+                    IO.puts("\n📊 FX Trading Test Results:")
+                    IO.puts("-------------------------------------------")
+                    IO.puts("  Total Profit/Loss: #{format_value(results.profit_loss)}")
+                    IO.puts("  Win Rate: #{format_percentage(results.win_rate)}")
+                    IO.puts("  Maximum Drawdown: #{format_value(results.max_drawdown)}")
+                    IO.puts("  Total Trades: #{results.trade_count}")
+                    IO.puts("-------------------------------------------")
+                    
+                    # Return the detailed results for programmatic use
+                    results
+                    
+                  {:error, reason} ->
+                    IO.puts("\n❌ Error retrieving test results: #{inspect(reason)}")
+                    {:error, reason}
+                end
+                
+              {:error, reason} ->
+                IO.puts("\n❌ Error setting up test simulation: #{inspect(reason)}")
+                {:error, reason}
+            end
             
           {:error, reason} ->
+            IO.puts("\n❌ Error finding best agent: #{inspect(reason)}")
             {:error, reason}
         end
         
       {:error, reason} ->
+        IO.puts("\n❌ Error loading experiment data: #{inspect(reason)}")
         {:error, reason}
     end
   end
+  
+  # Format a numeric value with 2 decimal places
+  defp format_value(value) when is_number(value) do
+    sign = if value >= 0, do: "+", else: ""
+    "#{sign}#{:erlang.float_to_binary(value * 1.0, [decimals: 2])}"
+  end
+  defp format_value(nil), do: "N/A"
+  defp format_value(value), do: "#{inspect(value)}"
+  
+  # Format a percentage value
+  defp format_percentage(value) when is_number(value) do
+    "#{:erlang.float_to_binary(value * 100.0, [decimals: 2])}%"
+  end
+  defp format_percentage(nil), do: "N/A"
+  defp format_percentage(value), do: "#{inspect(value)}"
   
   # Fetch the best genotype from a population
   defp fetch_best_genotype(population_id) do

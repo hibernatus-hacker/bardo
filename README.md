@@ -172,7 +172,7 @@ iex> Bardo.Examples.Applications.Flatland.run(:flatland_example, 20, 20, 40, 100
 
 ### 4. Forex (FX) Trading
 
-Evolves a trading strategy for foreign exchange markets using historical price data.
+Evolves a trading strategy for foreign exchange markets using historical price data. This example demonstrates how neuroevolution can be applied to financial market forecasting and trading strategy development.
 
 ```elixir
 # Run with small parameters for quick testing
@@ -190,6 +190,19 @@ iex> Bardo.Examples.Applications.Fx.run(:fx_example, 50, 5000, 50)
 iex> Bardo.Examples.Applications.Fx.test_best_agent(:fx_example)
 ```
 
+The FX example:
+- Uses EUR/USD forex historical data (located in priv/fx_tables/)
+- Evolves neural networks that take price patterns as input and produce trading signals
+- Evaluates agents based on trading performance metrics (profit/loss, win rate, drawdown)
+- Provides a backtesting function to evaluate the best agent on out-of-sample data
+
+When you run this example, you'll see detailed output including:
+- Experiment configuration (population size, data window, generations)
+- Progress indicators as the evolution runs
+- Detailed test results showing trading metrics when you run test_best_agent
+
+This example is particularly interesting for those interested in applying machine learning to financial markets, as it demonstrates how neuroevolution can discover non-linear patterns in time series data.
+
 See the [examples documentation](docs/examples.md) for more details on these examples, their configurations, and what to expect when running them.
 
 ### Troubleshooting Common Issues
@@ -204,14 +217,35 @@ When running the examples, you might encounter some issues:
 
 4. **Memory usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
 
+5. **Understanding the output**: All examples now provide detailed output at each stage:
+   - At startup: Configuration details and experiment parameters
+   - During execution: Progress indicators in the logs
+   - After completion: Summary of results and performance metrics
+   - Follow-up testing: Each example has test functions with detailed output
+
 **Note on Complex Examples**: 
-- All examples (DPB, Flatland, and FX) are now fully functional.
+- All examples (DPB, Flatland, and FX) are now fully functional with enhanced user feedback.
 - They showcase different aspects of the neuroevolution framework:
   - DPB: Control problem with continuous state and action spaces
   - Flatland: Multi-agent co-evolution in a 2D environment
   - FX: Time series prediction and decision making
 
-Begin with the examples with reduced parameters to verify functionality before attempting longer evolutionary runs.
+Begin with the examples with reduced parameters to verify functionality before attempting longer evolutionary runs. For example:
+
+```elixir
+# Quick test runs (will complete in minutes)
+iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_test, 5, 3, 1000)
+iex> Bardo.Examples.Applications.Flatland.run(:flatland_test, 5, 5, 10, 100, 3)
+iex> Bardo.Examples.Applications.Fx.run(:fx_test, 5, 500, 3)
+```
+
+After the evolution completes, don't forget to try the testing/visualization functions:
+```elixir
+# Test the evolved agents
+iex> Bardo.Examples.Benchmarks.Dpb.test_best_solution(:dpb_test)
+iex> Bardo.Examples.Applications.Flatland.visualize(:flatland_test)
+iex> Bardo.Examples.Applications.Fx.test_best_agent(:fx_test)
+```
 
 ### Key Implementation Modules
 

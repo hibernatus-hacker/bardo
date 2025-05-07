@@ -110,13 +110,28 @@ defmodule Bardo.Examples.Benchmarks.Dpb do
     # Create the experiment configuration
     config = configure_with_damping(experiment_id, population_size, generations, max_steps)
     
+    # Print experiment setup information
+    IO.puts("\n=== Double Pole Balancing Experiment (With Damping) ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Population size: #{population_size}")
+    IO.puts("Generations: #{generations}")
+    IO.puts("Max steps: #{max_steps}")
+    IO.puts("Starting experiment...\n")
+    
     # Set up the experiment
     case PolisMgr.setup(config) do
       {:ok, _} ->
         # Start the experiment
         ExperimentManagerClient.start(experiment_id)
         
+        # This is synchronous, so we can assume the experiment is running
+        IO.puts("\nDPB experiment is running. Progress will be shown in the logs.")
+        IO.puts("After completion, you can test the best solution with:")
+        IO.puts("  Bardo.Examples.Benchmarks.Dpb.test_best_solution(#{inspect(experiment_id)})\n")
+        :ok
+        
       {:error, reason} ->
+        IO.puts("\nError starting DPB experiment: #{inspect(reason)}")
         {:error, reason}
     end
   end
@@ -137,13 +152,28 @@ defmodule Bardo.Examples.Benchmarks.Dpb do
     # Create the experiment configuration
     config = configure_without_damping(experiment_id, population_size, generations, max_steps)
     
+    # Print experiment setup information
+    IO.puts("\n=== Double Pole Balancing Experiment (Without Damping) ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Population size: #{population_size}")
+    IO.puts("Generations: #{generations}")
+    IO.puts("Max steps: #{max_steps}")
+    IO.puts("Starting experiment...\n")
+    
     # Set up the experiment
     case PolisMgr.setup(config) do
       {:ok, _} ->
         # Start the experiment
         ExperimentManagerClient.start(experiment_id)
         
+        # This is synchronous, so we can assume the experiment is running
+        IO.puts("\nDPB experiment is running. Progress will be shown in the logs.")
+        IO.puts("After completion, you can test the best solution with:")
+        IO.puts("  Bardo.Examples.Benchmarks.Dpb.test_best_solution(#{inspect(experiment_id)})\n")
+        :ok
+        
       {:error, reason} ->
+        IO.puts("\nError starting DPB experiment: #{inspect(reason)}")
         {:error, reason}
     end
   end
@@ -160,6 +190,12 @@ defmodule Bardo.Examples.Benchmarks.Dpb do
   """
   @spec test_best_solution(atom(), pos_integer(), boolean()) :: map() | {:error, any()}
   def test_best_solution(experiment_id, max_steps \\ 100000, visualize \\ false) do
+    IO.puts("\n=== Testing Best DPB Solution ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Max steps: #{max_steps}")
+    IO.puts("Visualize: #{visualize}")
+    IO.puts("Loading experiment data...\n")
+    
     # Load the experiment data from the database
     case Models.read(experiment_id, :experiment) do
       {:ok, experiment} ->
@@ -168,14 +204,19 @@ defmodule Bardo.Examples.Benchmarks.Dpb do
         
         # Determine the morphology
         morphology = if experiment_uses_damping?(experiment) do
+          IO.puts("Experiment type: With Damping")
           DpbWDamping
         else
+          IO.puts("Experiment type: Without Damping")
           DpbWoDamping
         end
         
         # Get the best genotype from the population
         case fetch_best_genotype(population_id) do
           {:ok, genotype} ->
+            IO.puts("Successfully retrieved best genotype")
+            IO.puts("Setting up test simulation...")
+            
             # Configure test simulation
             test_config = %{
               id: :"#{experiment_id}_test",
@@ -208,17 +249,41 @@ defmodule Bardo.Examples.Benchmarks.Dpb do
             # Run the test
             {:ok, _} = PolisMgr.setup(test_config)
             
+            IO.puts("Test running... (waiting for completion)")
             # Wait for test to complete
             Process.sleep(5000)
             
             # Retrieve results
-            retrieve_test_results(:"#{experiment_id}_test")
+            IO.puts("Retrieving test results...")
+            results = retrieve_test_results(:"#{experiment_id}_test")
+            
+            # Display the results nicely
+            IO.puts("\n=== Test Results ===")
+            case results do
+              %{steps: steps, success: success, jiggle: jiggle} ->
+                IO.puts("Steps completed: #{steps}/#{max_steps}")
+                IO.puts("Success: #{success}")
+                IO.puts("Stability (jiggle): #{jiggle}")
+                
+                if steps >= max_steps do
+                  IO.puts("\n🎉 SUCCESS! The neural network balanced the poles for the maximum number of steps.")
+                else
+                  IO.puts("\n⚠️ The neural network was able to balance the poles for #{steps} steps.")
+                end
+                
+              other ->
+                IO.puts("Unexpected results format: #{inspect(other)}")
+            end
+            
+            results
             
           {:error, reason} ->
+            IO.puts("Error retrieving best genotype: #{inspect(reason)}")
             {:error, reason}
         end
         
       {:error, reason} ->
+        IO.puts("Error reading experiment data: #{inspect(reason)}")
         {:error, reason}
     end
   end

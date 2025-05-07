@@ -109,13 +109,30 @@ defmodule Bardo.Examples.Applications.Flatland do
     # Create the experiment configuration
     config = configure(experiment_id, predator_population_size, prey_population_size, plant_quantity, simulation_steps, generations)
     
+    # Print experiment setup information
+    IO.puts("\n=== Flatland Predator-Prey Simulation ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Predator population: #{predator_population_size}")
+    IO.puts("Prey population: #{prey_population_size}")
+    IO.puts("Plant quantity: #{plant_quantity}")
+    IO.puts("Simulation steps: #{simulation_steps}")
+    IO.puts("Generations: #{generations}")
+    IO.puts("Starting experiment...\n")
+    
     # Set up the experiment
     case PolisMgr.setup(config) do
       {:ok, _} ->
         # Start the experiment
         ExperimentManagerClient.start(experiment_id)
         
+        # This is synchronous, so we can assume the experiment is running
+        IO.puts("\nFlatland experiment is running. Progress will be shown in the logs.")
+        IO.puts("After completion, you can visualize the best agents with:")
+        IO.puts("  Bardo.Examples.Applications.Flatland.visualize(#{inspect(experiment_id)})\n")
+        :ok
+        
       {:error, reason} ->
+        IO.puts("\nError starting Flatland experiment: #{inspect(reason)}")
         {:error, reason}
     end
   end
@@ -130,6 +147,10 @@ defmodule Bardo.Examples.Applications.Flatland do
   """
   @spec visualize(atom()) :: :ok | {:error, any()}
   def visualize(experiment_id) do
+    IO.puts("\n=== Visualizing Flatland Best Agents ===")
+    IO.puts("Experiment ID: #{experiment_id}")
+    IO.puts("Loading experiment data...\n")
+    
     # Load the experiment data from the database
     case Models.read(experiment_id, :experiment) do
       {:ok, experiment} ->
@@ -137,9 +158,14 @@ defmodule Bardo.Examples.Applications.Flatland do
         predator_pop_id = Models.get(experiment, [:populations, 0, :id])
         prey_pop_id = Models.get(experiment, [:populations, 1, :id])
         
+        IO.puts("Retrieving best predator and prey genotypes...")
+        
         # Get the best genotypes from each population
         {:ok, predator_genotype} = fetch_best_genotype(predator_pop_id)
         {:ok, prey_genotype} = fetch_best_genotype(prey_pop_id)
+        
+        IO.puts("Successfully retrieved best genotypes")
+        IO.puts("Setting up visualization environment...")
         
         # Configure visualization
         vis_config = %{
@@ -177,9 +203,15 @@ defmodule Bardo.Examples.Applications.Flatland do
         }
         
         # Start the visualization
-        PolisMgr.setup(vis_config)
+        {:ok, _} = PolisMgr.setup(vis_config)
+        
+        IO.puts("\n🌍 Flatland visualization started!")
+        IO.puts("Watching predator and prey agents interact in the environment.")
+        IO.puts("The visualizer will run until you stop the program.")
+        :ok
         
       {:error, reason} ->
+        IO.puts("\nError reading experiment data: #{inspect(reason)}")
         {:error, reason}
     end
   end
