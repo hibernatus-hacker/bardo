@@ -13,6 +13,46 @@ defmodule Bardo.Examples.Applications.Flatland.Prey do
   @behaviour Morphology
   
   @doc """
+  Returns a list of sensors for the prey agents.
+  
+  Required by the Morphology behaviour.
+  """
+  @impl Morphology
+  def sensors do
+    [
+      %{
+        id: :distance_scanner,
+        type: :flatland_sensor,
+        vl: 5,
+        parameters: %{sensor_type: :distance, rays: 5}
+      },
+      %{
+        id: :color_scanner,
+        type: :flatland_sensor,
+        vl: 5,
+        parameters: %{sensor_type: :color, rays: 5}
+      }
+    ]
+  end
+
+  @doc """
+  Returns a list of actuators for the prey agents.
+  
+  Required by the Morphology behaviour.
+  """
+  @impl Morphology
+  def actuators do
+    [
+      %{
+        id: :wheels,
+        type: :flatland_actuator,
+        vl: 2,
+        parameters: %{actuator_type: :two_wheels}
+      }
+    ]
+  end
+  
+  @doc """
   Initialize the prey morphology.
   
   Returns the sensor and actuator configuration for prey agents.

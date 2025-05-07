@@ -9,7 +9,6 @@ defmodule Bardo.Examples.Simple.Xor do
   
   alias Bardo.AgentManager.Cortex
   alias Bardo.PopulationManager.{Genotype, GenomeMutator}
-  alias Bardo.Utils
   
   @doc """
   Run the XOR example.

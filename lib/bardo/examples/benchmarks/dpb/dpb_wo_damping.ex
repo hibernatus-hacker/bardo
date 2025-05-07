@@ -13,6 +13,52 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   @behaviour Morphology
   
   @doc """
+  Returns a list of sensors for the morphology.
+  
+  Required by the Morphology behaviour.
+  """
+  @impl Morphology
+  def sensors do
+    [
+      %{
+        id: :cart_position,
+        type: :dpb_sensor,
+        vl: 1,
+        parameters: %{sensor_type: :position}
+      },
+      %{
+        id: :pole1_angle,
+        type: :dpb_sensor,
+        vl: 1,
+        parameters: %{sensor_type: :angle1}
+      },
+      %{
+        id: :pole2_angle,
+        type: :dpb_sensor,
+        vl: 1,
+        parameters: %{sensor_type: :angle2}
+      }
+    ]
+  end
+
+  @doc """
+  Returns a list of actuators for the morphology.
+  
+  Required by the Morphology behaviour.
+  """
+  @impl Morphology
+  def actuators do
+    [
+      %{
+        id: :force,
+        type: :dpb_actuator,
+        vl: 1,
+        parameters: %{actuator_type: :force}
+      }
+    ]
+  end
+  
+  @doc """
   Get the sensor and actuator configuration for a DPB agent without damping.
   
   Returns a map with :sensors and :actuators keys.
@@ -20,8 +66,8 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   @impl Morphology
   def get_phys_config(_owner, cortex_id, scape_name) do
     %{
-      sensors: sensors(cortex_id, scape_name),
-      actuators: actuators(cortex_id, scape_name)
+      sensors: sensors_config(cortex_id, scape_name),
+      actuators: actuators_config(cortex_id, scape_name)
     }
   end
   
@@ -70,7 +116,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   
   Without damping only includes position sensors, not velocity sensors.
   """
-  def sensors(cortex_id, scape_name) do
+  def sensors_config(cortex_id, scape_name) do
     [
       # Position sensors only (no velocity sensors)
       DpbSensor.cart_position(1, 1, cortex_id, scape_name),
@@ -84,7 +130,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   
   Returns a list with a single force actuator.
   """
-  def actuators(cortex_id, scape_name) do
+  def actuators_config(cortex_id, scape_name) do
     [
       # Force actuator without damping
       DpbActuator.without_damping(4, 1, cortex_id, scape_name)

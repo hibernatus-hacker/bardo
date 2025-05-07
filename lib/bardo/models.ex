@@ -4,7 +4,12 @@ defmodule Bardo.Models do
   
   This module defines the type specifications and data models used throughout
   the system, as well as utility functions for working with these models.
+  
+  This module also provides functions for reading and writing models to storage,
+  which is essential for more complex examples that need to persist state.
   """
+  
+  alias Bardo.DB
 
   @doc """
   Get a value from a model by key.

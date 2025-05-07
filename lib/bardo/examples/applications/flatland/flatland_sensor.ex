@@ -33,7 +33,7 @@ defmodule Bardo.Examples.Applications.Flatland.FlatlandSensor do
   Required by the Sensor behavior.
   """
   @impl Sensor
-  def percept(sensor_type, {percept, agent_id, vl, params, mod_state}) do
+  def percept(sensor_type, {percept, _agent_id, vl, _params, mod_state}) do
     # Process the percept data to generate output signals
     case sensor_type do
       :distance_scanner ->
@@ -58,9 +58,9 @@ defmodule Bardo.Examples.Applications.Flatland.FlatlandSensor do
   Required by the Sensor behavior.
   """
   @impl Sensor
-  def sense(sensor_type, {agent_id, vl, params, scape, sensor_id, op_mode, mod_state}) do
+  def sense(sensor_type, {_agent_id, _vl, params, _scape, _sensor_id, _op_mode, mod_state}) do
     # Gather sensory input from the scape
-    sensing_params = %{
+    _sensing_params = %{
       sensor_type: sensor_type,
       angles: if is_list(params) do 
         Keyword.get(params, :angles, []) 
@@ -180,7 +180,7 @@ defmodule Bardo.Examples.Applications.Flatland.FlatlandSensor do
   end
   
   # Normalize distance values to the range [0.0, 1.0]
-  defp normalize_distances(distances, vl) do
+  defp normalize_distances(distances, _vl) do
     # For now, assume distances are already normalized
     distances
   end
