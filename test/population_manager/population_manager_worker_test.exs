@@ -1,7 +1,8 @@
 defmodule Bardo.PopulationManager.PopulationManagerWorkerTest do
   use ExUnit.Case, async: true
-  alias Bardo.PopulationManager.PopulationManagerWorker
-  alias Bardo.PopulationManager.PopulationManager
+  # Aliases are commented out since they're not used in this simplified test suite
+  # alias Bardo.PopulationManager.PopulationManagerWorker
+  # alias Bardo.PopulationManager.PopulationManager
 
   # For testing GenServers like this, we would typically use mocks to isolate the worker
   # from the actual PopulationManager process.

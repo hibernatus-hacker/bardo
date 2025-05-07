@@ -28,8 +28,7 @@ defmodule Bardo.Models do
       
       iex> get(:unknown, model)
       :not_found
-  """
-  @doc """
+      
   Access model data directly.
   
   This helper function provides direct access to model data, which can be in different formats:
@@ -243,7 +242,7 @@ defmodule Bardo.Models do
   @spec read(atom() | binary(), atom()) :: {:ok, map()} | {:error, term()}
   def read(id, type) do
     try do
-      case DB.get({id, type}) do
+      case DB.fetch(type, id) do
         nil -> {:error, "Model not found"}
         model -> {:ok, model}
       end
@@ -268,7 +267,7 @@ defmodule Bardo.Models do
   @spec write(atom() | binary(), atom(), map()) :: :ok | {:error, term()}
   def write(id, type, model) do
     try do
-      DB.put({id, type}, model)
+      DB.store(type, id, model)
       :ok
     rescue
       e -> 
@@ -290,7 +289,7 @@ defmodule Bardo.Models do
   @spec delete(atom() | binary(), atom()) :: :ok | {:error, term()}
   def delete(id, type) do
     try do
-      DB.delete({id, type})
+      DB.delete(type, id)
       :ok
     rescue
       e -> 
@@ -312,7 +311,7 @@ defmodule Bardo.Models do
   @spec exists?(atom() | binary(), atom()) :: boolean()
   def exists?(id, type) do
     try do
-      DB.get({id, type}) != nil
+      DB.fetch(type, id) != nil
     rescue
       _ -> false
     end

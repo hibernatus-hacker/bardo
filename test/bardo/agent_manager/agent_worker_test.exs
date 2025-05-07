@@ -2,7 +2,7 @@ defmodule Bardo.AgentManager.AgentWorkerTest do
   use ExUnit.Case
   
   alias Bardo.AgentManager.AgentWorker
-  alias Bardo.AgentManager.Exoself
+  # alias Bardo.AgentManager.Exoself  # Not used in tests
   
   @agent_id {:agent, 1.334}
   @op_mode :gt

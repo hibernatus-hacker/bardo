@@ -64,7 +64,7 @@ defmodule Bardo.PolisMgr do
   defp ensure_manager_started do
     if Process.whereis(Bardo.Polis.Manager) == nil do
       # Start supervisor which will start manager
-      {:ok, _} = Bardo.Polis.Supervisor.start_link()
+      {:ok, _} = Bardo.Polis.Supervisor.start_link([])
     end
     :ok
   end

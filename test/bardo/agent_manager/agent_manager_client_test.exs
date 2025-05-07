@@ -15,12 +15,12 @@ defmodule Bardo.AgentManager.AgentManagerClientTest do
     """
     
     # Maintain the same API as the original
-    def start_agent(agent_id, op_mode) do
+    def start_agent(_agent_id, _op_mode) do
       # Just return :ok to replicate original test
       :ok
     end
     
-    def stop_agent(agent_id) do
+    def stop_agent(_agent_id) do
       # Just return :ok to replicate original test
       :ok
     end
@@ -69,7 +69,7 @@ defmodule Bardo.AgentManager.AgentManagerClientTest do
     
     # Override the AgentManagerClient module for this test
     original_module = Bardo.AgentManager.AgentManagerClient
-    code = original_module.__info__(:compile)[:source] |> to_string()
+    _code = original_module.__info__(:compile)[:source] |> to_string()
     
     # Create a temporary module that intercepts the calls
     Module.create(Bardo.AgentManager.AgentManagerClient, quote do
@@ -77,18 +77,18 @@ defmodule Bardo.AgentManager.AgentManagerClientTest do
       Test version of AgentManagerClient for testing
       """
       
-      def start_agent(agent_id, op_mode) do
+      def start_agent(agent_id_arg, op_mode_arg) do
         # Send a message to the test process to verify this was called
-        send(unquote(test_pid), {:start_agent_called, agent_id, op_mode})
+        send(unquote(test_pid), {:start_agent_called, agent_id_arg, op_mode_arg})
         # Delegate to test module
-        TestAgentManagerClient.start_agent(agent_id, op_mode)
+        TestAgentManagerClient.start_agent(agent_id_arg, op_mode_arg)
       end
       
-      def stop_agent(agent_id) do
+      def stop_agent(agent_id_arg) do
         # Send a message to the test process to verify this was called
-        send(unquote(test_pid), {:stop_agent_called, agent_id})
+        send(unquote(test_pid), {:stop_agent_called, agent_id_arg})
         # Delegate to test module
-        TestAgentManagerClient.stop_agent(agent_id)
+        TestAgentManagerClient.stop_agent(agent_id_arg)
       end
       
       # Make sure we preserve other functions

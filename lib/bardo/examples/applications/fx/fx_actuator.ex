@@ -22,6 +22,20 @@ defmodule Bardo.Examples.Applications.Fx.FxActuator do
   - agent_id: ID of the agent
   """
   @impl Actuator
+  def init(_params) do
+    state = %{
+      id: nil,
+      actuator_type: :trade,
+      fanin: 1,
+      cortex_pid: nil,
+      scape_pid: nil,
+      agent_id: nil
+    }
+    
+    {:ok, state}
+  end
+  
+  # Legacy init function for compatibility
   def init(id, actuator_type, fanin, cortex_pid, scape_pid, agent_id) do
     state = %{
       id: id,
@@ -44,6 +58,38 @@ defmodule Bardo.Examples.Applications.Fx.FxActuator do
   3. Processes responses (fitness, account updates)
   """
   @impl Actuator
+  def actuate(_actuator_type, {agent_id, signals, _params, _vl, scape, actuator_id, mod_state}) do
+    # Get the neural network output
+    [value | _] = signals
+    
+    # Convert the output to a trade decision
+    # -1 = short, 0 = no position, 1 = long
+    trade_decision = convert_to_trade_decision(value)
+    
+    # Prepare parameters for the scape
+    trade_params = %{
+      value: trade_decision
+    }
+    
+    # Send the decision to the scape
+    if is_pid(scape) do
+      Bardo.AgentManager.PrivateScape.actuate(scape, agent_id, actuator_id, :trade, trade_params)
+    end
+    
+    # Return updated state
+    mod_state
+  end
+
+  @doc """
+  Cleanup resources when terminating.
+  """
+  @impl Actuator
+  def terminate(_reason, _mod_state) do
+    # No resources to clean up
+    :ok
+  end
+  
+  # Legacy handle function for compatibility
   def handle(signals, state) do
     %{
       actuator_type: actuator_type,

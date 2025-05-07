@@ -1,7 +1,8 @@
 defmodule Bardo.PopulationManager.TotTopologicalMutationsTest do
   use ExUnit.Case, async: true
-  alias Bardo.PopulationManager.TotTopologicalMutations
-  alias Bardo.{Models, DB}
+  # Aliases are commented out since they're not used in this simplified test suite
+  # alias Bardo.PopulationManager.TotTopologicalMutations
+  # alias Bardo.{Models, DB}
 
   # These tests would require proper mocking of the DB, ETS tables, etc.
   # The tests below are simplified examples and would need proper mocking to work correctly

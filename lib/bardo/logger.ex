@@ -161,11 +161,13 @@ defmodule Bardo.Logger do
     {:undefined, :undefined, :undefined, inspect(message), []}
   end
   
-  # Format message is not currently used but kept for future use
-  defp _format_message(module, function, status, message, data) do
-    data_str = if Enum.empty?(data), do: "", else: " data=#{inspect(data)}"
-    "[#{module}:#{function}] (#{status}) #{message}#{data_str}"
-  end
+  # Function removed to eliminate warning
+  # This function was for future functionality but was causing warnings
+  # 
+  # defp _format_message(module, function, status, message, data) do
+  #   data_str = if Enum.empty?(data), do: "", else: " data=#{inspect(data)}"
+  #   "[#{module}:#{function}] (#{status}) #{message}#{data_str}"
+  # end
   
   defp format_structured_log(level, in_mod, what, result, details, params) do
     %{

@@ -209,15 +209,21 @@ See the [examples documentation](docs/examples.md) for more details on these exa
 
 When running the examples, you might encounter some issues:
 
-1. **Warning messages during compilation**: There are several warnings about unused variables and implementation conflicts that you can safely ignore. These are planned to be addressed in future versions but don't affect the functionality of the examples.
+1. **Warning messages during compilation**: There are several warnings about unused variables and implementation conflicts that you can safely ignore. These are planned to be addressed in future versions but don't affect the functionality of the examples. In particular, you may see warnings about:
+   - Behavior callbacks not implemented
+   - Implementation conflicts
+   - Unused variables
+   - Deprecated functions
 
-2. **Recommend using IEx**: We recommend running the examples within an interactive Elixir shell (`iex -S mix`) rather than using `mix run -e`. This allows you to examine the state of the system during and after the experiments.
+2. **XOR Example Works Best**: Currently, the XOR example is the most stable and reliable example. The other more complex examples (DPB, Flatland, FX) are still being developed and may not work completely as expected.
 
-3. **Start with small parameters**: The examples can be resource-intensive with large populations or many generations. Start with the small parameter sets we provide and increase them as needed.
+3. **Use Mix Tasks or IEx**: Run examples using the provided Mix tasks or within an interactive Elixir shell (`iex -S mix`). This allows you to examine the state of the system during and after the experiments.
 
-4. **Memory usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
+4. **Start with small parameters**: The examples can be resource-intensive with large populations or many generations. Start with the small parameter sets we provide and increase them as needed.
 
-5. **Understanding the output**: All examples now provide detailed output at each stage:
+5. **Memory usage**: For very long runs, be aware of memory usage, as the system stores information about all agents throughout evolution.
+
+6. **Understanding the output**: All examples now provide detailed output at each stage:
    - At startup: Configuration details and experiment parameters
    - During execution: Progress indicators in the logs
    - After completion: Summary of results and performance metrics
@@ -246,6 +252,60 @@ iex> Bardo.Examples.Benchmarks.Dpb.test_best_solution(:dpb_test)
 iex> Bardo.Examples.Applications.Flatland.visualize(:flatland_test)
 iex> Bardo.Examples.Applications.Fx.test_best_agent(:fx_test)
 ```
+
+### Running Examples with Mix Tasks
+
+The project includes Mix tasks to run the examples, which is the recommended way to run code in a Mix project:
+
+1. **run_xor**: Runs just the XOR example, which is the most stable and self-contained example.
+
+   ```bash
+   # Run with default settings
+   mix run_xor
+   
+   # Run with custom settings
+   mix run_xor --size 50 --generations 20
+   
+   # Run without progress output
+   mix run_xor --quiet
+   ```
+
+2. **run_examples**: Attempts to run all available examples and benchmarks with small parameters.
+
+   ```bash
+   # Run all available examples
+   mix run_examples
+   
+   # Run only the XOR example
+   mix run_examples --xor-only
+   ```
+
+These Mix tasks:
+- Properly load the application and all its modules
+- Check if examples are available before running them
+- Handle dependencies between examples
+- Provide detailed error reporting
+- Summarize which examples succeeded and failed
+
+### Running Examples in IEx
+
+You can also run the examples directly in an interactive Elixir shell:
+
+```bash
+# Start an interactive shell
+$ iex -S mix
+
+# Run the XOR example
+iex> Bardo.Examples.Simple.Xor.run(population_size: 20, max_generations: 10)
+
+# Run a benchmark example
+iex> Bardo.Examples.Benchmarks.Dpb.run_with_damping(:dpb_test, 5, 3, 1000)
+
+# Run an application example
+iex> Bardo.Examples.Applications.Flatland.run(:flatland_test, 5, 5, 10, 100, 3)
+```
+
+This approach gives you the most flexibility and allows you to interact with the results.
 
 ### Key Implementation Modules
 

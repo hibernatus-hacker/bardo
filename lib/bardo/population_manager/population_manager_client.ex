@@ -12,7 +12,7 @@ defmodule Bardo.PopulationManager.PopulationManagerClient do
   """
   @spec new_run() :: :ok
   def new_run do
-    PopulationManagerSupervisor.start_population_mgr()
+    PopulationManagerSupervisor.start_population_manager()
     :ok
   end
 
@@ -21,7 +21,7 @@ defmodule Bardo.PopulationManager.PopulationManagerClient do
   """
   @spec restart_run() :: :ok
   def restart_run do
-    PopulationManagerSupervisor.restart_population_mgr()
+    PopulationManagerSupervisor.restart_population_manager()
     :ok
   end
 

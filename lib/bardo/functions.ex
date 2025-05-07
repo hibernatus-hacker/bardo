@@ -143,7 +143,7 @@ defmodule Bardo.Functions do
   def sqrt(val), do: sgn(val) * :math.sqrt(abs(val))
 
   @spec log(float()) :: float()
-  def log(0.0), do: 0.0
+  def log(value) when value == +0.0 or value == -0.0, do: 0.0
   def log(val), do: sgn(val) * :math.log(abs(val))
 
   @spec sigmoid(float()) :: float()
@@ -325,7 +325,7 @@ defmodule Bardo.Functions do
   # Internal functions
 
   @spec phi(float(), float()) :: float()
-  defp phi(_p = 0.0, _z), do: 0.0
+  defp phi(p, _z) when p == +0.0 or p == -0.0, do: 0.0
   defp phi(p, z), do: :math.acos(z / p)
 
   @spec cartesian_coord_diffs1([float()], [float()], [float()]) :: [float()]
@@ -352,15 +352,15 @@ defmodule Bardo.Functions do
   end
 
   @spec theta(float(), float(), float()) :: float()
-  defp theta(0.0, _x, _y), do: 0.0
+  defp theta(r, _x, _y) when r == +0.0 or r == -0.0, do: 0.0
   defp theta(_r, x, y), do: theta_false_case(x, y)
 
   @spec theta_false_case(float(), float()) :: float()
   defp theta_false_case(x, y) when x > 0.0 and y >= 0.0, do: :math.atan(y / x)
   defp theta_false_case(x, y) when x > 0.0 and y < 0.0, do: :math.atan(y / x) + 2 * :math.pi()
   defp theta_false_case(x, y) when x < 0.0, do: :math.atan(y / x) + :math.pi()
-  defp theta_false_case(0.0, y) when y > 0.0, do: :math.pi() / 2
-  defp theta_false_case(0.0, y) when y < 0.0, do: 3 * :math.pi() / 2
+  defp theta_false_case(x, y) when (x == +0.0 or x == -0.0) and y > 0.0, do: :math.pi() / 2
+  defp theta_false_case(x, y) when (x == +0.0 or x == -0.0) and y < 0.0, do: 3 * :math.pi() / 2
 
   @spec centripital_distance([float()], float()) :: float()
   defp centripital_distance([val | coord], acc) do

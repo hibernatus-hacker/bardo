@@ -2,7 +2,7 @@ defmodule Bardo.AgentManager.NeuronTest do
   use ExUnit.Case
   
   alias Bardo.AgentManager.Neuron
-  alias Bardo.AppConfig
+  # alias Bardo.AppConfig  # Not used directly in the tests
   
   setup do
     # First ensure the AppConfig module is ready with default values

@@ -1,7 +1,7 @@
 defmodule Bardo.PopulationManager.GenotypeTest do
   use ExUnit.Case, async: true
   alias Bardo.PopulationManager.Genotype
-  alias Bardo.{DB, Models}
+  # alias Bardo.{DB, Models} # Not used in the tests
 
   setup do
     # Set up test environment, mock DB if needed

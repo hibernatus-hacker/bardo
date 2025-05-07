@@ -8,33 +8,26 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
   
   alias Bardo.ScapeManager.Sector
   alias Bardo.Examples.Applications.Flatland.FlatlandUtils
-  alias Bardo.Models
-  
-  @behaviour Sector
+  # Models is not currently used
+  # alias Bardo.Models
   
   # Define constants
   @world_width 1000
   @world_height 1000
-  @plant_colour -0.5
-  @prey_colour 0
-  @predator_colour 0.5
-  @predator_avatar_diameter 20
-  @prey_avatar_diameter 15
-  @plant_avatar_diameter 10
-  @plant_energy 600
-  @predator_hunger_degradation_rate 1
-  @prey_hunger_degradation_rate 1
-  @energy_degradation_rate 0.01
-  @avatar_respawn_period 500
-  @energy_award_per_consumption 800
-  @max_energy 2000
-  @max_force 90
-  @max_torque 0.2
-  @friction 0.06
-  @weight_per_energy_unit 3
-  @collision_dx 0.5
   
-  # Define Flatland state struct (converted from Erlang record)
+  # Struct defined below - reference for fields:
+  # - scape_pid: PID of the scape
+  # - width: world width
+  # - height: world height
+  # - plant_quantity: number of plants
+  # - avatars: map of avatars
+  # - avatar_age: age counter
+  # - pids: set of PIDs
+  # - plant_respawn_coord_history: coordinates of respawned plants
+  
+  @behaviour Sector
+  
+  # Define Flatland state struct (moved from below)
   defstruct [
     :scape_pid,
     :width,
@@ -45,6 +38,85 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
     pids: MapSet.new(),
     plant_respawn_coord_history: []
   ]
+  
+  # Implementation of required Sector callbacks
+  
+  @impl Sector
+  def init(params) do
+    %{
+      scape_pid: scape_pid,
+      plant_quantity: plant_quantity
+    } = params
+    
+    flatland_state = %__MODULE__{
+      scape_pid: scape_pid,
+      width: @world_width,
+      height: @world_height,
+      plant_quantity: plant_quantity,
+      avatars: %{},
+      avatar_age: 0,
+      pids: MapSet.new(),
+      plant_respawn_coord_history: []
+    }
+    
+    # Create initial plants
+    flatland_state = spawn_plants(flatland_state)
+    
+    {:ok, flatland_state}
+  end
+  
+  @impl Sector
+  def sense(agent_id, params, _sensor_pid, state) do
+    result = case params[:sensor_type] do
+      :distance_scanner ->
+        {resp, _} = sense_distance(agent_id, params, state)
+        resp
+      # Commented out colour_scanner because it's not yet implemented
+      # :colour_scanner ->
+      #   {resp, _} = sense_colour(agent_id, params, state)
+      #   resp
+      _ ->
+        0.0
+    end
+    
+    {result, state}
+  end
+  
+  @impl Sector
+  def actuate(agent_id, _function, params, state) do
+    result = case params[:actuator_type] do
+      :two_wheels ->
+        output_vector = params[:output_vector]
+        {resp, new_state} = actuate_two_wheels(agent_id, output_vector, state)
+        {{resp[:fitness], resp[:status]}, new_state}
+      _ ->
+        {{0.0, :continue}, state}
+    end
+    
+    result
+  end
+  
+  # Define constants - moved to the beginning of the module
+  @plant_colour -0.5
+  @prey_colour 0
+  @predator_colour 0.5
+  @predator_avatar_diameter 20
+  @prey_avatar_diameter 15
+  @plant_avatar_diameter 10
+  @plant_energy 600
+  @predator_hunger_degradation_rate 1
+  @prey_hunger_degradation_rate 1
+  @energy_degradation_rate 0.01
+  # @avatar_respawn_period 500 # Commented out as it's not currently used
+  @energy_award_per_consumption 800
+  @max_energy 2000
+  @max_force 90
+  @max_torque 0.2
+  @friction 0.06
+  @weight_per_energy_unit 3
+  @collision_dx 0.5
+  
+  # Struct already defined at top of module
   
   # Define avatar struct (converted from Erlang record)
   defmodule Avatar do
@@ -73,7 +145,7 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
   @doc """
   Initializes the Flatland sector with the given parameters.
   """
-  @impl Sector
+  # Legacy init function for compatibility
   def init(params, _state) do
     %{
       scape_pid: scape_pid,
@@ -127,18 +199,50 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
   def leave(agent_id, _params, state) do
     case get_avatar_by_agent_id(state, agent_id) do
       nil ->
-        {:success, state}
+        {:ok, state}
         
       avatar ->
         new_state = remove_avatar(state, avatar.id)
-        {:success, new_state}
+        {:ok, new_state}
+    end
+  end
+  
+  @impl Sector
+  def remove(agent_id, state) do
+    case get_avatar_by_agent_id(state, agent_id) do
+      nil ->
+        {:ok, state}
+        
+      avatar ->
+        new_state = remove_avatar(state, avatar.id)
+        {:ok, new_state}
+    end
+  end
+  
+  @impl Sector
+  def insert(agent_id, params, state) do
+    type = params[:type]
+    
+    case type do
+      :predator ->
+        avatar = create_predator_avatar(state, agent_id)
+        new_state = add_avatar(state, avatar)
+        {:ok, new_state}
+        
+      :prey ->
+        avatar = create_prey_avatar(state, agent_id)
+        new_state = add_avatar(state, avatar)
+        {:ok, new_state}
+        
+      _ ->
+        {:ok, state}
     end
   end
   
   @doc """
   Handles the step operation for the Flatland environment.
   """
-  @impl Sector
+  # Step implementation - not part of Sector behaviour
   def step(_params, state) do
     new_state = do_step(state)
     {:success, new_state}
@@ -147,7 +251,7 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
   @doc """
   Handles a sensor operation from an agent.
   """
-  @impl Sector
+  # Legacy sense function for compatibility
   def sense(agent_id, params, state) do
     case params[:sensor_type] do
       :distance_scanner ->
@@ -164,7 +268,7 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
   @doc """
   Handles an actuator operation from an agent.
   """
-  @impl Sector
+  # Legacy actuate function for compatibility
   def actuate(agent_id, params, state) do
     case params[:actuator_type] do
       :two_wheels ->
@@ -689,7 +793,7 @@ defmodule Bardo.Examples.Applications.Flatland.Flatland do
     end)
     
     # Find the closest intersection and its color
-    {closest_dist, closest_color} = Enum.reduce(
+    {_closest_dist, closest_color} = Enum.reduce(
       other_avatars, 
       {1.0, 1.0},
       fn other, {closest, color} ->

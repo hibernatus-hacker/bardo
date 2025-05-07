@@ -89,8 +89,8 @@ defmodule Bardo.Examples.Benchmarks.DpbTest do
   describe "run functions using mocks" do
     setup do
       # Save original modules
-      original_polis_mgr = Bardo.PolisMgr
-      original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
+      _original_polis_mgr = Bardo.PolisMgr
+      _original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
       
       # Replace with mocks
       :code.unstick_mod(Bardo.PolisMgr)

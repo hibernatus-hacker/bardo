@@ -49,7 +49,8 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
   * Custom selection algorithms can be implemented by adding new functions to this module
   """
 
-  alias Bardo.{Models, DB, Logger}
+  alias Bardo.Models
+  alias Bardo.DB
   alias Bardo.Logger, as: LogR
   alias Bardo.PopulationManager.{Genotype, GenomeMutator}
 

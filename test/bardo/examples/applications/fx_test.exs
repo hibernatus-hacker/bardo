@@ -82,8 +82,8 @@ defmodule Bardo.Examples.Applications.FxTest do
   describe "run/4 using mocks" do
     test "sets up and starts the experiment" do
       # Save original modules
-      original_polis_mgr = Bardo.PolisMgr
-      original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
+      _original_polis_mgr = Bardo.PolisMgr
+      _original_exp_mgr_client = Bardo.ExperimentManager.ExperimentManagerClient
       
       # Replace with mocks
       :code.unstick_mod(Bardo.PolisMgr)

@@ -24,8 +24,9 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   use GenServer
   require Logger
   alias Bardo.Logger, as: LogR
-  alias Bardo.Models
-  alias Bardo.DB
+  # Aliases not used in this module but keeping for future use
+  # alias Bardo.Models
+  # alias Bardo.DB
   
   # Client API
 
@@ -53,7 +54,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   @doc """
   Create a new experiment.
   """
-  def new_experiment(name) do
+  def new_experiment(_name) do
     experiment_id = "experiment_#{:erlang.system_time(:millisecond)}"
     {:ok, experiment_id}
   end
@@ -61,49 +62,49 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   @doc """
   Configure an experiment.
   """
-  def configure(experiment_id, config) do
+  def configure(_experiment_id, _config) do
     :ok
   end
   
   @doc """
   Start evaluation with a fitness function.
   """
-  def start_evaluation(experiment_id, fitness_function) do
+  def start_evaluation(_experiment_id, _fitness_function) do
     :ok
   end
   
   @doc """
   Start an experiment with the given ID.
   """
-  def start(experiment_id) do
+  def start(_experiment_id) do
     :ok
   end
   
   @doc """
   Get the status of an experiment.
   """
-  def status(experiment_id) do
+  def status(_experiment_id) do
     {:in_progress, %{generation: 1, best_fitness: 0.0}}
   end
   
   @doc """
   Get the best solution from an experiment.
   """
-  def get_best_solution(experiment_id) do
+  def get_best_solution(_experiment_id) do
     {:ok, %{}}
   end
   
   @doc """
   Stop an experiment.
   """
-  def stop(experiment_id) do
+  def stop(_experiment_id) do
     :ok
   end
   
   # GenServer callbacks
   
   @impl true
-  def init(args) do
+  def init(_args) do
     LogR.debug({:experiment_mgr, :init, :ok})
     state = %{
       current_run: nil,
@@ -122,7 +123,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   end
   
   @impl true
-  def handle_cast({:complete, population_id, trace}, state) do
+  def handle_cast({:complete, population_id, _trace}, state) do
     LogR.debug({:experiment_mgr, :complete, :ok, nil, [population_id]})
     {:noreply, state}
   end

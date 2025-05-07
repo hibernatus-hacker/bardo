@@ -20,8 +20,8 @@ defmodule Bardo.PopulationManager.PopulationManagerClientTest do
   end
   
   test "new_run starts a new population manager run" do
-    # Set up mock for start_population_mgr
-    :meck.expect(PopulationManagerSupervisor, :start_population_mgr, fn -> :ok end)
+    # Set up mock for start_population_manager
+    :meck.expect(PopulationManagerSupervisor, :start_population_manager, fn -> {:ok, self()} end)
     
     # Call the function under test
     assert :ok = PopulationManagerClient.new_run()
@@ -31,8 +31,8 @@ defmodule Bardo.PopulationManager.PopulationManagerClientTest do
   end
   
   test "restart_run restarts the population manager" do
-    # Set up mock for restart_population_mgr
-    :meck.expect(PopulationManagerSupervisor, :restart_population_mgr, fn -> :ok end)
+    # Set up mock for restart_population_manager
+    :meck.expect(PopulationManagerSupervisor, :restart_population_manager, fn -> {:ok, self()} end)
     
     # Call the function under test
     assert :ok = PopulationManagerClient.restart_run()

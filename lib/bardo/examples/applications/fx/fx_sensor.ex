@@ -17,6 +17,90 @@ defmodule Bardo.Examples.Applications.Fx.FxSensor do
   @doc """
   Initialize a new sensor for FX trading.
   
+  This is the implementation of the Sensor behavior's init/1 callback.
+  """
+  @impl Sensor
+  def init(params) do
+    state = %{
+      id: nil,
+      sensor_type: Map.get(params, :sensor_type, :pli),
+      params: Map.get(params, :params, %{dimension: 10, timeframe: 50}),
+      fanout: Map.get(params, :fanout, 10),
+      cortex_pid: nil,
+      scape_pid: nil,
+      agent_id: nil
+    }
+    
+    {:ok, state}
+  end
+  
+  @doc """
+  Process sensory data based on sensor type.
+  
+  This is the implementation of the Sensor behavior's percept/2 callback.
+  """
+  @impl Sensor
+  def percept(sensor_type, {percept, _agent_id, vl, params, mod_state}) do
+    # Process the sensor data based on the sensor type
+    output = case sensor_type do
+      :pci ->
+        # PCI is a 2D grid representation of price movements
+        # Convert to a flattened normalized vector
+        process_pci_data(percept, params)
+        
+      :pli ->
+        # PLI is a vector of recent price information
+        # Normalize the price data
+        process_pli_data(percept)
+        
+      :internals ->
+        # Internals contain current account/position information
+        # Convert to a normalized vector
+        process_internals_data(percept)
+        
+      _ ->
+        # Default case for unknown sensor types
+        generate_default_output(vl)
+    end
+    
+    # Return the processed sensory input and state
+    {output, mod_state}
+  end
+  
+  @doc """
+  Send a sensing request to the scape.
+  
+  This is the implementation of the Sensor behavior's sense/2 callback.
+  """
+  @impl Sensor
+  def sense(sensor_type, {agent_id, _vl, params, scape, sensor_id, _op_mode, mod_state}) do
+    # Prepare sensing parameters
+    sense_params = %{
+      sensor_type: sensor_type,
+      params: params
+    }
+    
+    # Request data from the scape via PrivateScape
+    if is_pid(scape) do
+      Bardo.AgentManager.PrivateScape.sense(scape, agent_id, sensor_id, sense_params)
+    end
+    
+    # Return state (PrivateScape will send percept back to sensor)
+    mod_state
+  end
+  
+  @doc """
+  Cleanup resources when terminating.
+  """
+  @impl Sensor
+  def terminate(_reason, _mod_state) do
+    # No resources to clean up
+    :ok
+  end
+  
+  @doc """
+  Initialize a new sensor for FX trading.
+  
   Parameters:
   - id: Sensor ID
   - sensor_type: :pci, :pli, or :internals
@@ -26,7 +110,7 @@ defmodule Bardo.Examples.Applications.Fx.FxSensor do
   - scape_pid: PID of the scape process
   - agent_id: ID of the agent
   """
-  @impl Sensor
+  # Legacy init function for compatibility
   def init(id, sensor_type, params, fanout, cortex_pid, scape_pid, agent_id) do
     state = %{
       id: id,
@@ -46,7 +130,7 @@ defmodule Bardo.Examples.Applications.Fx.FxSensor do
   
   This function sends a sensing request to the scape and processes the response.
   """
-  @impl Sensor
+  # Legacy read function for compatibility
   def read(state) do
     %{
       sensor_type: sensor_type,
@@ -63,7 +147,7 @@ defmodule Bardo.Examples.Applications.Fx.FxSensor do
     
     # Send a sense request to the scape
     case GenServer.call(scape_pid, {:sense, agent_id, sense_params}) do
-      {:success, response, _scape_state} ->
+      {:success, response, _} ->
         # Process the sensor data based on the sensor type
         percept(sensor_type, response, state)
         
@@ -214,19 +298,8 @@ defmodule Bardo.Examples.Applications.Fx.FxSensor do
   end
   
   # Generate default output when there's an error or no data
-  defp generate_default_output(state) do
-    case state.sensor_type do
-      :pci ->
-        # Default PCI is all zeros
-        List.duplicate(0.0, state.fanout)
-        
-      :pli ->
-        # Default PLI is all zeros
-        List.duplicate(0.0, state.fanout)
-        
-      :internals ->
-        # Default internals: neutral values
-        List.duplicate(0.5, state.fanout)
-    end
+  defp generate_default_output(vl) do
+    # Return a vector of appropriate length filled with zeros
+    List.duplicate(0.0, vl)
   end
 end

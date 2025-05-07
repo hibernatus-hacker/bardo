@@ -5,7 +5,7 @@ defmodule Bardo.AgentManager.TuningSelectionTest do
   # Define a test version of the module with test-only functions
   defmodule TestTuningSelection do
     # Define a tuple as our standard return value (matching Erlang)
-    @nid4 {:neuron, {0.0, 2.2524777677148906}}
+    # @nid4 {:neuron, {0.0, 2.2524777677148906}}  # Unused module attribute
     @spread 6.283185307179586
     
     @doc "Return a list of neurons sorted by age with spread values"
@@ -87,7 +87,7 @@ defmodule Bardo.AgentManager.TuningSelectionTest do
   end
   
   # Constants
-  @cxid {:cortex, {:origin, 38.7370377260318}}
+  # @cxid {:cortex, {:origin, 38.7370377260318}} # Unused module attribute
   @nid2 {:neuron, {0.0, 5.585330747505288}}
   @nids [
     {:neuron, {0.0, 9.657190484886447}},

@@ -1,7 +1,8 @@
 defmodule Bardo.PopulationManager.SelectionAlgorithmTest do
   use ExUnit.Case, async: true
-  alias Bardo.PopulationManager.SelectionAlgorithm
-  alias Bardo.{Models, DB, AppConfig}
+  # Aliases are commented out since they're not used in this simplified test suite
+  # alias Bardo.PopulationManager.SelectionAlgorithm
+  # alias Bardo.{Models, DB, AppConfig}
 
   # This test file requires mocking the DB, ETS tables, etc.
   # The tests below are simplified examples and would need proper mocking to work correctly
@@ -15,8 +16,8 @@ defmodule Bardo.PopulationManager.SelectionAlgorithmTest do
     test "returns accumulated lists when agent_index is 0" do
       # We'd need to mock the DB and ETS to properly test this
       # This is a simple stub test for the pattern match case
-      offspring_acc = [{:agent, 1.0}, {:agent, 2.0}]
-      reentry_acc = [{:agent, 3.0}]
+      _offspring_acc = [{:agent, 1.0}, {:agent, 2.0}]
+      _reentry_acc = [{:agent, 3.0}]
       
       # This assumes reenter function is mocked to return :ok
       # result = SelectionAlgorithm.choose_winners(:specie_1, [], 0.0, offspring_acc, reentry_acc, 0)

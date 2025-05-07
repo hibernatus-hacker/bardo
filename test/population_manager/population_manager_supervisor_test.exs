@@ -1,6 +1,7 @@
 defmodule Bardo.PopulationManager.PopulationManagerSupervisorTest do
   use ExUnit.Case, async: false  # We need to use async: false since we're dealing with global ETS tables
-  alias Bardo.PopulationManager.PopulationManagerSupervisor
+  # alias not used in placeholder test
+  # alias Bardo.PopulationManager.PopulationManagerSupervisor
 
   # Testing supervisors requires careful handling of processes and global state
   

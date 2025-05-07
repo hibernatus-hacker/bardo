@@ -13,6 +13,93 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbSensor do
   @doc """
   Initialize a new sensor for the DPB simulation.
   
+  This is the implementation of the Sensor behavior's init/1 callback.
+  """
+  @impl Sensor
+  def init(params) do
+    state = %{
+      id: nil,
+      sensor_type: Map.get(params, :sensor_type, :cart_position),
+      fanout: 1,
+      cortex_pid: nil,
+      scape_pid: nil,
+      agent_id: nil
+    }
+    
+    {:ok, state}
+  end
+  
+  @doc """
+  Process sensory data based on sensor type.
+  
+  This is the implementation of the Sensor behavior's percept/2 callback.
+  """
+  @impl Sensor
+  def percept(state, data) do
+    %{sensor_type: sensor_type} = state
+    
+    # Extract and validate the sensory input
+    value = case sensor_type do
+      :cart_position ->
+        # Cart position data should be between -2.4 and 2.4
+        validate_range(data, -2.4, 2.4)
+        
+      :pole1_angle ->
+        # Pole angle data should be between -0.6 and 0.6 radians
+        validate_range(data, -0.6, 0.6)
+        
+      :pole2_angle ->
+        # Pole angle data should be between -0.6 and 0.6 radians
+        validate_range(data, -0.6, 0.6)
+        
+      :cart_velocity ->
+        # Cart velocity (no specific range, but we'll normalize it)
+        validate_range(data, -10.0, 10.0)
+        
+      :pole1_angular_velocity ->
+        # Angular velocity (no specific range, but we'll normalize it)
+        validate_range(data, -10.0, 10.0)
+        
+      :pole2_angular_velocity ->
+        # Angular velocity (no specific range, but we'll normalize it)
+        validate_range(data, -10.0, 10.0)
+        
+      _ ->
+        # Default case for unknown sensor types
+        0.0
+    end
+    
+    # Return the processed sensory input
+    {:ok, [value], state}
+  end
+  
+  @doc """
+  Send a sensing request to the scape.
+  
+  This is the implementation of the Sensor behavior's sense/2 callback.
+  """
+  @impl Sensor
+  def sense(state, _processed_input) do
+    %{
+      sensor_type: sensor_type,
+      scape_pid: _scape_pid,
+      agent_id: _agent_id
+    } = state
+    
+    # Request data from the scape
+    _sense_params = %{
+      sensor_type: sensor_type
+    }
+    
+    # Send a sense request to the scape directly for the behavior implementation
+    # In a real implementation, we would process the response
+    # For now, just return a default value
+    {:ok, [0.0], state}
+  end
+  
+  @doc """
+  Initialize a new sensor for the DPB simulation.
+  
   Parameters:
   - id: Sensor ID
   - sensor_type: :cart_position, :pole1_angle, :pole2_angle, :cart_velocity, 
@@ -22,7 +109,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbSensor do
   - scape_pid: PID of the scape process
   - agent_id: ID of the agent
   """
-  @impl Sensor
+  # Legacy init function for compatibility
   def init(id, sensor_type, fanout, cortex_pid, scape_pid, agent_id) do
     state = %{
       id: id,
@@ -41,7 +128,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbSensor do
   
   This function sends a sensing request to the scape and processes the response.
   """
-  @impl Sensor
+  # Legacy read function for compatibility
   def read(state) do
     %{
       sensor_type: sensor_type,
@@ -56,7 +143,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbSensor do
     
     # Send a sense request to the scape
     case GenServer.call(scape_pid, {:sense, agent_id, sense_params}) do
-      {:success, response, _scape_state} ->
+      {:success, response, _} ->
         # Process the sensor data
         percept(sensor_type, response, state)
         

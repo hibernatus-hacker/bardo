@@ -22,7 +22,7 @@ defmodule Bardo.AgentManager.TuningDurationTest do
   end
 
   # Constants - same as in Erlang
-  @cxid {:cortex, {:origin, 38.73324260318}}
+  # @cxid {:cortex, {:origin, 38.73324260318}} # Unused module attribute
   @nid1 {:neuron, {0.0, 1.4947780822482732}}
   @nid2 {:neuron, {0.0, 2.0703147894593346}}
   @nid3 {:neuron, {0.0, 1.3476029283449762}}

@@ -19,7 +19,9 @@ defmodule Bardo.Polis.Manager do
   
   use GenServer
   
-  alias Bardo.{DB, LogR, AppConfig}
+  alias Bardo.{DB, LogR}
+  # AppConfig is not used in this module
+  # alias Bardo.AppConfig
   alias Bardo.ScapeManager.ScapeManagerClient
 
   @doc """

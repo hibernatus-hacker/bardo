@@ -45,22 +45,19 @@ defmodule Bardo.Examples.Applications.FlatlandActuatorTest do
       end
     end
     
-    # Simulate error case
-    def handle_call({:actuate, _agent_id, %{actuator_type: :unknown}}, _from, state) do
-      {:reply, {:error, "Unknown actuator type"}, state}
-    end
+    # Error case is already handled by the catch-all handler above
     
-    # Simulate agent death
-    def handle_call({:actuate, _agent_id, %{actuator_type: :two_wheels, output_vector: [0, 0]}}, _from, state) do
-      response = %{
-        fitness: [0.0],
-        misc: %{
-          energy: 0.0,
-          state: :dead
-        }
-      }
-      {:reply, {:success, response}, state}
-    end
+    # Commented out unreachable handler - first clause will handle all matching cases
+    # def handle_call({:actuate, _agent_id, _params}, _from, state) do
+    #   response = %{
+    #     fitness: [0.0],
+    #     misc: %{
+    #       energy: 0.0,
+    #       state: :dead
+    #     }
+    #   }
+    #   {:reply, {:success, response}, state}
+    # end
   end
   
   describe "init/7" do

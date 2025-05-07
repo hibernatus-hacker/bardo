@@ -1,7 +1,8 @@
 defmodule Bardo.PopulationManager.SpecieIdentifierTest do
   use ExUnit.Case, async: true
-  alias Bardo.PopulationManager.SpecieIdentifier
-  alias Bardo.{Models, DB}
+  # Aliases are commented out since they're not used in this simplified test suite
+  # alias Bardo.PopulationManager.SpecieIdentifier
+  # alias Bardo.{Models, DB}
 
   # This test requires mocking DB.read to return an agent with a specific pattern
   describe "tot_n/1" do

@@ -47,13 +47,13 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   - params: Additional parameters (e.g., max_steps)
   """
   @impl PrivateScape
-  def init(scape_pid, params) do
+  def init(params) do
     # Extract parameters or use defaults
     max_steps = Map.get(params, :max_steps, @max_steps)
     
     # Initialize the simulation state
     state = %__MODULE__{
-      scape_pid: scape_pid,
+      scape_pid: nil,          # Will be set later
       x: 0.0,                  # Start cart at center
       x_dot: 0.0,              # No initial velocity
       theta1: 0.07,            # Slight angle for first pole
@@ -68,12 +68,32 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
     {:ok, state}
   end
   
+  # Legacy init function for compatibility
+  def init(scape_pid, params) do
+    max_steps = Map.get(params, :max_steps, @max_steps)
+    
+    state = %__MODULE__{
+      scape_pid: scape_pid,
+      x: 0.0,
+      x_dot: 0.0,
+      theta1: 0.07,
+      theta1_dot: 0.0,
+      theta2: 0.0,
+      theta2_dot: 0.0,
+      steps: 0,
+      max_steps: max_steps,
+      jiggle_total: 0.0
+    }
+    
+    {:ok, state}
+  end
+  
   @doc """
   Handle an agent entering the private scape.
   
   For DPB, we just return success with the current state.
   """
-  @impl PrivateScape
+  # Not part of PrivateScape behaviour, but provided for compatibility
   def enter(_agent_id, _params, state) do
     {:ok, state}
   end
@@ -83,7 +103,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   
   For DPB, we just return success with the current state.
   """
-  @impl PrivateScape
+  # Not part of PrivateScape behaviour, but provided for compatibility
   def leave(_agent_id, _params, state) do
     {:ok, state}
   end
@@ -94,6 +114,25 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   Returns the requested state variable (cart position, pole angles, etc.)
   """
   @impl PrivateScape
+  def sense(params, state) do
+    # Get the appropriate state variable based on sensor type
+    sensor_type = Map.get(params, :sensor_type, :cart_position)
+    
+    value = case sensor_type do
+      :cart_position -> state.x
+      :pole1_angle -> state.theta1
+      :pole2_angle -> state.theta2
+      :cart_velocity -> state.x_dot
+      :pole1_angular_velocity -> state.theta1_dot
+      :pole2_angular_velocity -> state.theta2_dot
+      _ -> 0.0
+    end
+    
+    # Return value and unchanged state
+    {value, state}
+  end
+  
+  # Legacy sense function for compatibility
   def sense(_agent_id, params, state) do
     %{sensor_type: sensor_type} = params
     
@@ -117,6 +156,34 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   Applies the force to the cart and simulates physics for one step.
   """
   @impl PrivateScape
+  def actuate(_function, params, _agent_id, state) do
+    # Get force and damping parameters
+    force = Map.get(params, :force, 0.0)
+    damping_type = Map.get(params, :parameters, :without_damping)
+    
+    # Run one step of physics simulation
+    case simulate_step(state, force) do
+      # Simulation failed (poles fell or cart out of bounds)
+      {:failed, new_state} ->
+        # Calculate fitness based on damping type
+        fitness = calculate_fitness(new_state, damping_type)
+        response = {{%{status: :failed, fitness: fitness}}, fitness}
+        {response, new_state}
+        
+      # Simulation completed successfully (max steps reached)
+      {:completed, new_state} ->
+        fitness = calculate_fitness(new_state, damping_type)
+        response = {{%{status: :completed, fitness: fitness}}, fitness}
+        {response, new_state}
+        
+      # Simulation continues
+      {:continue, new_state} ->
+        response = {{%{status: :continue}}, 0.0}
+        {response, new_state}
+    end
+  end
+  
+  # Legacy actuate function for compatibility
   def actuate(_agent_id, params, state) do
     %{force: force, parameters: damping_type} = params
     
@@ -148,7 +215,7 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   This is not used in DPB since the simulation advances via actuate/3,
   but we implement it for PrivateScape behaviour compliance.
   """
-  @impl PrivateScape
+  # Not part of PrivateScape behaviour, but provided for compatibility
   def step(_params, state) do
     {:ok, state}
   end

@@ -8,9 +8,10 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
   """
   
   alias Bardo.AgentManager.PrivateScape
+  require Logger
   
   @behaviour PrivateScape
-  
+
   # Define constants
   @default_balance 10000.0
   @default_leverage 100.0
@@ -99,6 +100,7 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
       window_end: min(window_size, data_length - 1)
     }
     
+    Logger.info("[FX] Initialized with window size: #{window_size}, data length: #{data_length}")
     {:ok, state}
   end
   
@@ -114,20 +116,18 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
     sensor_type = Map.get(params, :sensor_type)
     sensor_params = Map.get(params, :params, %{})
     
-    case sensor_type do
+    result = case sensor_type do
       :pci ->
         # Price Chart Image sensor
         # Return a window of price data for creating a 2D grid
         timeframe = Map.get(sensor_params, :timeframe, 30)
-        prices = get_price_data_window(state, timeframe)
-        {prices, state}
+        get_price_data_window(state, timeframe)
         
       :pli ->
         # Price List Information sensor
         # Return a list of recent prices
         lookback = Map.get(sensor_params, :lookback, 20)
-        prices = get_price_list(state, lookback)
-        {prices, state}
+        get_price_list(state, lookback)
         
       :internals ->
         # Internals sensor
@@ -138,13 +138,15 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
           position: 0,
           leverage: @default_leverage
         })
-        internals = get_account_internals(account, state)
-        {internals, state}
+        get_account_internals(account, state)
         
       _ ->
         # Unknown sensor type, return empty list
-        {[], state}
+        []
     end
+    
+    Logger.debug("[FX] Sensor #{sensor_type} accessed by agent #{inspect(agent_id)}")
+    {result, state}
   end
   
   @doc """
@@ -159,31 +161,54 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
         # Get the value from params
         value = Map.get(params, :value, 0)
         
-        # Get the agent's account
-        account = Map.get(state.accounts, agent_id)
+        # If this is a new agent, create an account
+        account = case Map.get(state.accounts, agent_id) do
+          nil -> 
+            # Create new account for agent
+            %{
+              agent_id: agent_id,
+              balance: @default_balance,
+              equity: @default_balance,
+              leverage: @default_leverage,
+              position: 0,
+              order: nil,
+              max_equity: @default_balance,
+              min_equity: @default_balance,
+              completed_trades: []
+            }
+          existing -> existing
+        end
         
         # Execute the trade
-        {updated_account, response} = execute_trade(account, value, state)
+        {updated_account, _response} = execute_trade(account, value, state)
         
         # Update the account in the state
         new_accounts = Map.put(state.accounts, agent_id, updated_account)
         new_state = %{state | accounts: new_accounts}
         
         # Check if we've reached the end of the data
-        if state.index >= state.window_end do
+        result = if state.index >= state.window_end do
           # Calculate final fitness
           fitness = calculate_fitness(updated_account)
+          halt_flag = :goal_reached
           
-          # Return completion response
-          {{%{status: :complete, fitness: fitness}, []}, new_state}
+          # Return completion response with fitness and goal_reached flag
+          {fitness, halt_flag}
         else
-          # Return standard response
-          {{response, []}, new_state}
+          # Step the simulation forward
+          {:ok, _stepped_state} = step(%{}, new_state)
+          
+          # Return standard response with empty fitness and continue flag
+          {[], :continue}
         end
+        
+        Logger.debug("[FX] Trade executed by agent #{inspect(agent_id)}, position: #{value}")
+        {result, new_state}
         
       _ ->
         # Unknown function
-        {{%{error: "Unknown function"}, []}, state}
+        Logger.warning("[FX] Unknown function #{inspect(function)} called by agent #{inspect(agent_id)}")
+        {[], state}
     end
   end
   
@@ -193,37 +218,10 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
   Required by the PrivateScape behavior.
   """
   @impl PrivateScape
-  def terminate(_reason, _state) do
+  def terminate(reason, _state) do
     # No resources to clean up
+    Logger.info("[FX] Terminating FX simulator, reason: #{inspect(reason)}")
     :ok
-  end
-  
-  @doc """
-  Initialize the private scape for FX trading.
-  
-  Legacy version - kept for backwards compatibility.
-  
-  Parameters:
-  - scape_pid: PID of the scape
-  - window_size: Size of the data window for simulation
-  """
-  def init(scape_pid, window_size) do
-    # Load price data from file
-    {:ok, data} = load_fx_data()
-    data_length = length(data)
-    
-    # Initialize state
-    state = %State{
-      data: data,
-      data_length: data_length,
-      index: 0,
-      accounts: %{},
-      scape_pid: scape_pid,
-      window_start: 0,
-      window_end: min(window_size, data_length - 1)
-    }
-    
-    {:ok, state}
   end
   
   @doc """
@@ -278,78 +276,6 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
   end
   
   @doc """
-  Handle a sensor request from an agent (legacy version).
-  
-  Returns the requested price data based on the sensor type.
-  """
-  def sense(agent_id, params, state) do
-    %{sensor_type: sensor_type, params: sensor_params} = params
-    
-    case sensor_type do
-      :pci ->
-        # Price Chart Image sensor
-        # Return a window of price data for creating a 2D grid
-        prices = get_price_data_window(state, sensor_params.timeframe)
-        {:ok, prices, state}
-        
-      :pli ->
-        # Price List Information sensor
-        # Return a list of recent prices
-        prices = get_price_list(state, sensor_params.lookback)
-        {:ok, prices, state}
-        
-      :internals ->
-        # Internals sensor
-        # Return account information
-        account = Map.get(state.accounts, agent_id)
-        internals = get_account_internals(account, state)
-        {:ok, internals, state}
-        
-      _ ->
-        # Unknown sensor type
-        {:error, "Unknown sensor type", state}
-    end
-  end
-  
-  @doc """
-  Handle an actuator request from an agent (legacy version).
-  
-  Executes trading actions based on the agent's decision.
-  """
-  def actuate(agent_id, params, state) do
-    %{actuator_type: actuator_type, value: value} = params
-    
-    case actuator_type do
-      :trade ->
-        # Get the agent's account
-        account = Map.get(state.accounts, agent_id)
-        
-        # Execute the trade
-        {updated_account, response} = execute_trade(account, value, state)
-        
-        # Update the account in the state
-        new_accounts = Map.put(state.accounts, agent_id, updated_account)
-        new_state = %{state | accounts: new_accounts}
-        
-        # Check if we've reached the end of the data
-        if state.index >= state.window_end do
-          # Calculate final fitness
-          fitness = calculate_fitness(updated_account)
-          
-          # Return completion response
-          {:ok, %{status: :complete, fitness: fitness}, new_state}
-        else
-          # Return standard response
-          {:ok, response, new_state}
-        end
-        
-      _ ->
-        # Unknown actuator type
-        {:error, "Unknown actuator type", state}
-    end
-  end
-  
-  @doc """
   Advance the simulation by one step.
   
   Updates all accounts and moves to the next price point.
@@ -377,7 +303,7 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
   
   # Load forex data from file
   defp load_fx_data do
-    file_path = Path.join(:code.priv_dir(:bardo), @data_path)
+    file_path = Application.app_dir(:bardo, @data_path)
     
     case File.read(file_path) do
       {:ok, content} ->
@@ -389,6 +315,7 @@ defmodule Bardo.Examples.Applications.Fx.Fx do
         {:ok, data}
         
       {:error, reason} ->
+        Logger.error("[FX] Failed to load FX data: #{reason}")
         {:error, "Failed to load FX data: #{reason}"}
     end
   end
