@@ -1,10 +1,34 @@
 defmodule Bardo.AgentManager.Cortex do
   @moduledoc """
-  The Cortex is a neural network synchronizing element.
+  The Cortex is the central coordination element of a neural network agent.
   
-  It needs to know the PID of every sensor and actuator, so that it will know when all the
-  actuators have received their control inputs, and that it's time for the sensors to again 
-  gather and fanout sensory data to the neurons in the input layer.
+  ## Overview
+  
+  The Cortex manages the synchronization and communication between all components of
+  a neural network agent:
+  
+  * **Sensors**: Receive information from the environment
+  * **Neurons**: Process information through activation functions
+  * **Actuators**: Act on the environment based on neural outputs
+  
+  It orchestrates the sense-think-act cycle by:
+  1. Triggering sensors to gather input from the environment
+  2. Coordinating the forward propagation of signals through the neural network
+  3. Ensuring actuators receive their control signals to interact with the environment
+  4. Managing the timing and synchronization of the entire process
+  
+  ## Key Responsibilities
+  
+  * **Network Coordination**: Ensures all neurons, sensors, and actuators operate in coordination
+  * **Cycle Management**: Controls the timing of sensing, processing, and acting phases
+  * **Message Routing**: Directs signals between appropriate network components
+  * **State Management**: Maintains the state of the neural network across operational cycles
+  
+  ## Implementation Details
+  
+  Each Cortex is implemented as an Erlang process that communicates with other processes
+  (sensors, neurons, actuators) through message passing. This leverages the BEAM VM's
+  concurrency model for efficient parallel processing across the neural network.
   """
   
   require Logger
@@ -22,6 +46,110 @@ defmodule Bardo.AgentManager.Cortex do
     else
       Node.spawn_link(node, fn -> __MODULE__.init(exoself_pid) end)
     end
+  end
+  
+  @doc """
+  Creates a neural network (cortex) from a genotype.
+  
+  This is a simplified implementation for basic examples and testing.
+  It creates an in-memory neural network without spawning processes.
+  """
+  @spec from_genotype(map()) :: map()
+  def from_genotype(genotype) do
+    neurons = genotype.neurons || %{}
+    connections = genotype.connections || %{}
+    
+    # Create a simple neural network representation
+    %{
+      neurons: neurons,
+      connections: connections,
+      type: :feed_forward,
+      state: :ready
+    }
+  end
+  
+  @doc """
+  Activates a neural network with the given inputs.
+  
+  This is a simplified implementation for basic examples and testing.
+  """
+  @spec activate(map(), [float()]) :: [float()]
+  def activate(nn, inputs) do
+    # Get input, hidden, and output neurons
+    input_neurons = filter_neurons_by_layer(nn.neurons, :input)
+    bias_neurons = filter_neurons_by_layer(nn.neurons, :bias)
+    hidden_neurons = filter_neurons_by_layer(nn.neurons, :hidden)
+    output_neurons = filter_neurons_by_layer(nn.neurons, :output)
+    
+    # Set input values
+    neuron_values = 
+      # Set input neurons to input values
+      Enum.zip(input_neurons, inputs)
+      |> Enum.map(fn {{id, _neuron}, value} -> {id, value} end)
+      |> Map.new()
+      
+    # Set bias neurons to 1.0
+    neuron_values = 
+      Enum.reduce(bias_neurons, neuron_values, fn {id, _neuron}, acc ->
+        Map.put(acc, id, 1.0)
+      end)
+      
+    # Calculate hidden layer values
+    neuron_values = 
+      calculate_layer_values(hidden_neurons, neuron_values, nn.connections)
+      
+    # Calculate output layer values
+    neuron_values = 
+      calculate_layer_values(output_neurons, neuron_values, nn.connections)
+      
+    # Return output values in order
+    Enum.map(output_neurons, fn {id, _neuron} -> Map.get(neuron_values, id, 0.0) end)
+  end
+  
+  # Filter neurons by layer
+  defp filter_neurons_by_layer(neurons, layer) do
+    Enum.filter(neurons, fn {_id, neuron} -> neuron.layer == layer end)
+  end
+  
+  # Calculate values for a layer of neurons
+  defp calculate_layer_values(neurons, values, connections) do
+    Enum.reduce(neurons, values, fn {neuron_id, neuron}, acc ->
+      # Find connections to this neuron
+      incoming_connections = 
+        Enum.filter(connections, fn {_id, connection} -> 
+          connection.to_id == neuron_id
+        end)
+        
+      # Calculate weighted sum of inputs
+      weighted_sum = 
+        Enum.reduce(incoming_connections, 0.0, fn {_conn_id, connection}, sum ->
+          from_id = connection.from_id
+          weight = connection.weight
+          input_value = Map.get(values, from_id, 0.0)
+          sum + (input_value * weight)
+        end)
+        
+      # Apply activation function
+      output = apply_activation_function(weighted_sum, neuron.activation_function)
+      
+      # Add result to values map
+      Map.put(acc, neuron_id, output)
+    end)
+  end
+  
+  # Apply activation function
+  defp apply_activation_function(x, activation_function) do
+    case activation_function do
+      :sigmoid -> sigmoid(x)
+      :tanh -> :math.tanh(x)
+      :relu -> max(0, x)
+      _ -> sigmoid(x) # Default to sigmoid
+    end
+  end
+  
+  # Sigmoid activation function
+  defp sigmoid(x) do
+    1.0 / (1.0 + :math.exp(-x))
   end
   
   @doc """
@@ -60,20 +188,20 @@ defmodule Bardo.AgentManager.Cortex do
     :ok
   end
 
-  @doc """
-  The Cortex's goal is to synchronize the NN system such that when
-  the actuators have received all their control signals, the sensors are
-  once again triggered to gather new sensory information. Thus the
-  cortex waits for the sync messages from the actuator PIDs in its
-  system, and once it has received all the sync messages, it triggers
-  the sensors and then drops back to waiting for a new set of sync
-  messages. The cortex stores 2 copies of the actuator PIDs: the APids,
-  and the MemoryAPids (MAPids). Once all the actuators have sent it the
-  sync messages, it can restore the APids list from the MAPids. Finally,
-  there is also the Step variable which decrements every time a full
-  cycle of Sense-Think-Act completes, once this reaches 0, the NN system
-  begins its termination and backup process.
-  """
+  # Internal operation details
+  # 
+  # The Cortex's goal is to synchronize the NN system such that when
+  # the actuators have received all their control signals, the sensors are
+  # once again triggered to gather new sensory information. Thus the
+  # cortex waits for the sync messages from the actuator PIDs in its
+  # system, and once it has received all the sync messages, it triggers
+  # the sensors and then drops back to waiting for a new set of sync
+  # messages. The cortex stores 2 copies of the actuator PIDs: the APids,
+  # and the MemoryAPids (MAPids). Once all the actuators have sent it the
+  # sync messages, it can restore the APids list from the MAPids. Finally,
+  # there is also the Step variable which decrements every time a full
+  # cycle of Sense-Think-Act completes, once this reaches 0, the NN system
+  # begins its termination and backup process.
   
   @doc """
   Initialize the cortex process.

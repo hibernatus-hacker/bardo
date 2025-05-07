@@ -15,7 +15,20 @@ config :bardo,
   interactive_selection: false,
   re_entry_probability: 0.0,
   shof_ratio: 1,
-  selection_algorithm_efficiency: 1
+  selection_algorithm_efficiency: 1,
+  
+  # Additional parameters for modern Bardo
+  activation_function: :sigmoid,
+  weight_range: {-1.0, 1.0},
+  bias_range: {-1.0, 1.0},
+  population_size: 50,
+  max_generations: 100,
+  mutation_rate: 0.3,
+  add_neuron_probability: 0.1,
+  add_link_probability: 0.2,
+  enable_speciation: true,
+  species_distance_threshold: 0.5,
+  minimum_species_size: 5
 
 # PMP configuration
 config :bardo, :pmp,

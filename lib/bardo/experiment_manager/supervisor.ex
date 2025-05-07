@@ -9,9 +9,9 @@ defmodule Bardo.ExperimentManager.Supervisor do
   @doc """
   Starts the supervisor.
   """
-  @spec start_link() :: {:ok, pid()}
-  def start_link do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  @spec start_link(any()) :: {:ok, pid()}
+  def start_link(args) do
+    Supervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   @doc false

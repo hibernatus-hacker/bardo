@@ -1,12 +1,56 @@
 defmodule Bardo.PopulationManager.SelectionAlgorithm do
   @moduledoc """
-  The SelectionAlgorithm module is a container for the
-  selection_algorithm functions. By keeping all the selection
-  functions in this module, it makes it easier for us to later
-  add new ones, and then simply reference them by their name.
+  The SelectionAlgorithm module provides different strategies for selecting agents for reproduction.
+  
+  ## Overview
+  
+  Selection algorithms determine which agents in a population survive and reproduce. 
+  These algorithms form the backbone of the evolutionary process by implementing the 
+  principle of "survival of the fittest."
+  
+  ## Selection Strategies
+  
+  Bardo implements several selection strategies, each with different characteristics:
+  
+  ### Hall of Fame Competition
+  
+  * Maintains an elite subset of the best-performing agents across generations
+  * New agents must compete against the hall of fame to be selected
+  * Provides protection against evolutionary forgetting and cycling
+  
+  ### Tournament Selection
+  
+  * Randomly selects subgroups of agents and chooses the best from each group
+  * Selection pressure can be tuned by adjusting tournament size
+  * Balances exploration and exploitation effectively
+  
+  ### Truncation Selection
+  
+  * Simply selects the top N performers from the population
+  * Provides high selection pressure for rapid convergence
+  * May lead to premature convergence on suboptimal solutions
+  
+  ### Rank-Based Selection
+  
+  * Selection probability is based on rank rather than absolute fitness
+  * Maintains selection pressure even when fitness differences are small
+  * Helps prevent premature convergence in some scenarios
+  
+  ### Fitness Proportionate Selection
+  
+  * Also known as "roulette wheel" selection
+  * Selection probability is directly proportional to fitness
+  * Simple but can lead to early domination by slightly superior agents
+  
+  ## Implementation Notes
+  
+  * Selection algorithms operate within species to preserve diversity
+  * Parameters can adjust selection pressure to balance exploration vs. exploitation
+  * Custom selection algorithms can be implemented by adding new functions to this module
   """
 
-  alias Bardo.{Models, DB}
+  alias Bardo.{Models, DB, Logger}
+  alias Bardo.Logger, as: LogR
   alias Bardo.PopulationManager.{Genotype, GenomeMutator}
 
   @doc """
@@ -16,8 +60,8 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
   def hof_competition(specie_id, remaining_champion_designators, specie_size_limit) do
     s = DB.read(specie_id, :specie)
     shof = Models.get(s, :hall_of_fame)
-    shof_ratio = AppConfig.get_env(:shof_ratio)
-    eff = AppConfig.get_env(:selection_algorithm_efficiency)
+    shof_ratio = Bardo.AppConfig.get_env(:bardo, :shof_ratio, 0.5)
+    eff = Bardo.AppConfig.get_env(:bardo, :selection_algorithm_efficiency, 1.0)
     
     new_gen_ids = if shof_ratio < 1 do
       actives = remaining_champion_designators
@@ -52,7 +96,7 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
     DB.write(Models.set(s, [{:agent_ids, []}]), :specie)
     
     shof = Models.get(s, :hall_of_fame)
-    shof_ratio = AppConfig.get_env(:shof_ratio)
+    shof_ratio = Bardo.AppConfig.get_env(:bardo, :shof_ratio, 0.5)
     
     new_gen_ids = if shof_ratio < 1 do
       actives = remaining_champion_designators
@@ -115,7 +159,7 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
     DB.write(Models.set(s, [{:agent_ids, []}]), :specie)
     
     shof = Models.get(s, :hall_of_fame)
-    shof_ratio = AppConfig.get_env(:shof_ratio)
+    shof_ratio = Bardo.AppConfig.get_env(:bardo, :shof_ratio, 0.5)
     
     new_gen_ids = if shof_ratio < 1 do
       actives = remaining_champion_designators
@@ -150,7 +194,7 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
     DB.write(Models.set(s, [{:agent_ids, []}]), :specie)
     
     shof = Models.get(s, :hall_of_fame)
-    shof_ratio = AppConfig.get_env(:shof_ratio)
+    shof_ratio = Bardo.AppConfig.get_env(:bardo, :shof_ratio, 0.5)
     
     new_gen_ids = if shof_ratio < 1 do
       actives = remaining_champion_designators

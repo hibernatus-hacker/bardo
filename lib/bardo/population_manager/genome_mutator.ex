@@ -1,13 +1,17 @@
 defmodule Bardo.PopulationManager.GenomeMutator do
   @moduledoc """
-  The genome_mutator module is a container for the
-  genome_mutator functions. We need to have a set of mutation operators
-  which are flexible enough so that any NN topology A can be turned
-  into a NN topology B, by applying the available mutation operators to
-  the NN system in some sequence. It is only then that our
-  neuroevolutionary system will have the necessary tools and flexibility
-  to evolve any type of NN based system given enough time and the
-  appropriate fitness function.
+  The genome_mutator is responsible for mutating genotypes. It uses
+  various mutation operators to modify a genotype, and return a mutant
+  of the genotype. Specifically, the mutation operators
+  include both topological and parametric mutations. The topological
+  mutations mutate the structure of a genotype by adding, or
+  removing, neurons, connections, sensors, and actuators.
+  The parametric mutations mutate the parameters of the genotype, such as
+  the weights and the plasticity parameters. In a multi-objective
+  optimization, bias mutation is performed on the bias parameters of
+  the neural network, thus changing the biasing of the NN from one
+  objective to another, while preserving overall proficiency.
+  
   Technically, we do not need every one of these mutation operators; the
   following list will be enough for a highly versatile complexifying
   topology and weight evolving artificial neural network (TWEANN) system:
@@ -17,6 +21,171 @@ defmodule Bardo.PopulationManager.GenomeMutator do
   combination of MOs can convert any NN topology A into a NN topology B,
   given that A is contained (smaller, and simpler in a sense) within B.
   """
+  
+  alias Bardo.PopulationManager.Genotype
+  
+  @doc """
+  Applies mutation operators to a genotype based on probabilities.
+  
+  ## Parameters
+  
+  - `genotype` - The genotype to mutate
+  - `opts` - Options controlling mutation probabilities
+  
+  ## Options
+  
+  - `:add_neuron_probability` - Probability of adding a neuron (default: 0.1)
+  - `:add_link_probability` - Probability of adding a connection (default: 0.2)
+  - `:mutate_weights_probability` - Probability of mutating weights (default: 0.8)
+  
+  ## Examples
+  
+      iex> genotype = Bardo.PopulationManager.Genotype.new()
+      iex> mutated = Bardo.PopulationManager.GenomeMutator.simple_mutate(genotype)
+  """
+  def simple_mutate(genotype, opts \\ %{}) do
+    # Default probabilities
+    add_neuron_prob = Map.get(opts, :add_neuron_probability, 0.1)
+    add_link_prob = Map.get(opts, :add_link_probability, 0.2)
+    mutate_weights_prob = Map.get(opts, :mutate_weights_probability, 0.8)
+    
+    # Apply mutations based on probabilities
+    genotype
+    |> maybe_add_neuron(add_neuron_prob)
+    |> maybe_add_link(add_link_prob)
+    |> maybe_mutate_weights(mutate_weights_prob)
+  end
+  
+  # Apply a mutation with a certain probability
+  defp maybe_apply(genotype, mutation_fun, probability) do
+    if :rand.uniform() < probability do
+      mutation_fun.(genotype)
+    else
+      genotype
+    end
+  end
+  
+  # Maybe add a neuron
+  defp maybe_add_neuron(genotype, probability) do
+    maybe_apply(genotype, &add_neuron/1, probability)
+  end
+  
+  # Maybe add a link
+  defp maybe_add_link(genotype, probability) do
+    maybe_apply(genotype, &add_link/1, probability)
+  end
+  
+  # Maybe mutate weights
+  defp maybe_mutate_weights(genotype, probability) do
+    maybe_apply(genotype, &perturb_weights/1, probability)
+  end
+  
+  # Add a neuron by splitting a connection
+  defp add_neuron(genotype) do
+    # If no connections, just return the genotype
+    if map_size(genotype.connections) == 0 do
+      genotype
+    else
+      # Select a random connection
+      {conn_id, connection} = Enum.random(genotype.connections)
+      
+      # Create a new hidden neuron
+      genotype = Genotype.add_neuron(genotype, :hidden)
+      new_neuron_id = "neuron_#{genotype.next_neuron_id - 1}"
+      
+      # Remove the old connection
+      connections = Map.delete(genotype.connections, conn_id)
+      
+      # Add two new connections
+      # Input to new neuron with weight 1.0
+      genotype = %{genotype | connections: connections}
+      genotype = Genotype.add_connection(genotype, connection.from_id, new_neuron_id, 1.0)
+      
+      # New neuron to output with the original weight
+      genotype = Genotype.add_connection(genotype, new_neuron_id, connection.to_id, connection.weight)
+      
+      genotype
+    end
+  end
+  
+  # Add a random link between unconnected neurons
+  defp add_link(genotype) do
+    # Get all neuron IDs
+    neuron_ids = Map.keys(genotype.neurons)
+    
+    # If less than 2 neurons, just return the genotype
+    if length(neuron_ids) < 2 do
+      genotype
+    else
+      # Try up to 5 times to find a valid connection
+      try_add_link(genotype, 5)
+    end
+  end
+  
+  # Try to add a link up to n times
+  defp try_add_link(genotype, 0), do: genotype
+  defp try_add_link(genotype, tries) do
+    # Get all neuron IDs by layer
+    input_ids = Genotype.get_layer_neuron_ids(genotype, :input)
+    bias_ids = Genotype.get_layer_neuron_ids(genotype, :bias)
+    hidden_ids = Genotype.get_layer_neuron_ids(genotype, :hidden)
+    output_ids = Genotype.get_layer_neuron_ids(genotype, :output)
+    
+    # Possible sources (input, bias, hidden)
+    source_ids = input_ids ++ bias_ids ++ hidden_ids
+    
+    # Possible targets (hidden, output)
+    target_ids = hidden_ids ++ output_ids
+    
+    # If no valid sources or targets, return the genotype
+    if source_ids == [] or target_ids == [] do
+      genotype
+    else
+      # Select random source and target
+      from_id = Enum.random(source_ids)
+      to_id = Enum.random(target_ids)
+      
+      # Check if connection already exists
+      existing = Enum.any?(genotype.connections, fn {_id, conn} -> 
+        conn.from_id == from_id and conn.to_id == to_id
+      end)
+      
+      if existing do
+        # Try again
+        try_add_link(genotype, tries - 1)
+      else
+        # Create new connection with random weight
+        weight = :rand.uniform() * 2 - 1 # Weight between -1 and 1
+        Genotype.add_connection(genotype, from_id, to_id, weight)
+      end
+    end
+  end
+  
+  # Mutate weights with Gaussian perturbations
+  defp perturb_weights(genotype) do
+    # Mutate each weight with a small Gaussian noise
+    connections = 
+      Enum.map(genotype.connections, fn {id, connection} ->
+        if :rand.uniform() < 0.1 do
+          # 10% chance of completely random weight
+          new_weight = :rand.uniform() * 2 - 1 # Between -1 and 1
+          {id, %{connection | weight: new_weight}}
+        else
+          # 90% chance of small perturbation
+          perturbation = :rand.normal() * 0.1 # Gaussian with standard deviation 0.1
+          new_weight = connection.weight + perturbation
+          
+          # Limit weight to a reasonable range
+          new_weight = max(-5.0, min(5.0, new_weight))
+          
+          {id, %{connection | weight: new_weight}}
+        end
+      end)
+      |> Map.new()
+    
+    # Return genotype with updated connections
+    %{genotype | connections: connections}
+  end
 
   alias Bardo.{Models, Utils, DB}
   alias Bardo.TuningSelection

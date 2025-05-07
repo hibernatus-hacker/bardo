@@ -1,27 +1,181 @@
 defmodule Bardo.PopulationManager.Genotype do
   @moduledoc """
-  The Genotype module encapsulates the NN based system creation and NN
-  genotype access and storage. Unlike in static NN based systems,
-  topology and weight evolving artificial neural network systems
-  (TWEANNs) can modify the very topology and structure of a NN. We do
-  not need to figure out what NN topology we should give to our NN
-  system, because it will evolve the topology most optimal for the
-  problem we give it. Plus, we never really know ahead of time what the
-  most optimal NN topology needed to solve some particular problem
-  anyway. The seed NN genotype should be the simplest possible, given
-  the particular morphology of the agent, we let the neuroevolutionary
-  process complexify the topology of the NN system over time.
-  Finally, because we use different kinds of activation functions, not
-  only tanh but also sin, abs, sgn...we might wish for some species in
-  the population to be started with a particular subset of these
-  activation functions, and other species with another subset, to
-  perhaps observe how and which evolutionary paths they take due to
-  these different constraints. For this reason, we also implement a
-  constraint record which the population_mgr can use when
-  constructing agents. The constraint record specifies which morphology
-  and which set of activation functions the seed agent and its
-  offspring should have access to during evolution.
+  The Genotype module encapsulates the genetic representation of neural networks.
+  
+  ## Overview
+  
+  In neuroevolution, a genotype serves as the genetic blueprint from which a neural network
+  (phenotype) is constructed. The Genotype module provides functions for creating, manipulating,
+  and evolving these blueprints.
+  
+  ## Key Concepts
+  
+  ### Topology and Weight Evolving Artificial Neural Networks (TWEANNs)
+  
+  Unlike traditional neural networks with fixed architectures, TWEANNs can evolve their
+  entire structure during the evolutionary process:
+  
+  * New neurons can be added
+  * New connections can be formed
+  * Existing connections can be modified or removed
+  * Neural parameters (weights, biases, activation functions) can change
+  
+  This allows the evolutionary process to discover optimal network structures
+  without the need for manual architecture design or hyperparameter tuning.
+  
+  ### Incremental Complexity
+  
+  The evolutionary process typically begins with minimal seed genotypes and gradually
+  increases complexity as needed to solve the problem:
+  
+  1. Start with the simplest possible network (often just input-output connections)
+  2. Allow mutation operators to add complexity as evolution progresses
+  3. Let natural selection favor the most efficient solutions
+  
+  ### Activation Function Diversity
+  
+  Bardo supports a variety of activation functions beyond the standard sigmoid/tanh:
+  
+  * Sine, absolute value, sign function
+  * Gaussian, step functions
+  * Linear and rectified linear
+  * Custom user-defined functions
+  
+  Different activation functions can be used in different parts of the network or
+  constrained to specific subpopulations to explore diverse solution spaces.
+  
+  ## Constraints
+  
+  Evolutionary constraints can be applied to guide the evolutionary process:
+  
+  * Morphology constraints: Define the available sensors and actuators
+  * Activation function constraints: Limit which functions can be used
+  * Topological constraints: Restrict certain kinds of connections
+  
+  ## Implementation
+  
+  The genotype representation uses a structured encoding that tracks:
+  
+  * Neuron properties (layer, type, activation function, etc.)
+  * Connection topology (which neurons connect to which)
+  * Connection weights and other parameters
+  * Historical markers to aid in crossover operations
   """
+  
+  require Logger
+  
+  @doc """
+  Creates a new empty genotype.
+  
+  Returns a map with empty neurons and connections.
+  
+  ## Examples
+  
+      iex> genotype = Bardo.PopulationManager.Genotype.new()
+      %{neurons: %{}, connections: %{}}
+  """
+  def new do
+    %{
+      neurons: %{},
+      connections: %{},
+      next_neuron_id: 1,
+      next_connection_id: 1
+    }
+  end
+  
+  @doc """
+  Adds a neuron to the genotype.
+  
+  ## Parameters
+  
+  - `genotype` - The genotype to add the neuron to
+  - `layer` - The layer of the neuron (:input, :hidden, :output, or :bias)
+  - `params` - Optional parameters for the neuron
+  
+  ## Examples
+  
+      iex> genotype = Bardo.PopulationManager.Genotype.new()
+      iex> genotype = Bardo.PopulationManager.Genotype.add_neuron(genotype, :input)
+      %{neurons: %{"neuron_1" => %{layer: :input, activation_function: :sigmoid}}, ...}
+  """
+  def add_neuron(genotype, layer, params \\ %{}) do
+    # Get neuron ID (either from params or generate new)
+    neuron_id = Map.get(params, :id, "neuron_#{genotype.next_neuron_id}")
+    
+    # Create neuron with default activation function (sigmoid)
+    neuron = %{
+      layer: layer,
+      activation_function: Map.get(params, :activation_function, :sigmoid)
+    }
+    
+    # Add neuron to genotype
+    %{
+      genotype |
+      neurons: Map.put(genotype.neurons, neuron_id, neuron),
+      next_neuron_id: genotype.next_neuron_id + 1
+    }
+  end
+  
+  @doc """
+  Adds a connection between two neurons.
+  
+  ## Parameters
+  
+  - `genotype` - The genotype to add the connection to
+  - `from_id` - The ID of the source neuron
+  - `to_id` - The ID of the target neuron
+  - `weight` - The weight of the connection
+  
+  ## Examples
+  
+      iex> genotype = Bardo.PopulationManager.Genotype.new()
+      iex> genotype = Bardo.PopulationManager.Genotype.add_neuron(genotype, :input, %{id: "input"})
+      iex> genotype = Bardo.PopulationManager.Genotype.add_neuron(genotype, :output, %{id: "output"})
+      iex> genotype = Bardo.PopulationManager.Genotype.add_connection(genotype, "input", "output", 0.5)
+  """
+  def add_connection(genotype, from_id, to_id, weight) do
+    # Check if neurons exist
+    if not Map.has_key?(genotype.neurons, from_id) or not Map.has_key?(genotype.neurons, to_id) do
+      genotype
+    else
+      # Create connection
+      connection_id = "connection_#{genotype.next_connection_id}"
+      connection = %{
+        from_id: from_id,
+        to_id: to_id,
+        weight: weight
+      }
+      
+      # Add connection to genotype
+      %{
+        genotype |
+        connections: Map.put(genotype.connections, connection_id, connection),
+        next_connection_id: genotype.next_connection_id + 1
+      }
+    end
+  end
+  
+  @doc """
+  Gets the IDs of neurons in a specific layer.
+  
+  ## Parameters
+  
+  - `genotype` - The genotype to get neurons from
+  - `layer` - The layer to get neurons from
+  
+  ## Examples
+  
+      iex> genotype = Bardo.PopulationManager.Genotype.new()
+      iex> genotype = Bardo.PopulationManager.Genotype.add_neuron(genotype, :input, %{id: "input1"})
+      iex> genotype = Bardo.PopulationManager.Genotype.add_neuron(genotype, :input, %{id: "input2"})
+      iex> Bardo.PopulationManager.Genotype.get_layer_neuron_ids(genotype, :input)
+      ["input1", "input2"]
+  """
+  def get_layer_neuron_ids(genotype, layer) do
+    genotype.neurons
+    |> Enum.filter(fn {_id, neuron} -> neuron.layer == layer end)
+    |> Enum.map(fn {id, _neuron} -> id end)
+  end
 
   require Logger
   alias Bardo.{Models, Utils, DB}

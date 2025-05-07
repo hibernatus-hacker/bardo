@@ -16,6 +16,29 @@ defmodule Bardo.Utils do
     # :rand.seed(:exsplus, {i1, i2, i3})
     :rand.seed(:exs1024s)
   end
+  
+  @doc """
+  Saturate a value between a minimum and maximum limit.
+  
+  ## Examples
+  
+      iex> Bardo.Utils.sat(1.5, 1.0)
+      1.0
+      
+      iex> Bardo.Utils.sat(-1.5, 1.0) 
+      -1.0
+      
+      iex> Bardo.Utils.sat(0.5, 1.0)
+      0.5
+  """
+  @spec sat(float(), float()) :: float()
+  def sat(value, limit) when limit > 0 do
+    cond do
+      value > limit -> limit
+      value < -limit -> -limit
+      true -> value
+    end
+  end
 
   @doc """
   Safely serialize Erlang term to binary.
