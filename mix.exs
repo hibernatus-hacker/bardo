@@ -50,6 +50,8 @@ defmodule Bardo.MixProject do
       # {:shards, "~> 1.0"},
       # Code coverage and testing
       {:excoveralls, "~> 0.15", only: :test},
+      # Property based testing
+      {:stream_data, "~> 0.5", only: [:dev, :test]},
       # Static code analysis
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       # Dialyzer for type checking

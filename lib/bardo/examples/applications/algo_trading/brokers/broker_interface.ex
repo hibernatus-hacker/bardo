@@ -6,7 +6,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
   and provides helper functions for integrating with various trading platforms.
   """
   
-  alias Bardo.AgentManager.PrivateScape
+  # Private scape not used directly
   require Logger
   
   @callback connect(map()) :: {:ok, map()} | {:error, any()}
@@ -140,7 +140,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
         %{
           order: %{
             instrument: symbol,
-            units: if direction > 0, do: size, else: -size,
+            units: (if direction > 0 do size else -size end),
             type: "MARKET",
             positionFill: "DEFAULT",
             stopLossOnFill: %{

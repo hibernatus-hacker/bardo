@@ -620,7 +620,7 @@ defmodule Mix.Tasks.RunAlgoTrading do
     data_window = if test_mode, do: 1000, else: 5000
     
     # Visualization option
-    visualize = Keyword.get(opts, :visualize, false)
+    _visualize = Keyword.get(opts, :visualize, false)
     
     # Testing period options
     test_period = Keyword.get(opts, :test_period)
@@ -6851,7 +6851,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   require Logger
   
   alias Bardo.Logger, as: LogR
-  alias Bardo.Models
+  # Models is used indirectly through Persistence
   alias Bardo.Persistence
   alias Bardo.PopulationManager.PopulationManagerSupervisor
   alias Bardo.PopulationManager.PopulationManagerClient
@@ -18447,11 +18447,11 @@ defmodule Bardo.Examples.Applications.AlgoTrading do
     
     if account_id == nil do
       IO.puts("\n❌ Error: account_id is required for live trading")
-      return {:error, "account_id is required for live trading"}
+      {:error, "account_id is required for live trading"}
     end
     
     if is_tuple(broker_module) and elem(broker_module, 0) == :error do
-      return broker_module
+      broker_module
     end
     
     IO.puts("\n==================================================")
@@ -22200,9 +22200,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     end
   end
   
-  @doc """
-  Handle a broker notification (e.g., fill confirmation).
-  """
   @impl GenServer
   def handle_info({:broker_notification, notification}, state) do
     # Process broker notification
@@ -22211,9 +22208,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:noreply, updated_state}
   end
   
-  @doc """
-  Handle a request to get the current status.
-  """
   @impl GenServer
   def handle_call(:status, _from, state) do
     # Build status report
@@ -22229,20 +22223,14 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:reply, status, state}
   end
   
-  @doc """
-  Handle a request to close all positions.
-  """
   @impl GenServer
   def handle_call(:close_all_positions, _from, state) do
     # Close any open positions
-    updated_state = close_all_positions(state)
+    updated_state = close_positions(state)
     
     {:reply, :ok, updated_state}
   end
   
-  @doc """
-  Handle a request to update risk parameters.
-  """
   @impl GenServer
   def handle_call({:update_risk_params, new_params}, _from, state) do
     # Merge new parameters with existing ones
@@ -22254,9 +22242,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:reply, :ok, updated_state}
   end
   
-  @doc """
-  Handle a request to enable/disable continuous learning.
-  """
   @impl GenServer
   def handle_call({:set_adaptation, enabled}, _from, state) do
     # Update adaptation setting
@@ -22842,7 +22827,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   end
   
   # Close all positions (used when stopping the agent)
-  defp close_all_positions(state) do
+  defp close_positions(state) do
     # Just close the current position for now
     close_current_position(state)
   end
@@ -22917,7 +22902,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   end
   
   # Place an order through the broker
-  defp place_order(state, direction, size, price, stop_loss, take_profit) do
+  defp place_order(state, direction, size, _price, stop_loss, take_profit) do
     # Call the place_order function on the broker module
     symbol = state.broker_config.symbol
     
@@ -23177,10 +23162,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   # Get pip value for a symbol
   defp get_pip_value(symbol) do
     # Default pip value structure
-    case symbol do
-      "JPY" <> _rest -> 0.01   # JPY pairs have 2 decimal places
-      _rest <> "JPY" -> 0.01
-      _ -> 0.0001              # Other major pairs have 4 decimal places
+    cond do
+      String.starts_with?(symbol, "JPY") -> 0.01   # JPY pairs have 2 decimal places
+      String.ends_with?(symbol, "JPY") -> 0.01     # JPY pairs have 2 decimal places
+      true -> 0.0001                               # Other major pairs have 4 decimal places
     end
   end
   
@@ -23220,14 +23205,16 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     # Get list of nodes or use all available
     nodes = Keyword.get(options, :nodes, Node.list() ++ [Node.self()])
     
-    if nodes == [] do
-      nodes = [Node.self()]
+    local_nodes = if nodes == [] do
+      [Node.self()]
+    else
+      nodes
     end
     
     # Zip agents, configs, and nodes
     agent_specs = 
       Enum.zip(agents, broker_configs)
-      |> Enum.zip(Stream.cycle(nodes))
+      |> Enum.zip(Stream.cycle(local_nodes))
       |> Enum.map(fn {{agent, config}, node} ->
         {node, agent, config}
       end)
@@ -23895,7 +23882,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding do
   """
   
   alias Bardo.PopulationManager.Genotype
-  alias Bardo.Models
+  # Models is used indirectly through Genotype
   
   @doc """
   Create a substrate-encoded genotype for an algorithmic trading neural network.
@@ -24660,23 +24647,25 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
     nodes = Keyword.get(opts, :nodes, Node.list())
     
     # If no nodes are connected, run locally
-    if nodes == [] do
+    local_nodes = if nodes == [] do
       Logger.warning("No connected nodes found. Running training on local node only.")
-      nodes = [Node.self()]
+      [Node.self()]
+    else
+      nodes
     end
     
     # Configuration
-    islands = Keyword.get(opts, :islands, length(nodes))
+    islands = Keyword.get(opts, :islands, length(local_nodes))
     migration_interval = Keyword.get(opts, :migration_interval, 10)
     migration_rate = Keyword.get(opts, :migration_rate, 0.1)
     
-    Logger.info("Starting distributed training on #{length(nodes)} nodes with #{islands} islands")
-    Logger.info("Nodes: #{inspect(nodes)}")
+    Logger.info("Starting distributed training on #{length(local_nodes)} nodes with #{islands} islands")
+    Logger.info("Nodes: #{inspect(local_nodes)}")
     
     # Create coordinator state
     coordinator_state = %{
       experiment_id: experiment_id,
-      nodes: nodes,
+      nodes: local_nodes,
       islands: islands,
       migration_interval: migration_interval,
       migration_rate: migration_rate,
@@ -24693,7 +24682,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
     island_configs = create_island_configs(experiment_id, config_opts, islands)
     
     # Distribute islands to nodes (round-robin)
-    node_assignments = distribute_islands_to_nodes(islands, nodes)
+    node_assignments = distribute_islands_to_nodes(islands, local_nodes)
     
     # Start training on each node
     island_results = Enum.map(0..(islands-1), fn island_idx ->
@@ -25727,7 +25716,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
     result = case sensor_type do
       :price_chart ->
         # Price Chart sensor - return price data for creating a 2D grid
-        dimension = Map.get(sensor_params, :dimension, 10)
+        _dimension = Map.get(sensor_params, :dimension, 10)
         timeframe = Map.get(sensor_params, :timeframe, 60)
         get_price_chart_data(state, timeframe)
         
@@ -25822,7 +25811,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       {fitness, halt_flag}
     else
       # Step the simulation forward
-      {:ok, stepped_state} = step(%{}, new_state)
+      {:ok, _stepped_state} = step(%{}, new_state)
       
       # Return standard response with empty fitness and continue flag
       {[], :continue}
@@ -26105,19 +26094,19 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       # Use predefined test periods
       test_period == "last_month" ->
         # Find index approximately 30 days ago
-        window_start = max(0, length(price_data) - (30 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(30 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
       test_period == "last_week" ->
         # Find index approximately 7 days ago
-        window_start = max(0, length(price_data) - (7 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(7 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
       test_period == "last_year" ->
         # Find index approximately 365 days ago
-        window_start = max(0, length(price_data) - (365 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(365 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
@@ -26792,7 +26781,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
   # Update risk levels for an account
   defp update_risk_levels(account, stop_loss_percent, take_profit_percent, state) do
     if account.position != 0 and account.order != nil do
-      current_price = get_current_price(state)
+      _current_price = get_current_price(state)
       
       # Calculate stop loss and take profit levels
       stop_loss = calculate_stop_level(account.order.open_price, account.position, stop_loss_percent, state.pip_value)
@@ -27082,7 +27071,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       trade_count: account.trade_count,
       win_count: account.win_count,
       loss_count: account.loss_count,
-      avg_profit_per_trade: if account.trade_count > 0, do: (account.balance - @default_balance) / account.trade_count, else: 0.0,
+      avg_profit_per_trade: (if account.trade_count > 0 do (account.balance - @default_balance) / account.trade_count else 0.0 end),
       avg_win: avg_win,
       avg_loss: avg_loss,
       sharpe_ratio: sharpe_ratio,
@@ -27222,7 +27211,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
   and provides helper functions for integrating with various trading platforms.
   """
   
-  alias Bardo.AgentManager.PrivateScape
+  # Private scape not used directly
   require Logger
   
   @callback connect(map()) :: {:ok, map()} | {:error, any()}
@@ -27356,7 +27345,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
         %{
           order: %{
             instrument: symbol,
-            units: if direction > 0, do: size, else: -size,
+            units: (if direction > 0 do size else -size end),
             type: "MARKET",
             positionFill: "DEFAULT",
             stopLossOnFill: %{
@@ -27593,7 +27582,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     result = case sensor_type do
       :price_chart ->
         # Price Chart sensor - return price data
-        dimension = Map.get(sensor_params, :dimension, 10)
+        _dimension = Map.get(sensor_params, :dimension, 10)
         timeframe = Map.get(sensor_params, :timeframe, 60)
         get_price_chart_data(state, timeframe)
         
@@ -28192,7 +28181,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   end
   
   # Calculate position size based on risk settings
-  defp calculate_position_size(direction, size_percent, state) do
+  defp calculate_position_size(_direction, size_percent, state) do
     # Get current account equity
     equity = state.equity
     
@@ -28206,7 +28195,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     adjusted_risk = risk_amount * size_percent
     
     # Get latest price
-    bid_ask = get_latest_bid_ask(state)
+    _bid_ask = get_latest_bid_ask(state)
     
     # Calculate position size
     # For MT, volume is in lots (1.0 = 100,000 units)
@@ -28340,7 +28329,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     requested_indicators = Map.get(params, :indicators, [])
     
     # Ensure we have enough data
-    bars = if length(state.last_bars) < 200 do
+    _bars = if length(state.last_bars) < 200 do
       # Fetch more bars if needed
       {:ok, more_bars} = get_market_data(
         %{api_url: state.api_url, api_key: state.api_key},
@@ -28408,7 +28397,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     
     # Calculate open profit/loss if there's an open position
     open_pl = if position != 0 do
-      order_id = Map.get(agent_state, :order_id)
+      _order_id = Map.get(agent_state, :order_id)
       entry_price = Map.get(agent_state, :entry_price, 0.0)
       size = Map.get(agent_state, :size, 0.0)
       

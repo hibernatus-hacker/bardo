@@ -365,11 +365,11 @@ defmodule Bardo.Examples.Applications.AlgoTrading do
     
     if account_id == nil do
       IO.puts("\n❌ Error: account_id is required for live trading")
-      return {:error, "account_id is required for live trading"}
+      {:error, "account_id is required for live trading"}
     end
     
     if is_tuple(broker_module) and elem(broker_module, 0) == :error do
-      return broker_module
+      broker_module
     end
     
     IO.puts("\n==================================================")

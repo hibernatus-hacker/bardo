@@ -147,9 +147,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     end
   end
   
-  @doc """
-  Handle a broker notification (e.g., fill confirmation).
-  """
   @impl GenServer
   def handle_info({:broker_notification, notification}, state) do
     # Process broker notification
@@ -158,9 +155,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:noreply, updated_state}
   end
   
-  @doc """
-  Handle a request to get the current status.
-  """
   @impl GenServer
   def handle_call(:status, _from, state) do
     # Build status report
@@ -176,20 +170,14 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:reply, status, state}
   end
   
-  @doc """
-  Handle a request to close all positions.
-  """
   @impl GenServer
   def handle_call(:close_all_positions, _from, state) do
     # Close any open positions
-    updated_state = close_all_positions(state)
+    updated_state = close_positions(state)
     
     {:reply, :ok, updated_state}
   end
   
-  @doc """
-  Handle a request to update risk parameters.
-  """
   @impl GenServer
   def handle_call({:update_risk_params, new_params}, _from, state) do
     # Merge new parameters with existing ones
@@ -201,9 +189,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     {:reply, :ok, updated_state}
   end
   
-  @doc """
-  Handle a request to enable/disable continuous learning.
-  """
   @impl GenServer
   def handle_call({:set_adaptation, enabled}, _from, state) do
     # Update adaptation setting
@@ -789,7 +774,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   end
   
   # Close all positions (used when stopping the agent)
-  defp close_all_positions(state) do
+  defp close_positions(state) do
     # Just close the current position for now
     close_current_position(state)
   end
@@ -864,7 +849,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   end
   
   # Place an order through the broker
-  defp place_order(state, direction, size, price, stop_loss, take_profit) do
+  defp place_order(state, direction, size, _price, stop_loss, take_profit) do
     # Call the place_order function on the broker module
     symbol = state.broker_config.symbol
     
@@ -1124,10 +1109,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
   # Get pip value for a symbol
   defp get_pip_value(symbol) do
     # Default pip value structure
-    case symbol do
-      "JPY" <> _rest -> 0.01   # JPY pairs have 2 decimal places
-      _rest <> "JPY" -> 0.01
-      _ -> 0.0001              # Other major pairs have 4 decimal places
+    cond do
+      String.starts_with?(symbol, "JPY") -> 0.01   # JPY pairs have 2 decimal places
+      String.ends_with?(symbol, "JPY") -> 0.01     # JPY pairs have 2 decimal places
+      true -> 0.0001                               # Other major pairs have 4 decimal places
     end
   end
   
@@ -1167,14 +1152,16 @@ defmodule Bardo.Examples.Applications.AlgoTrading.LiveAgent do
     # Get list of nodes or use all available
     nodes = Keyword.get(options, :nodes, Node.list() ++ [Node.self()])
     
-    if nodes == [] do
-      nodes = [Node.self()]
+    local_nodes = if nodes == [] do
+      [Node.self()]
+    else
+      nodes
     end
     
     # Zip agents, configs, and nodes
     agent_specs = 
       Enum.zip(agents, broker_configs)
-      |> Enum.zip(Stream.cycle(nodes))
+      |> Enum.zip(Stream.cycle(local_nodes))
       |> Enum.map(fn {{agent, config}, node} ->
         {node, agent, config}
       end)

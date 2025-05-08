@@ -40,23 +40,25 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
     nodes = Keyword.get(opts, :nodes, Node.list())
     
     # If no nodes are connected, run locally
-    if nodes == [] do
+    local_nodes = if nodes == [] do
       Logger.warning("No connected nodes found. Running training on local node only.")
-      nodes = [Node.self()]
+      [Node.self()]
+    else
+      nodes
     end
     
     # Configuration
-    islands = Keyword.get(opts, :islands, length(nodes))
+    islands = Keyword.get(opts, :islands, length(local_nodes))
     migration_interval = Keyword.get(opts, :migration_interval, 10)
     migration_rate = Keyword.get(opts, :migration_rate, 0.1)
     
-    Logger.info("Starting distributed training on #{length(nodes)} nodes with #{islands} islands")
-    Logger.info("Nodes: #{inspect(nodes)}")
+    Logger.info("Starting distributed training on #{length(local_nodes)} nodes with #{islands} islands")
+    Logger.info("Nodes: #{inspect(local_nodes)}")
     
     # Create coordinator state
     coordinator_state = %{
       experiment_id: experiment_id,
-      nodes: nodes,
+      nodes: local_nodes,
       islands: islands,
       migration_interval: migration_interval,
       migration_rate: migration_rate,
@@ -73,7 +75,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
     island_configs = create_island_configs(experiment_id, config_opts, islands)
     
     # Distribute islands to nodes (round-robin)
-    node_assignments = distribute_islands_to_nodes(islands, nodes)
+    node_assignments = distribute_islands_to_nodes(islands, local_nodes)
     
     # Start training on each node
     island_results = Enum.map(0..(islands-1), fn island_idx ->

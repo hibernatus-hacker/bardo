@@ -155,7 +155,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     result = case sensor_type do
       :price_chart ->
         # Price Chart sensor - return price data
-        dimension = Map.get(sensor_params, :dimension, 10)
+        _dimension = Map.get(sensor_params, :dimension, 10)
         timeframe = Map.get(sensor_params, :timeframe, 60)
         get_price_chart_data(state, timeframe)
         
@@ -754,7 +754,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   end
   
   # Calculate position size based on risk settings
-  defp calculate_position_size(direction, size_percent, state) do
+  defp calculate_position_size(_direction, size_percent, state) do
     # Get current account equity
     equity = state.equity
     
@@ -768,7 +768,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     adjusted_risk = risk_amount * size_percent
     
     # Get latest price
-    bid_ask = get_latest_bid_ask(state)
+    _bid_ask = get_latest_bid_ask(state)
     
     # Calculate position size
     # For MT, volume is in lots (1.0 = 100,000 units)
@@ -902,7 +902,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     requested_indicators = Map.get(params, :indicators, [])
     
     # Ensure we have enough data
-    bars = if length(state.last_bars) < 200 do
+    _bars = if length(state.last_bars) < 200 do
       # Fetch more bars if needed
       {:ok, more_bars} = get_market_data(
         %{api_url: state.api_url, api_key: state.api_key},
@@ -970,7 +970,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     
     # Calculate open profit/loss if there's an open position
     open_pl = if position != 0 do
-      order_id = Map.get(agent_state, :order_id)
+      _order_id = Map.get(agent_state, :order_id)
       entry_price = Map.get(agent_state, :entry_price, 0.0)
       size = Map.get(agent_state, :size, 0.0)
       

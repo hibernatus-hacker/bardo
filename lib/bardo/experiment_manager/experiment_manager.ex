@@ -26,7 +26,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   require Logger
   
   alias Bardo.Logger, as: LogR
-  alias Bardo.Models
+  # Models is used indirectly through Persistence
   alias Bardo.Persistence
   alias Bardo.PopulationManager.PopulationManagerSupervisor
   alias Bardo.PopulationManager.PopulationManagerClient

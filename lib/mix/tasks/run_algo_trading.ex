@@ -94,7 +94,7 @@ defmodule Mix.Tasks.RunAlgoTrading do
     data_window = if test_mode, do: 1000, else: 5000
     
     # Visualization option
-    visualize = Keyword.get(opts, :visualize, false)
+    _visualize = Keyword.get(opts, :visualize, false)
     
     # Testing period options
     test_period = Keyword.get(opts, :test_period)

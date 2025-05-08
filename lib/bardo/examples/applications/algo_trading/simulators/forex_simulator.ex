@@ -198,7 +198,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
     result = case sensor_type do
       :price_chart ->
         # Price Chart sensor - return price data for creating a 2D grid
-        dimension = Map.get(sensor_params, :dimension, 10)
+        _dimension = Map.get(sensor_params, :dimension, 10)
         timeframe = Map.get(sensor_params, :timeframe, 60)
         get_price_chart_data(state, timeframe)
         
@@ -293,7 +293,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       {fitness, halt_flag}
     else
       # Step the simulation forward
-      {:ok, stepped_state} = step(%{}, new_state)
+      {:ok, _stepped_state} = step(%{}, new_state)
       
       # Return standard response with empty fitness and continue flag
       {[], :continue}
@@ -576,19 +576,19 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       # Use predefined test periods
       test_period == "last_month" ->
         # Find index approximately 30 days ago
-        window_start = max(0, length(price_data) - (30 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(30 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
       test_period == "last_week" ->
         # Find index approximately 7 days ago
-        window_start = max(0, length(price_data) - (7 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(7 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
       test_period == "last_year" ->
         # Find index approximately 365 days ago
-        window_start = max(0, length(price_data) - (365 * 24 * 60 ÷ List.first(price_data).timeframe))
+        window_start = max(0, length(price_data) - div(365 * 24 * 60, List.first(price_data).timeframe))
         window_size = length(price_data) - window_start
         {window_start, window_size}
         
@@ -1263,7 +1263,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
   # Update risk levels for an account
   defp update_risk_levels(account, stop_loss_percent, take_profit_percent, state) do
     if account.position != 0 and account.order != nil do
-      current_price = get_current_price(state)
+      _current_price = get_current_price(state)
       
       # Calculate stop loss and take profit levels
       stop_loss = calculate_stop_level(account.order.open_price, account.position, stop_loss_percent, state.pip_value)
@@ -1553,7 +1553,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Simulators.ForexSimulator do
       trade_count: account.trade_count,
       win_count: account.win_count,
       loss_count: account.loss_count,
-      avg_profit_per_trade: if account.trade_count > 0, do: (account.balance - @default_balance) / account.trade_count, else: 0.0,
+      avg_profit_per_trade: (if account.trade_count > 0 do (account.balance - @default_balance) / account.trade_count else 0.0 end),
       avg_win: avg_win,
       avg_loss: avg_loss,
       sharpe_ratio: sharpe_ratio,

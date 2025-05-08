@@ -20,7 +20,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding do
   """
   
   alias Bardo.PopulationManager.Genotype
-  alias Bardo.Models
+  # Models is used indirectly through Genotype
   
   @doc """
   Create a substrate-encoded genotype for an algorithmic trading neural network.
