@@ -2,7 +2,7 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
   use ExUnit.Case, async: true
   use ExUnitProperties
 
-  alias Bardo.PopulationManager.GenomeMutator
+  alias Bardo.PopulationManager.{Genotype, GenomeMutator}
   
   # Define our generators and helpers inline to avoid dependency issues
 

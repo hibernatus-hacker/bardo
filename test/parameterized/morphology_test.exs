@@ -1,8 +1,9 @@
 defmodule Bardo.Parameterized.MorphologyTest do
   use ExUnit.Case, async: true
   
+  alias Bardo.Morphology
   alias Bardo.AgentManager.Cortex
-  alias Bardo.PopulationManager.Genotype
+  alias Bardo.PopulationManager.{Genotype, GenomeMutator}
   
   @moduletag :parameterized
   
@@ -70,7 +71,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
         nn = Cortex.from_genotype(genotype)
         
         # Check structure
-        hidden_neurons =
+        hidden_neurons = 
           nn.neurons
           |> Map.values()
           |> Enum.filter(&(&1.layer == :hidden))
@@ -136,8 +137,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
         end),
         actuators: Enum.with_index(phys_config.actuators, fn actuator, idx ->
           %{id: idx + 1, fanin: actuator.fanin}
-        end),
-        recurrent: Map.get(phys_config, :recurrent, false)
+        end)
       }
       
       pattern = create_neuron_pattern(:test_owner, :test_agent, :test_cortex, neural_interface)
@@ -175,8 +175,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
         end),
         actuators: Enum.with_index(phys_config.actuators, fn actuator, idx ->
           %{id: idx + 1, fanin: actuator.fanin}
-        end),
-        recurrent: Map.get(phys_config, :recurrent, false)
+        end)
       }
       
       pattern = create_neuron_pattern(:test_owner, :test_agent, :test_cortex, neural_interface)
@@ -197,23 +196,23 @@ defmodule Bardo.Parameterized.MorphologyTest do
   defp create_test_genotype(input_dim, output_dim) do
     # Create a new genotype
     genotype = Genotype.new()
-
+    
     # Add input neurons
     genotype = Enum.reduce(1..input_dim, genotype, fn i, g ->
-      Genotype.add_neuron(g, :input, %{id: "input_#{i}", activation_function: :sigmoid})
+      Genotype.add_neuron(g, :input, %{id: "input_#{i}"})
     end)
-
+    
     # Add bias neuron
-    genotype = Genotype.add_neuron(genotype, :bias, %{id: "bias", activation_function: :identity})
-
+    genotype = Genotype.add_neuron(genotype, :bias, %{id: "bias"})
+    
     # Add one hidden neuron per input to ensure good connectivity
     genotype = Enum.reduce(1..input_dim, genotype, fn i, g ->
-      Genotype.add_neuron(g, :hidden, %{id: "hidden_#{i}", activation_function: :tanh, layer: :hidden})
+      Genotype.add_neuron(g, :hidden, %{id: "hidden_#{i}"})
     end)
-
+    
     # Add output neurons
     genotype = Enum.reduce(1..output_dim, genotype, fn i, g ->
-      Genotype.add_neuron(g, :output, %{id: "output_#{i}", activation_function: :sigmoid})
+      Genotype.add_neuron(g, :output, %{id: "output_#{i}"})
     end)
     
     # Get neuron IDs by layer
@@ -238,81 +237,66 @@ defmodule Bardo.Parameterized.MorphologyTest do
       end)
     end)
     
-    # Ensure hidden neurons have layer explicitly set
-    neuron_map = for {id, neuron} <- genotype.neurons, into: %{} do
-      if String.starts_with?(id, "hidden_") do
-        # Ensure hidden neurons have layer: :hidden
-        {id, Map.put(neuron, :layer, :hidden)}
-      else
-        {id, neuron}
-      end
-    end
-    
-    %{genotype | neurons: neuron_map}
+    genotype
   end
   
   # Create a layered network architecture with specified layer counts
   defp create_layered_genotype(input_dim, hidden_layer_count, output_dim) do
     # Create a new genotype
     genotype = Genotype.new()
-
+    
     # Add input neurons
     genotype = Enum.reduce(1..input_dim, genotype, fn i, g ->
-      Genotype.add_neuron(g, :input, %{id: "input_#{i}", activation_function: :sigmoid})
+      Genotype.add_neuron(g, :input, %{id: "input_#{i}"})
     end)
-
+    
     # Add bias neuron
-    genotype = Genotype.add_neuron(genotype, :bias, %{id: "bias", activation_function: :identity})
-
+    genotype = Genotype.add_neuron(genotype, :bias, %{id: "bias"})
+    
     # Create hidden layers
     neurons_per_layer = 3  # This is arbitrary but common
-    {genotype, hidden_neuron_groups} =
+    hidden_neuron_groups = 
       if hidden_layer_count > 0 do
-        Enum.reduce(1..hidden_layer_count, {genotype, []}, fn layer, {g, groups} ->
-          {layer_neurons, updated_g} = Enum.reduce(1..neurons_per_layer, {[], g}, fn neuron, {neurons, curr_g} ->
+        for layer <- 1..hidden_layer_count do
+          for neuron <- 1..neurons_per_layer do
             # Create neuron ID that encodes layer and position
             neuron_id = "hidden_L#{layer}_N#{neuron}"
-            # Add to genotype with explicit :hidden layer
-            updated_g = Genotype.add_neuron(curr_g, :hidden, %{id: neuron_id, activation_function: :tanh, layer: :hidden})
-            {[neuron_id | neurons], updated_g}
-          end)
-          layer_neurons = Enum.reverse(layer_neurons)
-          {updated_g, [layer_neurons | groups]}
-        end)
+            # Add to genotype
+            _genotype = Genotype.add_neuron(genotype, :hidden, %{id: neuron_id})
+            neuron_id
+          end
+        end
       else
-        {genotype, []}
+        []
       end
-
+    
     # Add output neurons
     genotype = Enum.reduce(1..output_dim, genotype, fn i, g ->
-      Genotype.add_neuron(g, :output, %{id: "output_#{i}", activation_function: :sigmoid})
+      Genotype.add_neuron(g, :output, %{id: "output_#{i}"})
     end)
-
+    
     # Get input and output IDs
     input_ids = Genotype.get_layer_neuron_ids(genotype, :input)
     bias_ids = Genotype.get_layer_neuron_ids(genotype, :bias)
     output_ids = Genotype.get_layer_neuron_ids(genotype, :output)
-
+    
     # Connect layers
-    genotype =
+    genotype = 
       if hidden_layer_count > 0 do
         # Connect inputs to first hidden layer
-        first_layer = Enum.reverse(hidden_neuron_groups) |> hd()
+        first_layer = hd(hidden_neuron_groups)
         genotype1 = Enum.reduce(input_ids ++ bias_ids, genotype, fn input_id, g ->
           Enum.reduce(first_layer, g, fn hidden_id, g2 ->
             weight = :rand.uniform() * 2 - 1
             Genotype.add_connection(g2, input_id, hidden_id, weight)
           end)
         end)
-
+        
         # Connect hidden layers to each other
-        genotype2 =
+        genotype2 = 
           if hidden_layer_count > 1 do
-            layer_pairs = Enum.zip(
-              Enum.drop(Enum.reverse(hidden_neuron_groups), 1),
-              Enum.drop(Enum.reverse(hidden_neuron_groups), -1)
-            )
-            Enum.reduce(layer_pairs, genotype1, fn {from_layer, to_layer}, g ->
+            Enum.zip(Enum.drop(hidden_neuron_groups, -1), Enum.drop(hidden_neuron_groups, 1))
+            |> Enum.reduce(genotype1, fn {from_layer, to_layer}, g ->
               Enum.reduce(from_layer, g, fn from_id, g2 ->
                 Enum.reduce(to_layer, g2, fn to_id, g3 ->
                   weight = :rand.uniform() * 2 - 1
@@ -323,9 +307,9 @@ defmodule Bardo.Parameterized.MorphologyTest do
           else
             genotype1
           end
-
+          
         # Connect last hidden layer to outputs
-        last_layer = hd(hidden_neuron_groups)
+        last_layer = List.last(hidden_neuron_groups)
         Enum.reduce(last_layer, genotype2, fn hidden_id, g ->
           Enum.reduce(output_ids, g, fn output_id, g2 ->
             weight = :rand.uniform() * 2 - 1
@@ -341,18 +325,8 @@ defmodule Bardo.Parameterized.MorphologyTest do
           end)
         end)
       end
-
-    # Explicitly set layer for all neurons when creating them
-    neuron_map = for {id, neuron} <- genotype.neurons, into: %{} do
-      if String.starts_with?(id, "hidden_") do
-        # Ensure hidden neurons have layer: :hidden
-        {id, Map.put(neuron, :layer, :hidden)}
-      else
-        {id, neuron}
-      end
-    end
-
-    %{genotype | neurons: neuron_map}
+      
+    genotype
   end
   
   # Create a feed-forward morphology
@@ -393,7 +367,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
   # Create a recurrent morphology
   defp create_recurrent_morphology(input_dim, output_dim) do
     # Create sensors
-    sensors =
+    sensors = 
       for i <- 1..input_dim do
         %{
           name: String.to_atom("sensor_#{i}"),
@@ -404,9 +378,9 @@ defmodule Bardo.Parameterized.MorphologyTest do
           format: {:symmetric, [0.0]}
         }
       end
-
+      
     # Create actuators
-    actuators =
+    actuators = 
       for i <- 1..output_dim do
         %{
           name: String.to_atom("actuator_#{i}"),
@@ -415,14 +389,13 @@ defmodule Bardo.Parameterized.MorphologyTest do
           actuator_type: :output
         }
       end
-
+      
     # Create physical configuration
     %{
       sensors: sensors,
       actuators: actuators,
       recurrent: true,
       memory_neurons: 4,  # Arbitrary but common for testing
-      hidden_neurons: 4,  # Add hidden neurons for the recurrent network
       type: :recurrent
     }
   end
@@ -432,32 +405,25 @@ defmodule Bardo.Parameterized.MorphologyTest do
     # Calculate dimensions from neural interface
     sensors = neural_interface.sensors
     actuators = neural_interface.actuators
-
-    # Calculate total neurons - add hidden neurons for recurrent networks
-    base_neurons = Enum.reduce(sensors, 0, fn sensor, acc -> acc + sensor.fanout end)
+    
+    # Calculate total neurons
+    total_neurons = Enum.reduce(sensors, 0, fn sensor, acc -> acc + sensor.fanout end)
     output_neurons = Enum.reduce(actuators, 0, fn actuator, acc -> acc + actuator.fanin end)
-
-    # Add extra neurons for recurrent networks - this will ensure our recurrent test passes
-    total_neurons =
-      case Map.get(neural_interface, :recurrent, false) do
-        true -> base_neurons + 4  # Add memory neurons for recurrent networks
-        _ -> base_neurons
-      end
-
+    
     # Create incremental mapping for sensors
-    {sensor_map, _} =
+    {sensor_map, _} = 
       Enum.reduce(sensors, {%{}, 0}, fn sensor, {map, offset} ->
         new_map = Map.put(map, sensor.id, {offset, offset + sensor.fanout})
         {new_map, offset + sensor.fanout}
       end)
-
+      
     # Create incremental mapping for actuators
-    {actuator_map, _} =
+    {actuator_map, _} = 
       Enum.reduce(actuators, {%{}, 0}, fn actuator, {map, offset} ->
         new_map = Map.put(map, actuator.id, {offset, offset + actuator.fanin})
         {new_map, offset + actuator.fanin}
       end)
-
+    
     # Return the pattern
     %{
       owner: owner,
@@ -466,8 +432,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
       total_neuron_count: total_neurons,
       output_neuron_count: output_neurons,
       sensor_id_to_idx_map: sensor_map,
-      actuator_id_to_idx_map: actuator_map,
-      bias_as_neuron: true
+      actuator_id_to_idx_map: actuator_map
     }
   end
 end

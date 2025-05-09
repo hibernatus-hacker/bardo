@@ -1,137 +1,21 @@
 defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
   @moduledoc """
-  Behavior defining the interface for all broker implementations.
+  Generic interface for connecting trading agents to external brokers.
   
-  This module defines a consistent API for interacting with different brokers,
-  allowing the trading system to be broker-agnostic. Any broker implementation
-  must implement all these callback functions.
+  This module defines the common interface for all broker implementations
+  and provides helper functions for integrating with various trading platforms.
   """
   
-  @doc """
-  Initialize the broker with configuration options.
+  # Private scape not used directly
+  require Logger
   
-  ## Parameters
-  
-  - opts: A map of broker-specific options
-  
-  ## Returns
-  
-  - `{:ok, state}` - Broker state if initialization successful
-  - `{:error, reason}` - If initialization fails
-  """
-  @callback init(opts :: map()) :: {:ok, map()} | {:error, any()}
-  
-  @doc """
-  Get account information from the broker.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  
-  ## Returns
-  
-  - `{:ok, account_info}` - Account information map
-  - `{:error, reason}` - If the request fails
-  """
-  @callback get_account_info(state :: map()) :: {:ok, map()} | {:error, any()}
-  
-  @doc """
-  Get a list of available instruments from the broker.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  
-  ## Returns
-  
-  - `{:ok, instruments}` - List of available instruments
-  - `{:error, reason}` - If the request fails
-  """
-  @callback get_instruments(state :: map()) :: {:ok, list(map())} | {:error, any()}
-  
-  @doc """
-  Get historical price data for an instrument.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  - instrument: The instrument code (e.g., "EUR/USD")
-  - timeframe: The timeframe (e.g., "M15" for 15-minute candles)
-  - opts: Additional options (broker-specific)
-  
-  ## Returns
-  
-  - `{:ok, candles}` - List of candle data
-  - `{:error, reason}` - If the request fails
-  """
-  @callback get_historical_data(state :: map(), instrument :: String.t(), timeframe :: String.t(), opts :: map()) :: 
-    {:ok, map()} | {:error, any()}
-    
-  @doc """
-  Get current price quotes for one or more instruments.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  - instruments: List of instrument codes or a single instrument code
-  
-  ## Returns
-  
-  - `{:ok, quotes}` - Map of instrument quotes
-  - `{:error, reason}` - If the request fails
-  """
-  @callback get_quotes(state :: map(), instruments :: list(String.t()) | String.t()) :: 
-    {:ok, map()} | {:error, any()}
-    
-  @doc """
-  Execute a trade order.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  - order: A map containing order details
-  
-  ## Returns
-  
-  - `{:ok, order_details}` - Details of the executed order
-  - `{:error, reason}` - If the order execution fails
-  """
-  @callback execute_order(state :: map(), order :: map()) :: 
-    {:ok, map()} | {:error, any()}
-    
-  @doc """
-  Get open positions for the account.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  
-  ## Returns
-  
-  - `{:ok, positions}` - List of open positions
-  - `{:error, reason}` - If the request fails
-  """
-  @callback get_positions(state :: map()) :: 
-    {:ok, list(map())} | {:error, any()}
-    
-  @doc """
-  Close a position for a specific instrument.
-  
-  ## Parameters
-  
-  - state: The broker state map
-  - instrument: The instrument code
-  - opts: Additional options (broker-specific)
-  
-  ## Returns
-  
-  - `{:ok, result}` - Result of the position close operation
-  - `{:error, reason}` - If the operation fails
-  """
-  @callback close_position(state :: map(), instrument :: String.t(), opts :: map()) :: 
-    {:ok, map()} | {:error, any()}
-    
-  # Helper functions for broker implementations
+  @callback connect(map()) :: {:ok, map()} | {:error, any()}
+  @callback disconnect(map()) :: :ok | {:error, any()}
+  @callback get_account_info(map()) :: {:ok, map()} | {:error, any()}
+  @callback get_market_data(map(), String.t(), integer(), map()) :: {:ok, list(map())} | {:error, any()}
+  @callback place_order(map(), String.t(), integer(), float(), map()) :: {:ok, map()} | {:error, any()}
+  @callback close_order(map(), String.t()) :: {:ok, map()} | {:error, any()}
+  @callback modify_order(map(), String.t(), map()) :: {:ok, map()} | {:error, any()}
   
   @doc """
   Convert standard order direction to broker-specific format.
@@ -157,9 +41,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
         # Oanda uses "BUY"/"SELL" strings
         if direction > 0, do: "BUY", else: "SELL"
         
-      :gemini ->
-        # Gemini uses "buy"/"sell" strings (lowercase)
-        if direction > 0, do: "buy", else: "sell"
+      :binance ->
+        # Binance uses "BUY"/"SELL" strings
+        if direction > 0, do: "BUY", else: "SELL"
         
       _ ->
         # Default format
@@ -198,22 +82,96 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
             volume: Map.get(candle, "volume", 0) |> parse_integer()
           }
           
-        :gemini ->
-          # Gemini format conversion
-          %{
-            time: Map.get(candle, "time", Map.get(candle, "timestamp", "")),
-            open: Map.get(candle, "open", 0.0) |> parse_float(),
-            high: Map.get(candle, "high", 0.0) |> parse_float(),
-            low: Map.get(candle, "low", 0.0) |> parse_float(),
-            close: Map.get(candle, "close", 0.0) |> parse_float(),
-            volume: Map.get(candle, "volume", 0) |> parse_integer()
-          }
+        :binance ->
+          # Binance format conversion
+          # Binance returns arrays, not objects
+          case candle do
+            [time, open, high, low, close, volume | _] when is_list(candle) ->
+              %{
+                time: format_timestamp(time),
+                open: parse_float(open),
+                high: parse_float(high),
+                low: parse_float(low),
+                close: parse_float(close),
+                volume: parse_integer(volume)
+              }
+            _ -> 
+              # Try to handle object format
+              %{
+                time: Map.get(candle, "openTime", "") |> format_timestamp(),
+                open: Map.get(candle, "open", 0.0) |> parse_float(),
+                high: Map.get(candle, "high", 0.0) |> parse_float(),
+                low: Map.get(candle, "low", 0.0) |> parse_float(),
+                close: Map.get(candle, "close", 0.0) |> parse_float(),
+                volume: Map.get(candle, "volume", 0) |> parse_integer()
+              }
+          end
           
         _ ->
           # Default format (assume already standardized)
           candle
       end
     end)
+  end
+  
+  @doc """
+  Format an order for submission to a broker.
+  
+  Different brokers require different order formats.
+  This function creates the appropriate format for each broker type.
+  """
+  def format_order(symbol, direction, size, price, stop_loss, take_profit, broker_type) do
+    broker_direction = convert_direction(direction, broker_type)
+    
+    case broker_type do
+      :metatrader ->
+        # MT4/MT5 order format
+        %{
+          symbol: symbol,
+          cmd: broker_direction,
+          volume: size,
+          price: price,
+          sl: stop_loss,
+          tp: take_profit
+        }
+        
+      :oanda ->
+        # Oanda order format
+        %{
+          order: %{
+            instrument: symbol,
+            units: (if direction > 0 do size else -size end),
+            type: "MARKET",
+            positionFill: "DEFAULT",
+            stopLossOnFill: %{
+              price: stop_loss |> :erlang.float_to_binary([{:decimals, 5}])
+            },
+            takeProfitOnFill: %{
+              price: take_profit |> :erlang.float_to_binary([{:decimals, 5}])
+            }
+          }
+        }
+        
+      :binance ->
+        # Binance order format
+        %{
+          symbol: symbol,
+          side: broker_direction,
+          type: "MARKET",
+          quantity: size
+        }
+        
+      _ ->
+        # Default format
+        %{
+          symbol: symbol,
+          direction: broker_direction,
+          size: size,
+          price: price,
+          stop_loss: stop_loss,
+          take_profit: take_profit
+        }
+    end
   end
   
   # Private helper functions
@@ -249,4 +207,15 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
   defp parse_integer(value) when is_integer(value), do: value
   defp parse_integer(value) when is_float(value), do: trunc(value)
   defp parse_integer(_), do: 0
+  
+  # Format timestamp to standard format
+  defp format_timestamp(timestamp) when is_binary(timestamp), do: timestamp
+  defp format_timestamp(timestamp) when is_integer(timestamp) do
+    # Convert Unix timestamp to datetime string
+    case DateTime.from_unix(div(timestamp, 1000)) do
+      {:ok, datetime} -> DateTime.to_string(datetime)
+      _ -> ""
+    end
+  end
+  defp format_timestamp(_), do: ""
 end

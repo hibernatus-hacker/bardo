@@ -92,7 +92,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       end)
       
       # Set up neuron behavior
-      EnhancedMock.expect(Neuron, :forward, fn(pid, _from_pid, input) ->
+      EnhancedMock.expect(Neuron, :forward, fn(pid, from_pid, input) ->
         # Process signal based on neuron
         case pid do
           ^neuron_pid1 ->
@@ -100,13 +100,13 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
             # Apply sigmoid activation and forward to output neuron
             processed = Enum.map(input, fn x -> 1.0 / (1.0 + :math.exp(-x)) end)
             Neuron.forward(neuron_pid3, pid, processed)
-
+            
           ^neuron_pid2 ->
             # Second hidden neuron gets input from sensor 2
             # Apply tanh activation and forward to output neuron
             processed = Enum.map(input, fn x -> :math.tanh(x) end)
             Neuron.forward(neuron_pid3, pid, processed)
-
+            
           ^neuron_pid3 ->
             # Output neuron combines inputs from hidden neurons
             # Apply threshold activation and forward to actuator
@@ -115,7 +115,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
             output = if sum > 0.5, do: [1.0], else: [0.0]
             Actuator.forward(actuator_pid, pid, output)
         end
-
+        
         :ok
       end)
       
@@ -124,13 +124,13 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
         # Process output action and calculate fitness
         assert pid == actuator_pid
         assert from_pid == neuron_pid3
-
+        
         # Calculate fitness based on output
         fitness = Enum.sum(output)
-
+        
         # Provide feedback to cortex
         Cortex.sync(cortex_pid, pid, [fitness], 0)
-
+        
         :ok
       end)
       
@@ -167,6 +167,9 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       # Track number of cycles
       cycle_count = 3
 
+      # Set up tracking variables
+      test_pid = self()
+
       # Create an agent reference to track cycle count
       {:ok, cycle_tracker} = Agent.start_link(fn -> 0 end)
       
@@ -184,7 +187,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       end, count: cycle_count * length(sensor_pids))
       
       # Set up neuron behavior - forwards to next layer
-      EnhancedMock.expect(Neuron, :forward, fn(pid, _from_pid, input) ->
+      EnhancedMock.expect(Neuron, :forward, fn(pid, from_pid, input) ->
         # Last neuron forwards to actuator, others forward to next neuron
         if pid == List.last(neuron_pids) do
           # Process and forward to actuator
@@ -198,7 +201,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
             Neuron.forward(next_pid, pid, input)
           end
         end
-
+        
         :ok
       end)
       
@@ -263,6 +266,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       # Set up a scenario where a neuron fails during processing
       
       # Track which neurons have been activated
+      test_pid = self()
       {:ok, activated_neurons} = Agent.start_link(fn -> [] end)
       
       # Set up sensor behavior
@@ -278,7 +282,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       end)
       
       # Set up neuron behavior with failure in neuron 2
-      EnhancedMock.expect(Neuron, :forward, fn(pid, _from_pid, input) ->
+      EnhancedMock.expect(Neuron, :forward, fn(pid, from_pid, input) ->
         # Track neurons that were activated
         Agent.update(activated_neurons, fn list -> [pid | list] end)
 
@@ -296,12 +300,12 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
               # Before neuron 1 is activated, work normally
               Neuron.forward(neuron_pid3, pid, input)
             end
-
+            
           ^neuron_pid3 ->
             # Output neuron works normally
             Actuator.forward(actuator_pid, pid, input)
         end
-
+        
         :ok
       end)
       
@@ -311,7 +315,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
         Cortex.sync(cortex_pid, pid, [1.0], 0)
 
         # Notify test that actuator received output
-        send(self(), {:actuator_activated, output})
+        send(test_pid, {:actuator_activated, output})
 
         :ok
       end)
@@ -319,7 +323,7 @@ defmodule Bardo.EnhancedMocks.NetworkTest do
       # Set up cortex behavior for error recovery
       EnhancedMock.expect(Cortex, :sync, fn(_pid, _actuator_pid, fitness, _e_flag) ->
         # After receiving sync, notify test that cycle completed
-        send(self(), {:cycle_complete, fitness})
+        send(test_pid, {:cycle_complete, fitness})
 
         :ok
       end)

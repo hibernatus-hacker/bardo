@@ -14,6 +14,7 @@ defmodule Bardo.ExperimentManager.ExperimentManagerTest do
   use ExUnit.Case, async: false
   
   alias Bardo.ExperimentManager.ExperimentManager
+  alias Bardo.Persistence
   
   # We need to mock the PopulationManagerSupervisor to avoid actually starting populations
   # during tests. This is a simplistic mock for the tests.
@@ -59,7 +60,6 @@ defmodule Bardo.ExperimentManager.ExperimentManagerTest do
   end
   
   describe "experiment lifecycle" do
-    @tag :skip
     test "creates, configures, and starts an experiment", %{fitness_fn: fitness_fn} do
       # Create a new experiment
       {:ok, experiment_id} = ExperimentManager.new_experiment("Test Experiment")
@@ -118,7 +118,6 @@ defmodule Bardo.ExperimentManager.ExperimentManagerTest do
       assert experiment_id2 in active_experiments
     end
     
-    @tag :skip
     test "lists all experiments" do
       # Create a couple of experiments
       {:ok, experiment_id1} = ExperimentManager.new_experiment("Test Experiment List 1")
@@ -126,26 +125,20 @@ defmodule Bardo.ExperimentManager.ExperimentManagerTest do
       
       # List all experiments
       {:ok, all_experiments} = ExperimentManager.list_all()
-
-      # Find our experiments in the list by ID
+      
+      # Find our experiments in the list
       exp1 = Enum.find(all_experiments, fn e -> e.id == experiment_id1 end)
       exp2 = Enum.find(all_experiments, fn e -> e.id == experiment_id2 end)
-
+      
       # Verify they exist
       assert exp1 != nil
       assert exp2 != nil
-
-      # Since we can't guarantee ordering between tests, let's just check that each experiment's
-      # name is one of our expected names
-      valid_names = ["Test Experiment List 1", "Test Experiment List 2"]
-      assert exp1.name in valid_names
-      assert exp2.name in valid_names
-
-      # Also verify they're different experiments
-      assert exp1.id != exp2.id
+      
+      # Verify their names
+      assert exp1.name == "Test Experiment List 1"
+      assert exp2.name == "Test Experiment List 2"
     end
     
-    @tag :skip
     test "stops an experiment" do
       # Create and start an experiment
       {:ok, experiment_id} = ExperimentManager.new_experiment("Test Stop Experiment")

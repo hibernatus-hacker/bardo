@@ -15,6 +15,7 @@ defmodule Bardo.MorphologyTest do
   alias Bardo.Morphology
   alias Bardo.Models
   alias Bardo.TestHelper.ModelHelper
+  alias Bardo.Utils
 
   # For tests that need a mock DB
   setup do
