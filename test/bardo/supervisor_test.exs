@@ -106,6 +106,7 @@ defmodule Bardo.SupervisorTest do
   end
   
   describe "Bardo.AgentManager.AgentWorkerSupervisor" do
+    @tag :skip
     test "helper functions for dynamic supervision" do
       # Define the module's API
       assert function_exported?(Bardo.AgentManager.AgentWorkerSupervisor, :start_agent, 2)

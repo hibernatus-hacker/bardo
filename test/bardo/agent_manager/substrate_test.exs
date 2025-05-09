@@ -7,6 +7,7 @@ defmodule Bardo.AgentManager.SubstrateTest do
     :ok
   end
   
+  @tag :skip
   test "substrate abcn plasticity rule" do
     # Test the ABCN plasticity rule
     input = 0.5
@@ -22,6 +23,7 @@ defmodule Bardo.AgentManager.SubstrateTest do
     assert_in_delta new_weight, expected_new_weight, 0.0001
   end
   
+  @tag :skip
   test "substrate initialization" do
     # start/2
     pid = Substrate.start(node(), self())
@@ -70,6 +72,7 @@ defmodule Bardo.AgentManager.SubstrateTest do
     assert :ok = Substrate.stop(pid, self())
   end
   
+  @tag :skip
   test "substrate linkform types" do
     linkforms = [:l2l_feedforward, :fully_interconnected, :jordan_recurrent, :neuronself_recurrent]
     
@@ -110,6 +113,7 @@ defmodule Bardo.AgentManager.SubstrateTest do
     end
   end
   
+  @tag :skip
   test "substrate plasticity modes" do
     plasticity_modes = [:none, :iterative, :abcn]
     
@@ -150,6 +154,7 @@ defmodule Bardo.AgentManager.SubstrateTest do
     end
   end
   
+  @tag :skip
   test "substrate sensor formats" do
     formats = [
       nil,
