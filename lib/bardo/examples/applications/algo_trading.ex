@@ -543,7 +543,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading do
     IO.puts("\nStopping live trading session #{live_id}...")
     
     # Send the stop command to the live trading session
-    case PolisMgr.send_command(live_id, :stop) do
+    case Bardo.PolisMgr.send_command(live_id, :stop) do
       :ok ->
         IO.puts("\n✅ Live trading session stopped successfully.")
         IO.puts("Final trading summary:")

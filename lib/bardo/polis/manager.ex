@@ -81,6 +81,58 @@ defmodule Bardo.Polis.Manager do
   end
 
   @doc """
+  Stop a specific polis instance.
+  """
+  def stop_instance(id) do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        LogR.error({:polis_mgr, :stop_instance, :error, "PolisMgr not online", [id]})
+        {:error, "PolisMgr not online"}
+      pid ->
+        GenServer.call(pid, {:stop_instance, id})
+    end
+  end
+  
+  @doc """
+  Send a command to a polis instance.
+  """
+  def send_command(id, command) do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        LogR.error({:polis_mgr, :send_command, :error, "PolisMgr not online", [id, command]})
+        {:error, "PolisMgr not online"}
+      pid ->
+        GenServer.call(pid, {:send_command, id, command})
+    end
+  end
+  
+  @doc """
+  Evolve the next generation for a polis instance.
+  """
+  def evolve_generation(id) do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        LogR.error({:polis_mgr, :evolve_generation, :error, "PolisMgr not online", [id]})
+        {:error, "PolisMgr not online"}
+      pid ->
+        GenServer.call(pid, {:evolve_generation, id})
+    end
+  end
+  
+  @doc """
+  Update the population for a polis instance.
+  """
+  def update_population(id, population) do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        LogR.error({:polis_mgr, :update_population, :error, "PolisMgr not online", [id]})
+        {:error, "PolisMgr not online"}
+      pid ->
+        GenServer.call(pid, {:update_population, id, population})
+    end
+  end
+  
+  @doc """
   Backs up the DB and shuts down the application.
   """
   @spec backup_and_shutdown() :: {:error, String.t()} | :ok
@@ -128,10 +180,37 @@ defmodule Bardo.Polis.Manager do
     do_setup(config)
     {:reply, :ok, state}
   end
-
+  
   @impl GenServer
-  def handle_call(request, from, state) do
-    LogR.warning({:polis_mgr, :msg, :error, "unexpected handle_call", [request, from]})
+  def handle_call({:stop_instance, id}, _from, state) do
+    LogR.info({:polis_mgr, :stop_instance, :ok, "Stopping polis instance", [id]})
+    # In this mock implementation, we just acknowledge the request
+    {:reply, :ok, state}
+  end
+  
+  @impl GenServer
+  def handle_call({:send_command, id, command}, _from, state) do
+    LogR.info({:polis_mgr, :send_command, :ok, "Sending command to polis instance", [id, command]})
+    # In this mock implementation, we just acknowledge the request
+    {:reply, :ok, state}
+  end
+  
+  @impl GenServer
+  def handle_call({:evolve_generation, id}, _from, state) do
+    LogR.info({:polis_mgr, :evolve_generation, :ok, "Evolving generation for polis instance", [id]})
+    # In this mock implementation, we return a mock result
+    generation_info = %{
+      generation: 1,
+      status: :evolving,
+      timestamp: DateTime.utc_now()
+    }
+    {:reply, {:ok, generation_info}, state}
+  end
+  
+  @impl GenServer
+  def handle_call({:update_population, id, _population}, _from, state) do
+    LogR.info({:polis_mgr, :update_population, :ok, "Updating population for polis instance", [id]})
+    # In this mock implementation, we just acknowledge the request
     {:reply, :ok, state}
   end
 

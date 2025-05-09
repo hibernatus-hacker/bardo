@@ -1,9 +1,10 @@
 defmodule Bardo.Test.Distributed.DistributedTrainingTest do
   use ExUnit.Case
-  
+
   alias Bardo.Test.Distributed.DistributedTesting
-  
+
   @moduletag :distributed
+  @moduletag :skip  # Skip these tests by default, as they require distributed setup
   @moduletag timeout: 180_000  # 3 minutes timeout for distributed evolution
   
   setup do

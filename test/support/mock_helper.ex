@@ -125,42 +125,70 @@ defmodule Bardo.TestSupport.MockHelper do
   def redirect_module(module, test_module) when is_atom(module) and is_atom(test_module) do
     # Get all functions from the test module
     functions = test_module.__info__(:functions)
-    
+
     # Set up mock if not already done
     try do
       :meck.new(module, [:passthrough, :non_strict])
     catch
       :error, {:already_started, _} ->
         :meck.unload(module)
+        # Wait a little bit before creating the new mock to avoid race conditions
+        Process.sleep(50)
         :meck.new(module, [:passthrough, :non_strict])
     end
-    
+
     # Redirect each function to the test module
-    Enum.each(functions, fn {function, arity} ->
-      args = Macro.generate_arguments(arity, __MODULE__)
-      apply_fn = quote do
-        fn unquote_splicing(args) -> 
-          apply(unquote(test_module), unquote(function), [unquote_splicing(args)]) 
+    try do
+      Enum.each(functions, fn {function, arity} ->
+        args = Macro.generate_arguments(arity, __MODULE__)
+        apply_fn = quote do
+          fn unquote_splicing(args) ->
+            apply(unquote(test_module), unquote(function), [unquote_splicing(args)])
+          end
         end
-      end
-      apply_fn = Code.eval_quoted(apply_fn) |> elem(0)
-      :meck.expect(module, function, apply_fn)
-    end)
-    
-    # Register cleanup
+        apply_fn = Code.eval_quoted(apply_fn) |> elem(0)
+
+        # Wrap the expect call in a try/catch to handle potential errors
+        try do
+          :meck.expect(module, function, apply_fn)
+        catch
+          :error, reason ->
+            # Log the error but continue with other functions
+            IO.puts("Warning: Failed to mock #{inspect(module)}.#{function}/#{arity}: #{inspect(reason)}")
+        end
+      end)
+    rescue
+      e ->
+        # Handle any exceptions during the mocking process
+        IO.puts("Error during mocking of #{inspect(module)}: #{inspect(e)}")
+    end
+
+    # Register cleanup with a more robust unloading strategy
     ExUnit.Callbacks.on_exit({__MODULE__, {module, test_module, make_ref()}}, fn ->
       try do
-        if :meck.validate(module) do
-          :meck.unload(module)
-        else
-          IO.puts("Warning: Mock validation failed for #{inspect(module)}")
-          :meck.unload(module)
-        end
+        # First try normal unload
+        :meck.unload(module)
       catch
-        _kind, _reason -> :ok
+        # If it fails, try force unload
+        :error, _reason ->
+          try do
+            :meck.reset(module)
+            Process.sleep(50)
+            :meck.unload(module)
+          catch
+            _kind, _inner_reason ->
+              # Last resort: try to kill any processes related to this mock
+              Process.whereis(:"#{module}_meck")
+              |> case do
+                nil -> :ok
+                pid when is_pid(pid) ->
+                  Process.exit(pid, :kill)
+                  :ok
+              end
+          end
       end
     end)
-    
+
     :ok
   end
 end

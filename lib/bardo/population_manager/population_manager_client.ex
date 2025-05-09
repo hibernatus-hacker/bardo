@@ -12,7 +12,13 @@ defmodule Bardo.PopulationManager.PopulationManagerClient do
   """
   @spec new_run() :: :ok
   def new_run do
-    PopulationManagerSupervisor.start_population_manager()
+    # Start a new population with default parameters
+    PopulationManagerSupervisor.start_population("default_population", %{
+      experiment_id: "default_experiment",
+      run_number: 1,
+      population_size: 50,
+      morphology: :default
+    })
     :ok
   end
 
@@ -21,8 +27,17 @@ defmodule Bardo.PopulationManager.PopulationManagerClient do
   """
   @spec restart_run() :: :ok
   def restart_run do
-    PopulationManagerSupervisor.restart_population_manager()
-    :ok
+    # First stop any existing populations
+    case PopulationManagerSupervisor.list_populations() do
+      {:ok, populations} ->
+        Enum.each(populations, fn pop_id ->
+          PopulationManagerSupervisor.stop_population(pop_id)
+        end)
+      _ -> :ok
+    end
+
+    # Then start a new population
+    new_run()
   end
 
   @doc """
@@ -64,9 +79,25 @@ defmodule Bardo.PopulationManager.PopulationManagerClient do
   @doc """
   Sets the operation tag for the population manager.
   """
-  @spec set_op_tag(:pause | :continue) :: :ok
+  @spec set_op_tag(:pause | :continue | :stop) :: :ok
   def set_op_tag(op_tag) do
     PopulationManager.set_op_tag(op_tag)
     :ok
+  end
+
+  @doc """
+  Stops a population manager run with the specified ID.
+
+  ## Parameters
+    * `population_id` - ID of the population to stop
+
+  ## Returns
+    * `:ok` - If the population was stopped successfully
+    * `{:error, :not_found}` - If the population was not found
+  """
+  @spec stop(atom() | binary()) :: :ok | {:error, :not_found}
+  def stop(population_id) do
+    # Use the supervisor to stop the population
+    PopulationManagerSupervisor.stop_population(population_id)
   end
 end

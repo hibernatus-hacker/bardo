@@ -144,10 +144,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
             type: "MARKET",
             positionFill: "DEFAULT",
             stopLossOnFill: %{
-              price: stop_loss |> Float.to_string([decimals: 5])
+              price: stop_loss |> :erlang.float_to_binary([{:decimals, 5}])
             },
             takeProfitOnFill: %{
-              price: take_profit |> Float.to_string([decimals: 5])
+              price: take_profit |> :erlang.float_to_binary([{:decimals, 5}])
             }
           }
         }

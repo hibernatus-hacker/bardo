@@ -123,21 +123,51 @@ defmodule Bardo.SupervisorTest do
       # Create a fake init context
       init_arg = []
       # Call the init function directly
-      {:ok, {strategy, child_specs}} = apply(supervisor, :init, [init_arg])
-      {:ok, child_specs}
+      {:ok, supervisor_options} = apply(supervisor, :init, [init_arg])
+
+      # Handle all known supervisor format variations
+      case supervisor_options do
+        {_strategy, child_specs} when is_list(child_specs) ->
+          # Old format: {:ok, {strategy, children}}
+          {:ok, child_specs}
+        %{children: child_specs} when is_list(child_specs) ->
+          # New format: {:ok, %{strategy: strategy, children: children}}
+          {:ok, child_specs}
+        # Handle newest Elixir 1.17+ supervisor format which returns nested maps
+        {%{}, child_specs} when is_list(child_specs) ->
+          # Newest format: {:ok, {%{intensity: N, period: P, strategy: S, ...}, [children]}}
+          {:ok, child_specs}
+        _ ->
+          {:error, "Unknown supervisor options format: #{inspect(supervisor_options)}"}
+      end
     rescue
       e -> {:error, "Error getting child specs: #{inspect(e)}"}
     end
   end
-  
+
   # Extract the strategy from a supervisor
   defp get_strategy(supervisor) do
     try do
       # Create a fake init context
       init_arg = []
       # Call the init function directly
-      {:ok, {strategy, _}} = apply(supervisor, :init, [init_arg])
-      strategy
+      {:ok, supervisor_options} = apply(supervisor, :init, [init_arg])
+
+      # Handle all known supervisor format variations
+      case supervisor_options do
+        {strategy, _} when is_atom(strategy) ->
+          # Old format: {:ok, {strategy, children}}
+          strategy
+        %{strategy: strategy} ->
+          # New format: {:ok, %{strategy: strategy, ...}}
+          strategy
+        # Handle newest Elixir 1.17+ supervisor format which returns nested maps
+        {%{strategy: strategy}, _} ->
+          # Newest format: {:ok, {%{intensity: N, period: P, strategy: S, ...}, [children]}}
+          strategy
+        _ ->
+          {:error, "Unknown supervisor options format: #{inspect(supervisor_options)}"}
+      end
     rescue
       e -> {:error, "Error getting strategy: #{inspect(e)}"}
     end

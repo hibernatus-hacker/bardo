@@ -9,7 +9,6 @@ defmodule Bardo.TestSupport.MockExamples do
   import ExUnit.Assertions
   alias Bardo.TestSupport.EnhancedMock
   alias Bardo.AgentManager.{Cortex, Neuron, Sensor, Actuator}
-  alias Bardo.PopulationManager.{Genotype, GenomeMutator}
   
   @doc """
   Example: Testing with simple function mocking
@@ -21,7 +20,7 @@ defmodule Bardo.TestSupport.MockExamples do
     EnhancedMock.mock(Cortex)
     
     # Set an expectation for the activate function
-    EnhancedMock.expect(Cortex, :activate, fn(_nn, inputs) -> 
+    EnhancedMock.expect(Cortex, :activate, fn(_nn, _inputs) ->
       # Return a fixed output regardless of inputs
       [0.5]
     end)
@@ -74,7 +73,7 @@ defmodule Bardo.TestSupport.MockExamples do
     EnhancedMock.mock(Neuron)
     
     # Set an expectation with specific argument values
-    EnhancedMock.expect(Neuron, :forward, fn(neuron_pid, input_pid, input) -> 
+    EnhancedMock.expect(Neuron, :forward, fn(_neuron_pid, _input_pid, _input) ->
       :ok
     end, args: [self(), self(), [1.0]])
     
@@ -85,7 +84,7 @@ defmodule Bardo.TestSupport.MockExamples do
     # Neuron.forward(self(), self(), [0.5])
     
     # Set an expectation with a validation function
-    EnhancedMock.expect(Neuron, :forward, fn(neuron_pid, input_pid, input) -> 
+    EnhancedMock.expect(Neuron, :forward, fn(_neuron_pid, _input_pid, _input) ->
       :ok
     end, args: fn(_pid1, _pid2, input) -> 
       # Validate that input is a list of numbers between 0 and 1
@@ -134,8 +133,8 @@ defmodule Bardo.TestSupport.MockExamples do
       end
     })
     
-    # Use the DB mock
-    Bardo.DB.write(:obj_1, %{name: "Test"}, :object)
+    # Use the DB mock - store takes table, key, value
+    Bardo.DB.store(:object, :obj_1, %{name: "Test"})
     
     # Read should return the written value
     result = Bardo.DB.read(:obj_1, :object)
@@ -182,7 +181,7 @@ defmodule Bardo.TestSupport.MockExamples do
         {:ok, args}
       end,
       
-      handle_call: fn(request, from, state) ->
+      handle_call: fn(request, _from, state) ->
         case request do
           :get_state -> {:reply, state, state}
           {:set_state, new_state} -> {:reply, :ok, new_state}
@@ -269,23 +268,24 @@ defmodule Bardo.TestSupport.MockExamples do
     end)
     
     # Neuron forwards signals to connected neurons and actuators
-    EnhancedMock.expect(Neuron, :forward, fn(neuron_pid, from_pid, input) ->
+    EnhancedMock.expect(Neuron, :forward, fn(_neuron_pid, _from_pid, input) ->
       # Process input and forward to actuator
       output = Enum.map(input, fn x -> :math.tanh(x) end)
-      Actuator.forward(self(), neuron_pid, output)
+      # Mock the actuator response instead of calling directly
+      send(self(), {:actuator_forward, output})
       :ok
     end)
     
     # Actuator processes outputs and provides feedback
-    EnhancedMock.expect(Actuator, :forward, fn(actuator_pid, from_pid, output) ->
+    EnhancedMock.expect(Actuator, :forward, fn(_actuator_pid, _from_pid, output) ->
       # Process output and send fitness to cortex
       fitness = Enum.sum(output)
-      Cortex.sync(self(), actuator_pid, [fitness], 0)
+      Cortex.sync(self(), self(), [fitness], 0)
       :ok
     end)
     
     # Cortex collects fitness and tells sensors to continue
-    EnhancedMock.expect(Cortex, :sync, fn(cortex_pid, actuator_pid, fitness, e_flag) ->
+    EnhancedMock.expect(Cortex, :sync, fn(_cortex_pid, _actuator_pid, _fitness, _e_flag) ->
       # When all actuators have reported, tell sensors to continue
       Sensor.percept(self(), [1.0, 0.0])
       :ok

@@ -262,7 +262,7 @@ defmodule Bardo.Parameterized.MorphologyTest do
             # Create neuron ID that encodes layer and position
             neuron_id = "hidden_L#{layer}_N#{neuron}"
             # Add to genotype
-            genotype = Genotype.add_neuron(genotype, :hidden, %{id: neuron_id})
+            _genotype = Genotype.add_neuron(genotype, :hidden, %{id: neuron_id})
             neuron_id
           end
         end

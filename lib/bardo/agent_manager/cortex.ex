@@ -172,6 +172,7 @@ defmodule Bardo.AgentManager.Cortex do
   
   @doc """
   Sync the Cortex with an actuator, providing fitness and status.
+  Used in the cycle coordination process.
   """
   @spec sync(pid(), pid(), [float()], 0 | 1 | :goal_reached) :: :ok
   def sync(cortex_pid, actuator_pid, fitness, e_flag) do

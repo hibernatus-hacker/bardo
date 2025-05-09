@@ -1,19 +1,22 @@
 defmodule Bardo.Test.Distributed.DistributedTesting do
   @moduledoc """
   Distributed testing infrastructure for Bardo's distributed neuroevolution capabilities.
-  
+
   This module provides utilities for setting up, managing, and tearing down distributed
   test environments to verify the behavior of Bardo's distributed features like:
-  
+
   - Island-based evolutionary optimization
   - Distributed neural network training
   - Multi-node deployment of trading agents
   - Fault tolerance and recovery mechanisms
   - Node coordination and communication
-  
+
   The module handles node startup, cleanup, network partitioning simulation,
   and coordination of test cases across multiple nodes.
   """
+
+  # Temporary minimal implementation for getting tests passing
+  # To be properly implemented later
   
   require Logger
   

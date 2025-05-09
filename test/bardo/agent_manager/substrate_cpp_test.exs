@@ -16,9 +16,12 @@ defmodule Bardo.AgentManager.SubstrateCPPTest do
     else
       # If Functions module doesn't exist yet, we need to override specific functions
       MockHelper.setup_mocks([Bardo.Functions])
-      :meck.expect(Bardo.Functions, :cartesian, fn
-        [px], [py] -> TestFunctions.cartesian([px], [py])
-        [px], [py], [a, b, c] -> TestFunctions.cartesian([px], [py], [a, b, c])
+      # Define separate expectations for different arities
+      :meck.expect(Bardo.Functions, :cartesian, 2, fn([px], [py]) ->
+        TestFunctions.cartesian([px], [py])
+      end)
+      :meck.expect(Bardo.Functions, :cartesian, 3, fn([px], [py], [a, b, c]) ->
+        TestFunctions.cartesian([px], [py], [a, b, c])
       end)
     end
 
@@ -74,14 +77,16 @@ defmodule Bardo.AgentManager.SubstrateCPPTest do
   end
 
   # Mock cartesian/2
-  :meck.expect(Bardo.Functions, :cartesian, fn(icoord, coord) -> 
+  :meck.expect(Bardo.Functions, :cartesian, 2, fn(icoord, coord) ->
     # Implementation for cartesian/2
     icoord ++ coord
   end)
 
   # Mock cartesian/3
-  :meck.expect(Bardo.Functions, :cartesian, fn(icoord, coord, iow) ->
+  :meck.expect(Bardo.Functions, :cartesian, 3, fn(icoord, coord, iow) ->
     # Implementation for cartesian/3
+    # Extract values from iow which should contain [i, o, w]
+    [i, o, w] = iow
     [i, o, w | icoord ++ coord]
   end)
 

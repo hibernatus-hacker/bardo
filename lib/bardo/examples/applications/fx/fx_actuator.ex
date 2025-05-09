@@ -1,13 +1,43 @@
 defmodule Bardo.Examples.Applications.Fx.FxActuator do
   @moduledoc """
   Actuator implementation for the Forex (FX) trading application.
-  
+
   This module provides actuators that agents can use to interact
   with the Forex trading environment, primarily for executing trades.
   """
-  
+
+  @doc """
+  Creates a trade actuator configuration.
+
+  ## Parameters
+    * `fanin` - The number of decision signal inputs (typically 1)
+    * `threshold` - The threshold for trade decision boundaries
+    * `cortex_id` - The ID of the cortex this actuator is connected to
+    * `scape_name` - The name of the scape this actuator will control
+
+  ## Returns
+    * An actuator specification map
+  """
+  @spec trade(pos_integer(), number(), binary() | atom(), atom()) :: map()
+  def trade(fanin, threshold, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :trade_actuator,
+      type: :trade,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: fanin,
+      fanin_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        threshold: threshold
+      }
+    }
+  end
+
   alias Bardo.AgentManager.Actuator
-  
+
   @behaviour Actuator
   
   @doc """

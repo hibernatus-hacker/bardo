@@ -1,14 +1,105 @@
 defmodule Bardo.Examples.Applications.Fx.FxSensor do
   @moduledoc """
   Sensor implementation for the Forex (FX) trading application.
-  
+
   This module provides sensors that agents can use to perceive
   forex market data, including:
-  
+
   - Price Chart Image (PCI): 2D grid representation of price movement
   - Price List Information (PLI): Normalized vector of recent prices
   - Internals: Current trading position information
   """
+
+  @doc """
+  Creates a Price Chart Image (PCI) sensor configuration.
+
+  ## Parameters
+    * `dimension` - The dimension size of the price chart grid
+    * `timeframe` - The number of time periods to consider
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec pci(pos_integer(), pos_integer(), binary() | atom(), atom()) :: map()
+  def pci(dimension, timeframe, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :pci_sensor,
+      type: :pci,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: dimension * dimension,  # Flattened 2D grid
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        dimension: dimension,
+        timeframe: timeframe
+      }
+    }
+  end
+
+  @doc """
+  Creates a Price List Information (PLI) sensor configuration.
+
+  ## Parameters
+    * `count` - The number of price points to consider
+    * `period` - The time period between price points
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec pli(pos_integer(), pos_integer(), binary() | atom(), atom()) :: map()
+  def pli(count, period, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :pli_sensor,
+      type: :pli,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: count,  # One value per price point
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        count: count,
+        period: period
+      }
+    }
+  end
+
+  @doc """
+  Creates an Internals sensor configuration for tracking account state.
+
+  ## Parameters
+    * `size` - The number of internal account state variables to track
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec internals(pos_integer(), binary() | atom(), atom()) :: map()
+  def internals(size, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :internals_sensor,
+      type: :internals,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: size,  # Typically 5 internal variables: balance, equity, position, P/L, leverage
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        size: size
+      }
+    }
+  end
   
   alias Bardo.AgentManager.Sensor
   

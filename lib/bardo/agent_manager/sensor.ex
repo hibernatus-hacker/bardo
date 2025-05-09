@@ -68,6 +68,8 @@ defmodule Bardo.AgentManager.Sensor do
 
   @doc """
   Sends a perception from the environment to the sensor.
+  
+  For use in tests and simulations.
   """
   @spec percept(pid(), [float()]) :: :ok
   def percept(sensor_pid, percept) do
@@ -149,7 +151,7 @@ defmodule Bardo.AgentManager.Sensor do
         
         # Send the output to each neuron in the fanout
         Enum.each(fanout_pids, fn n_pid -> 
-          send(n_pid, {self(), :forward, output})
+          Bardo.AgentManager.Neuron.forward(n_pid, self(), output)
         end)
         
         loop(exoself_pid, %{state | mod_state: new_mod_state})

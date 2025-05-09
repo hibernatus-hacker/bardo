@@ -214,15 +214,15 @@ defmodule Bardo.Statistical.EvolutionaryStatisticsTest do
     # Add random connections with 50% probability for each possible connection
     possible_connections = [
       # Input to hidden
-      for from_id <- input_ids ++ bias_ids, to_id <- hidden_ids, do: {from_id, to_id},
+      for(from_id <- input_ids ++ bias_ids, to_id <- hidden_ids, do: {from_id, to_id}),
       # Hidden to hidden (forward connections only)
       for i <- 0..(length(hidden_ids)-2), j <- (i+1)..(length(hidden_ids)-1) do
         {Enum.at(hidden_ids, i), Enum.at(hidden_ids, j)}
       end,
       # Hidden to output
-      for from_id <- hidden_ids, to_id <- output_ids, do: {from_id, to_id},
+      for(from_id <- hidden_ids, to_id <- output_ids, do: {from_id, to_id}),
       # Input to output
-      for from_id <- input_ids ++ bias_ids, to_id <- output_ids, do: {from_id, to_id}
+      for(from_id <- input_ids ++ bias_ids, to_id <- output_ids, do: {from_id, to_id})
     ] |> List.flatten()
     
     # Add 50% of possible connections randomly

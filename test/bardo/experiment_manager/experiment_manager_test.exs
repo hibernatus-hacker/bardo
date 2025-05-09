@@ -33,13 +33,29 @@ defmodule Bardo.ExperimentManager.ExperimentManagerTest do
   setup do
     # Define a fitness function for testing
     fitness_fn = fn _solution -> 0.85 end
-    
+
+    # Start DB first - using ETS implementation for tests
+    {:ok, _db_pid} = start_supervised(Bardo.DB)
+
+    # Start the ExperimentManager GenServer process
+    {:ok, _pid} = start_supervised(
+      {ExperimentManager, [name: ExperimentManager]}
+    )
+
+    # Start the MockPopulationManager instead of the real one
+    # Inject the mock through the ExperimentManager
+    original_module = ExperimentManager.population_manager_module()
+    ExperimentManager.set_population_manager_module(__MODULE__.MockPopulationManager)
+
     # For tests that need clean up
     on_exit(fn ->
+      # Restore the original module
+      ExperimentManager.set_population_manager_module(original_module)
+
       # Clean up any test experiments
       :ok
     end)
-    
+
     %{fitness_fn: fitness_fn}
   end
   

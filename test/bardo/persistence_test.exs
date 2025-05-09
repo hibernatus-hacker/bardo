@@ -13,15 +13,17 @@ defmodule Bardo.PersistenceTest do
   
   use ExUnit.Case, async: false
   alias Bardo.Persistence
-  alias Bardo.Models
   alias Bardo.Morphology
   
   # Setup test environment with mock data
   setup do
+    # Start the DB
+    cleanup_fn = Bardo.TestHelper.DBSetup.setup_db()
+
     # Create temporary directory for tests
     tmp_dir = "test_tmp_#{:rand.uniform(1000)}"
     File.mkdir_p!(tmp_dir)
-    
+
     # Define a test model
     test_model = %{
       id: "test_#{:rand.uniform(1000)}",
@@ -34,12 +36,14 @@ defmodule Bardo.PersistenceTest do
         }
       }
     }
-    
+
     on_exit(fn ->
       # Clean up temporary directory
       File.rm_rf!(tmp_dir)
+      # Clean up DB
+      cleanup_fn.()
     end)
-    
+
     %{tmp_dir: tmp_dir, test_model: test_model}
   end
   

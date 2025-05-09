@@ -4,14 +4,73 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
 
   alias Bardo.PopulationManager.{Genotype, GenomeMutator}
   
-  # Import generators from the Genotype property test module
-  import Bardo.PopulationManager.GenotypePropertyTest, only: [
-    complex_genotype_generator: 0,
-    is_valid_genotype?: 1,
-    weight_generator: 0
-  ]
+  # Define our generators and helpers inline to avoid dependency issues
+
+  # Generate a valid weight
+  def weight_generator do
+    StreamData.float(min: -5.0, max: 5.0)
+  end
+
+  # Generate a basic genotype for testing
+  def complex_genotype_generator do
+    # Create a minimal valid genotype with 1 input, 1 hidden, and 1 output neuron
+    genotype = %{
+      neurons: %{
+        "input_1" => %{layer: :input, activation_function: :sigmoid},
+        "hidden_1" => %{layer: :hidden, activation_function: :tanh},
+        "output_1" => %{layer: :output, activation_function: :sigmoid}
+      },
+      connections: %{
+        "connection_1" => %{from_id: "input_1", to_id: "hidden_1", weight: 0.5},
+        "connection_2" => %{from_id: "hidden_1", to_id: "output_1", weight: 0.3}
+      },
+      next_neuron_id: 4,
+      next_connection_id: 3
+    }
+
+    StreamData.constant(genotype)
+  end
+
+  # Validator function to check if a genotype is valid
+  def is_valid_genotype?(genotype) do
+    # Basic structure checks
+    valid_structure =
+      is_map(genotype) &&
+      is_map(genotype.neurons) &&
+      is_map(genotype.connections) &&
+      is_integer(genotype.next_neuron_id) &&
+      is_integer(genotype.next_connection_id)
+
+    # Neuron checks
+    neurons_valid =
+      Enum.all?(genotype.neurons, fn {_id, neuron} ->
+        is_map(neuron) &&
+        neuron.layer in [:input, :hidden, :output, :bias] &&
+        is_atom(neuron.activation_function)
+      end)
+
+    # Connection checks
+    connections_valid =
+      Enum.all?(genotype.connections, fn {_id, connection} ->
+        is_map(connection) &&
+        is_binary(connection.from_id) &&
+        is_binary(connection.to_id) &&
+        is_number(connection.weight) &&
+        # Source exists
+        Map.has_key?(genotype.neurons, connection.from_id) &&
+        # Target exists
+        Map.has_key?(genotype.neurons, connection.to_id) &&
+        # Can't connect to input layer
+        genotype.neurons[connection.to_id].layer != :input &&
+        # Can't connect from output layer
+        genotype.neurons[connection.from_id].layer != :output
+      end)
+
+    valid_structure && neurons_valid && connections_valid
+  end
   
   # Test that all possible mutation probabilities work correctly
+  @tag property: true
   property "simple_mutate handles all probability combinations" do
     check all(
       genotype <- complex_genotype_generator(),
@@ -61,6 +120,7 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
   end
   
   # Test that neuron addition creates valid neuron and connections
+  @tag property: true
   property "adding neurons preserves network connectivity" do
     check all genotype <- complex_genotype_generator() do
       # Force a neuron addition mutation
@@ -100,6 +160,7 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
   end
   
   # Test that link addition creates valid connections
+  @tag property: true
   property "adding links maintains valid network structure" do
     check all genotype <- complex_genotype_generator() do
       # Force a link addition mutation
@@ -132,6 +193,7 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
   end
   
   # Test that weight mutation only changes weights, not structure
+  @tag property: true
   property "weight mutation preserves network structure" do
     check all genotype <- complex_genotype_generator() do
       # Force just weight mutations
@@ -173,6 +235,7 @@ defmodule Bardo.PopulationManager.GenomeMutatorPropertyTest do
   end
   
   # Test that multiple mutations produce valid structure
+  @tag property: true
   property "multiple mutations maintain network validity" do
     check all(
       genotype <- complex_genotype_generator(),

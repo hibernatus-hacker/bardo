@@ -79,6 +79,16 @@ defmodule Bardo.AgentManager.Actuator do
   end
 
   @doc """
+  Send output from neural network to actuator.
+  For use in tests.
+  """
+  @spec forward(pid(), pid(), [float()]) :: :ok
+  def forward(actuator_pid, from_pid, output) do
+    send(actuator_pid, {:forward, from_pid, output})
+    :ok
+  end
+
+  @doc """
   Initializes the actuator process.
   """
   @spec init(pid()) :: no_return()

@@ -731,7 +731,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
     }
     
     # Save the experiment record
-    Models.store(:experiment, coordinator_state.experiment_id, experiment_record)
+    Bardo.Persistence.save(experiment_record, :experiment)
     
     # Update coordinator state
     updated_state = %{coordinator_state | 
@@ -899,7 +899,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DistributedTraining do
   
   # Store coordinator state
   defp store_coordinator_state(state) do
-    Models.store(:distributed_training, state.experiment_id, state)
+    Bardo.Persistence.save(state, :distributed_training)
     :ok
   end
   

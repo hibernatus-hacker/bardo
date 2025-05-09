@@ -1,7 +1,5 @@
 # Bardo
 
-![Bardo Logo](https://via.placeholder.com/150/0A0A0A/FFFFFF?text=Bardo)
-
 Bardo is a powerful and approachable neuroevolution library for Elixir. It provides a complete toolkit for building, training and running neuroevolution systems that learn through evolutionary algorithms.
 
 Built on a foundation of concurrent topology and parameter evolving neural networks (TWEANN), Bardo makes advanced neuroevolution techniques accessible while leveraging Elixir/OTP's built-in concurrency for highly efficient parallel training.
@@ -123,7 +121,7 @@ initial_population = create_initial_population(population_size)
 
 # 2. Evolve the population through many generations
 {best_genotype, best_fitness, generations} = evolve(
-  initial_population, 
+  initial_population,
   max_generations
 )
 
@@ -299,7 +297,7 @@ When running the examples, you might encounter some issues:
 
 7. **Mock Data for Demonstrations**: If an example doesn't have real data available (e.g., if an experiment didn't complete), it will automatically use mock data for visualization to demonstrate how the system works.
 
-**Note on Complex Examples**: 
+**Note on Complex Examples**:
 - All examples are now fully functional with enhanced user feedback and visualization.
 - They showcase different aspects of the neuroevolution framework:
   - XOR: Simple pattern recognition
@@ -357,10 +355,10 @@ The project includes Mix tasks to run the examples, which is the recommended way
    ```bash
    # Run with default settings
    mix run_xor
-   
+
    # Run with custom settings
    mix run_xor --size 50 --generations 20
-   
+
    # Run without progress output
    mix run_xor --quiet
    ```
@@ -370,7 +368,7 @@ The project includes Mix tasks to run the examples, which is the recommended way
    ```bash
    # Run all available examples
    mix run_examples
-   
+
    # Run only the XOR example
    mix run_examples --xor-only
    ```
@@ -380,15 +378,15 @@ The project includes Mix tasks to run the examples, which is the recommended way
    ```bash
    # Run interactive menu to select an example
    mix run_complex_examples
-   
+
    # Run specific example directly
    mix run_complex_examples --example flatland
    mix run_complex_examples --example fx
-   
+
    # Run with custom parameters
    mix run_complex_examples --example flatland --generations 10 --size 5
    mix run_complex_examples --example fx --size 20 --generations 15
-   
+
    # Run without visualization step
    mix run_complex_examples --example fx --no-visualize
    ```
@@ -398,13 +396,13 @@ The project includes Mix tasks to run the examples, which is the recommended way
    ```bash
    # Run with default settings (EURUSD/15m)
    mix run_algo_trading
-   
+
    # Run with specific market and timeframe
    mix run_algo_trading --market forex --symbol GBPUSD --timeframe 60
-   
+
    # Run with optimization parameters
    mix run_algo_trading --generations 200 --population 150
-   
+
    # Run with backtesting options
    mix run_algo_trading --test-period last_month
    ```

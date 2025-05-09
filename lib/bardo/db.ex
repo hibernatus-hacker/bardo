@@ -1,15 +1,15 @@
 defmodule Bardo.DB do
   @moduledoc """
   A simple database for the Bardo system.
-  
+
   Uses ETS (Erlang Term Storage) for in-memory storage.
   """
-  
+
   use GenServer
   require Logger
-  
+
   @table_name :bardo_db
-  
+
   # Client API
 
   @doc """
@@ -42,7 +42,21 @@ defmodule Bardo.DB do
   def delete(table, key) do
     GenServer.call(__MODULE__, {:delete, table, key})
   end
-  
+
+  @doc """
+  List all values for a specific table type.
+
+  ## Parameters
+    * `table` - The table to list values from
+
+  ## Returns
+    * List of values for the specified table
+  """
+  @spec list(atom()) :: [term()] | []
+  def list(table) do
+    GenServer.call(__MODULE__, {:list, table})
+  end
+
   @doc """
   Write a value to the database. This is a direct wrapper for store.
   """
@@ -51,7 +65,7 @@ defmodule Bardo.DB do
     id = Map.get(value.data, :id)
     store(table, id, value)
   end
-  
+
   @doc """
   Read a value from the database. This is a direct wrapper for fetch.
   """
@@ -95,8 +109,43 @@ defmodule Bardo.DB do
   @impl true
   def handle_call({:delete, table, key}, _from, state) do
     encoded_key = encode_key(table, key)
-    :ets.delete(@table_name, encoded_key)
+
+    # First log what we have before deletion
+    before_keys = :ets.tab2list(@table_name) |> Enum.map(fn {k, _} -> k end)
+    Logger.debug("[DB] Before delete, keys: #{inspect(before_keys)}")
+
+    # Perform the deletion
+    result = :ets.delete(@table_name, encoded_key)
+    Logger.debug("[DB] Deleted key #{inspect(encoded_key)}, result: #{inspect(result)}")
+
+    # Verify the deletion
+    after_keys = :ets.tab2list(@table_name) |> Enum.map(fn {k, _} -> k end)
+    Logger.debug("[DB] After delete, keys: #{inspect(after_keys)}")
+
+    # Manually verify the key is no longer present
+    lookup_result = :ets.lookup(@table_name, encoded_key)
+    Logger.debug("[DB] Post-delete lookup for #{inspect(encoded_key)}: #{inspect(lookup_result)}")
+
     {:reply, :ok, state}
+  end
+
+  @impl true
+  def handle_call({:list, table}, _from, state) do
+    # Get all keys for the table
+    all_keys = :ets.tab2list(@table_name)
+    |> Enum.filter(fn {key, _} ->
+      # We prefix keys with table name in encode_key/2
+      # We need to filter keys that start with this prefix
+      key_prefix = "#{table}_"
+      String.starts_with?(key, key_prefix)
+    end)
+
+    # Extract and decode the values
+    values = Enum.map(all_keys, fn {_, encoded_value} ->
+      :erlang.binary_to_term(encoded_value)
+    end)
+
+    {:reply, values, state}
   end
 
   @impl true
@@ -115,6 +164,10 @@ defmodule Bardo.DB do
   # Private Functions
 
   defp encode_key(table, key) do
-    "#{table}_#{:erlang.term_to_binary(key)}"
+    # The key encoding is different between different functions - this is the source of the bug
+    # Logging key encoding to help debug
+    encoded = "#{table}_#{:erlang.term_to_binary(key)}"
+    Logger.debug("[DB] Encoding key - table: #{inspect(table)}, key: #{inspect(key)}, encoded: #{inspect(encoded)}")
+    encoded
   end
 end

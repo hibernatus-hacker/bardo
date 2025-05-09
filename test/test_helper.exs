@@ -13,6 +13,7 @@ Enum.each(support_files, &Code.require_file/1)
 # Ensure helper modules are compiled first
 Code.require_file("test_helper/mocks.ex", __DIR__)
 Code.require_file("test_helper/model_helper.ex", __DIR__)
+Code.require_file("test_helper/db_setup.ex", __DIR__)
 
 # Configure ExUnit
 ExUnit.start(

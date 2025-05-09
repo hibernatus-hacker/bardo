@@ -1,23 +1,23 @@
 defmodule Bardo.PolisMgr do
   @moduledoc """
   Interface module for Polis Manager operations.
-  
+
   This module acts as a facade for the Polis.Manager implementation,
   providing compatibility with the complex examples that expect a root-level
   PolisMgr module.
   """
-  
+
   alias Bardo.Polis.Manager
-  
+
   @doc """
   Sets up the neuroevolutionary platform with the given configuration.
-  
+
   This function configures the environment, sets up populations and scapes
   according to the provided configuration.
-  
+
   ## Parameters
     * `config` - Map containing configuration for experiments, populations, and scapes
-    
+
   ## Returns
     * `{:ok, term}` - If the setup was successful
     * `{:error, reason}` - If there was an error during setup
@@ -26,21 +26,21 @@ defmodule Bardo.PolisMgr do
   def setup(config) do
     # 1. Start Polis.Manager if not already started
     ensure_manager_started()
-    
+
     # 2. Process the configuration to extract and organize components
     processed_config = process_config(config)
-    
+
     # 3. Set up the experiment using Manager.setup
     try do
       Manager.setup(processed_config)
       {:ok, config.id}
     rescue
-      e -> 
+      e ->
         IO.puts("Error setting up polis: \#{inspect(e)}")
         {:error, e}
     end
   end
-  
+
   @doc """
   Prepares the system with the provided tarball.
   """
@@ -49,13 +49,83 @@ defmodule Bardo.PolisMgr do
     ensure_manager_started()
     Manager.prep(tarball)
   end
-  
+
   @doc """
   Stops the polis manager and cleans up resources.
   """
   @spec stop() :: :ok
   def stop do
     Manager.stop()
+  end
+
+  @doc """
+  Stops a specific polis instance.
+
+  ## Parameters
+    * `id` - ID of the polis instance to stop
+
+  ## Returns
+    * `:ok` - If the polis was stopped successfully
+    * `{:error, reason}` - If there was an error stopping the polis
+  """
+  @spec stop(atom() | binary()) :: :ok | {:error, term()}
+  def stop(id) do
+    # Call the Manager implementation
+    ensure_manager_started()
+    Manager.stop_instance(id)
+  end
+
+  @doc """
+  Sends a command to a live polis instance.
+
+  ## Parameters
+    * `id` - ID of the polis instance to send the command to
+    * `command` - The command to send
+
+  ## Returns
+    * `{:ok, result}` - Result of the command
+    * `{:error, reason}` - If there was an error executing the command
+  """
+  @spec send_command(atom() | binary(), atom()) :: {:ok, term()} | {:error, term()}
+  def send_command(id, command) when is_atom(command) do
+    # Call the Manager implementation
+    ensure_manager_started()
+    Manager.send_command(id, command)
+  end
+
+  @doc """
+  Evolves the next generation for a specific polis instance.
+
+  ## Parameters
+    * `id` - ID of the polis instance
+
+  ## Returns
+    * `{:ok, generation_info}` - Info about the evolved generation
+    * `{:error, reason}` - If there was an error evolving the generation
+  """
+  @spec evolve_generation(atom() | binary()) :: {:ok, map()} | {:error, term()}
+  def evolve_generation(id) do
+    # Call the Manager implementation
+    ensure_manager_started()
+    Manager.evolve_generation(id)
+  end
+
+  @doc """
+  Updates the population for a specific polis instance.
+
+  ## Parameters
+    * `id` - ID of the polis instance
+    * `population` - New population data
+
+  ## Returns
+    * `:ok` - If the population was updated successfully
+    * `{:error, reason}` - If there was an error updating the population
+  """
+  @spec update_population(atom() | binary(), map()) :: :ok | {:error, term()}
+  def update_population(id, population) do
+    # Call the Manager implementation
+    ensure_manager_started()
+    Manager.update_population(id, population)
   end
   
   # Private functions

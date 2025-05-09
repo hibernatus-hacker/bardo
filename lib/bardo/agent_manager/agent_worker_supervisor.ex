@@ -10,6 +10,31 @@ defmodule Bardo.AgentManager.AgentWorkerSupervisor do
   alias Bardo.AgentManager.AgentWorker
   
   @doc """
+  Child spec for supervisor.
+  
+  This allows this module to be used directly in a supervision tree.
+  """
+  def child_spec(args) do
+    DynamicSupervisor.child_spec(
+      [
+        strategy: :one_for_one,
+        name: __MODULE__
+      ]
+      |> Keyword.merge(Keyword.get(args, :opts, []))
+    )
+  end
+  
+  @doc """
+  Starts the dynamic supervisor for agent workers.
+  """
+  def start_link(init_arg \\ []) do
+    opts = Keyword.get(init_arg, :opts, [])
+    name = Keyword.get(opts, :name, __MODULE__)
+    
+    DynamicSupervisor.start_link([strategy: :one_for_one, name: name])
+  end
+  
+  @doc """
   Start a new agent worker under the dynamic supervisor.
   
   ## Parameters
@@ -20,7 +45,7 @@ defmodule Bardo.AgentManager.AgentWorkerSupervisor do
     * `{:ok, pid}` - If the worker was started successfully
     * `{:error, reason}` - If there was an error starting the worker
   """
-  @spec start_agent(binary(), map()) :: DynamicSupervisor.on_start_child()
+  @spec start_agent(binary() | atom(), map()) :: DynamicSupervisor.on_start_child()
   def start_agent(agent_id, params) do
     # Ensure agent ID is valid
     agent_id = if is_atom(agent_id), do: agent_id, else: String.to_atom("agent_#{agent_id}")

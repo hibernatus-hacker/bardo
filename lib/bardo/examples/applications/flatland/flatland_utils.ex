@@ -1,9 +1,10 @@
 defmodule Bardo.Examples.Applications.Flatland.FlatlandUtils do
   @moduledoc """
   Utility functions for the Flatland simulation.
-  
-  This module provides utility functions for calculating intersections
-  between rays and objects in the Flatland environment.
+
+  This module provides utility functions for creating and managing the Flatland
+  environment, including world creation, agent placement, and ray-object
+  intersections for sensor calculations.
   """
   
   @doc """
@@ -79,7 +80,7 @@ defmodule Bardo.Examples.Applications.Flatland.FlatlandUtils do
   
   @doc """
   Maps object type to color value.
-  
+
   Returns:
   - -0.5 for plants (green)
   - 0.0 for prey (blue)
@@ -93,6 +94,135 @@ defmodule Bardo.Examples.Applications.Flatland.FlatlandUtils do
       :predator -> 0.5  # Red
       _ -> 1.0          # White (nothing)
     end
+  end
+
+  @doc """
+  Creates a new Flatland world with the specified dimensions.
+
+  ## Parameters
+    * `width` - The width of the world
+    * `height` - The height of the world
+
+  ## Returns
+    * A map representing the Flatland world with plants, predators, and prey
+  """
+  @spec create_world(integer(), integer()) :: map()
+  def create_world(width, height) do
+    %{
+      width: width,
+      height: height,
+      plants: [],
+      predators: [],
+      prey: [],
+      walls: [
+        # Define the world boundaries as walls
+        # Left, right, top, bottom
+        {0, 0, 0, height},
+        {width, 0, width, height},
+        {0, 0, width, 0},
+        {0, height, width, height}
+      ],
+      time: 0
+    }
+  end
+
+  @doc """
+  Places a specified number of plants randomly in the world.
+
+  ## Parameters
+    * `world` - The world map
+    * `plant_count` - The number of plants to place
+
+  ## Returns
+    * The updated world map with plants
+  """
+  @spec place_plants_randomly(map(), integer()) :: map()
+  def place_plants_randomly(world, plant_count) do
+    plants = Enum.map(1..plant_count, fn _ ->
+      # Random position within the world bounds
+      x = :rand.uniform() * (world.width - 10) + 5
+      y = :rand.uniform() * (world.height - 10) + 5
+
+      # Create a plant with random position and energy
+      %{
+        id: "plant_#{:erlang.unique_integer([:positive])}",
+        x: x,
+        y: y,
+        radius: 3.0,
+        energy: 100.0 * :rand.uniform(),
+        type: :plant,
+        age: 0
+      }
+    end)
+
+    %{world | plants: plants}
+  end
+
+  @doc """
+  Places a specified number of predators and prey randomly in the world.
+
+  ## Parameters
+    * `world` - The world map
+    * `predator_count` - The number of predators to place
+    * `prey_count` - The number of prey to place
+
+  ## Returns
+    * The updated world map with predators and prey
+  """
+  @spec place_agents_randomly(map(), integer(), integer()) :: map()
+  def place_agents_randomly(world, predator_count, prey_count) do
+    # Create predators
+    predators = Enum.map(1..predator_count, fn _ ->
+      # Random position within the world bounds
+      x = :rand.uniform() * (world.width - 20) + 10
+      y = :rand.uniform() * (world.height - 20) + 10
+
+      # Random heading (0 to 2π)
+      heading = :rand.uniform() * 2 * :math.pi()
+
+      %{
+        id: "predator_#{:erlang.unique_integer([:positive])}",
+        x: x,
+        y: y,
+        heading: heading,
+        speed: 0.0,
+        radius: 5.0,
+        energy: 500.0,
+        type: :predator,
+        age: 0,
+        vision_range: 100.0,
+        vision_angle: :math.pi() / 2,
+        cortex_id: nil,
+        kills: 0
+      }
+    end)
+
+    # Create prey
+    prey = Enum.map(1..prey_count, fn _ ->
+      # Random position within the world bounds
+      x = :rand.uniform() * (world.width - 20) + 10
+      y = :rand.uniform() * (world.height - 20) + 10
+
+      # Random heading (0 to 2π)
+      heading = :rand.uniform() * 2 * :math.pi()
+
+      %{
+        id: "prey_#{:erlang.unique_integer([:positive])}",
+        x: x,
+        y: y,
+        heading: heading,
+        speed: 0.0,
+        radius: 4.0,
+        energy: 300.0,
+        type: :prey,
+        age: 0,
+        vision_range: 80.0,
+        vision_angle: :math.pi() / 2,
+        cortex_id: nil
+      }
+    end)
+
+    %{world | predators: predators, prey: prey}
   end
   
   @doc """

@@ -612,8 +612,12 @@ defmodule Bardo.Morphology do
   def get_phys_config(%{} = morphology, cortex_id, scape_name) do
     # Create full configurations for each sensor and actuator
     sensors = Enum.map(morphology.sensors, fn sensor ->
-      base = Models.get(:data, sensor)
-      
+      # Handle the case where Models.get(:data, sensor) returns :not_found
+      base = case Models.get(:data, sensor) do
+        :not_found -> sensor  # Use the sensor directly if :data key not found
+        base_data -> base_data
+      end
+
       %{
         id: Map.get(base, :id, Utils.random_string(8)),
         name: Map.get(base, :name, :default_sensor),
@@ -625,10 +629,14 @@ defmodule Bardo.Morphology do
         scape_name: scape_name
       }
     end)
-    
+
     actuators = Enum.map(morphology.actuators, fn actuator ->
-      base = Models.get(:data, actuator)
-      
+      # Handle the case where Models.get(:data, actuator) returns :not_found
+      base = case Models.get(:data, actuator) do
+        :not_found -> actuator  # Use the actuator directly if :data key not found
+        base_data -> base_data
+      end
+
       %{
         id: Map.get(base, :id, Utils.random_string(8)),
         name: Map.get(base, :name, :default_actuator),
@@ -640,7 +648,7 @@ defmodule Bardo.Morphology do
         scape_name: scape_name
       }
     end)
-    
+
     %{
       sensors: sensors,
       actuators: actuators

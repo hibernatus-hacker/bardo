@@ -56,6 +56,35 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   def start_link(args \\ []) do
     GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
+
+  @doc """
+  Start a new experiment run with default parameters.
+  This creates a default experiment and starts it immediately.
+
+  ## Returns
+    * `:ok` - If the run was started successfully
+    * `{:error, reason}` - If there was an error starting the run
+  """
+  @spec run() :: :ok | {:error, term()}
+  def run() do
+    # Create a new experiment with a timestamp-based name
+    name = "Default Experiment #{:erlang.system_time(:millisecond)}"
+
+    case new_experiment(name) do
+      {:ok, experiment_id} ->
+        # Configure with default settings
+        configure(experiment_id, @default_config)
+
+        # Set a basic fitness function (always returns 1.0 for testing)
+        start_evaluation(experiment_id, fn _ -> 1.0 end)
+
+        # Start the experiment
+        start(experiment_id)
+
+      error ->
+        error
+    end
+  end
   
   @doc """
   Create a new experiment with the given name.
@@ -323,8 +352,8 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
       name: name,
       config: @default_config,
       status: :not_started,
-      created_at: DateTime.utc_now(),
-      updated_at: DateTime.utc_now(),
+      created_at: System.os_time(:second),
+      updated_at: System.os_time(:second),
       runs: [],
       results: %{},
       fitness_function: nil
@@ -351,7 +380,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
           {:ok, experiment} ->
             # Merge new config with existing config
             merged_config = Map.merge(experiment.config || @default_config, config)
-            updated_experiment = %{experiment | config: merged_config, updated_at: DateTime.utc_now()}
+            updated_experiment = %{experiment | config: merged_config, updated_at: System.os_time(:second)}
             
             # Save changes
             case Persistence.save(updated_experiment, :experiment) do
@@ -371,7 +400,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
       experiment ->
         # Merge new config with existing config
         merged_config = Map.merge(experiment.config || @default_config, config)
-        updated_experiment = %{experiment | config: merged_config, updated_at: DateTime.utc_now()}
+        updated_experiment = %{experiment | config: merged_config, updated_at: System.os_time(:second)}
         
         # Save changes
         case Persistence.save(updated_experiment, :experiment) do
@@ -394,7 +423,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
         
       experiment ->
         # Store the fitness function
-        updated_experiment = %{experiment | fitness_function: fitness_function, updated_at: DateTime.utc_now()}
+        updated_experiment = %{experiment | fitness_function: fitness_function, updated_at: System.os_time(:second)}
         
         # Don't save the function directly to storage - it's not serializable
         # Instead, we'll save a flag indicating a fitness function is set
@@ -417,30 +446,32 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
     case Map.get(state.experiments, experiment_id) do
       nil ->
         {:reply, {:error, "Experiment not found"}, state}
-        
+
       experiment ->
         if experiment.fitness_function == nil do
           {:reply, {:error, "No fitness function set"}, state}
         else
           # Mark experiment as in progress
-          updated_experiment = %{experiment | 
-            status: :in_progress, 
-            started_at: DateTime.utc_now(),
-            updated_at: DateTime.utc_now()
-          }
-          
+          # Ensure the started_at field exists in the experiment
+          current_time = System.os_time(:second)
+
+          updated_experiment = experiment
+          |> Map.put(:status, :in_progress)
+          |> Map.put(:started_at, current_time)
+          |> Map.put(:updated_at, current_time)
+
           # Save to storage (without the function)
           saveable_experiment = %{updated_experiment | fitness_function: :function_set}
           case Persistence.save(saveable_experiment, :experiment) do
             :ok ->
               # Update state
               updated_state = put_in(state.experiments[experiment_id], updated_experiment)
-              
+
               # Start the first run
               Process.send(self(), {:start_run, experiment_id, 1}, [])
-              
+
               {:reply, :ok, updated_state}
-              
+
             error ->
               {:reply, error, state}
           end
@@ -493,7 +524,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
     case Map.get(state.experiments, experiment_id) do
       nil ->
         {:reply, {:error, "Experiment not found"}, state}
-        
+
       experiment ->
         # Stop any active runs
         Enum.each(state.active_runs, fn {population_id, run} ->
@@ -501,36 +532,43 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             PopulationManagerClient.stop(population_id)
           end
         end)
-        
+
         # Mark experiment as completed or stopped
         status = if experiment.status == :completed, do: :completed, else: :stopped
-        updated_experiment = %{experiment | 
-          status: status,
-          stopped_at: DateTime.utc_now(),
-          updated_at: DateTime.utc_now()
-        }
-        
+        current_time = System.os_time(:second)
+
+        # Ensure updated fields are added properly
+        updated_experiment = experiment
+        |> Map.put(:status, status)
+        |> Map.put(:stopped_at, current_time)
+        |> Map.put(:updated_at, current_time)
+
         # Save to storage
-        saveable_experiment = %{updated_experiment | fitness_function: :function_set}
+        saveable_experiment = if Map.has_key?(updated_experiment, :fitness_function) do
+          %{updated_experiment | fitness_function: :function_set}
+        else
+          updated_experiment
+        end
+
         case Persistence.save(saveable_experiment, :experiment) do
           :ok ->
             # Update state - remove from active if it was stopped
             updated_state = if status == :stopped do
               # Remove any pending runs
-              new_pending = Map.reject(state.pending_runs, fn {_, run} -> 
-                run.experiment_id == experiment_id 
+              new_pending = Map.reject(state.pending_runs, fn {_, run} ->
+                run.experiment_id == experiment_id
               end)
-              
-              %{state | 
+
+              %{state |
                 experiments: Map.put(state.experiments, experiment_id, updated_experiment),
                 pending_runs: new_pending
               }
             else
               %{state | experiments: Map.put(state.experiments, experiment_id, updated_experiment)}
             end
-            
+
             {:reply, :ok, updated_state}
-            
+
           error ->
             {:reply, error, state}
         end
@@ -554,18 +592,37 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
       {:ok, list} -> list
       _ -> []
     end
-    
-    # Transform for the response
-    experiments = Enum.map(all_experiments, fn {id, exp} ->
-      %{
-        id: id,
-        name: Map.get(exp, :name, "Unnamed"),
-        status: Map.get(exp, :status, :unknown),
-        created_at: Map.get(exp, :created_at, nil),
-        updated_at: Map.get(exp, :updated_at, nil)
-      }
+
+    # Transform for the response - ensure we handle both map and tuple format
+    experiments = Enum.map(all_experiments, fn
+      {id, exp} when is_map(exp) ->
+        %{
+          id: id,
+          name: Map.get(exp, :name, "Unnamed"),
+          status: Map.get(exp, :status, :unknown),
+          created_at: Map.get(exp, :created_at, nil),
+          updated_at: Map.get(exp, :updated_at, nil)
+        }
+      exp when is_map(exp) ->
+        # Handle when experiments are returned directly as a map
+        %{
+          id: Map.get(exp, :id, "unknown_id"),
+          name: Map.get(exp, :name, "Unnamed"),
+          status: Map.get(exp, :status, :unknown),
+          created_at: Map.get(exp, :created_at, nil),
+          updated_at: Map.get(exp, :updated_at, nil)
+        }
+      _ ->
+        # Default case for unexpected data format
+        %{
+          id: "unknown_id",
+          name: "Unknown Experiment",
+          status: :unknown,
+          created_at: nil,
+          updated_at: nil
+        }
     end)
-    
+
     {:reply, {:ok, experiments}, state}
   end
   
@@ -614,9 +671,9 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             
             # Update experiment with run results
             updated_runs = [updated_run | experiment.runs]
-            updated_experiment = %{experiment | 
+            updated_experiment = %{experiment |
               runs: updated_runs,
-              updated_at: DateTime.utc_now()
+              updated_at: System.os_time(:second)
             }
             
             # Check if all runs are completed
@@ -624,9 +681,9 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             
             updated_experiment = if run_number >= total_runs do
               # All runs completed, update status and compute statistics
-              %{updated_experiment | 
+              %{updated_experiment |
                 status: :completed,
-                completed_at: DateTime.utc_now(),
+                completed_at: System.os_time(:second),
                 results: compute_experiment_results(updated_runs)
               }
             else
@@ -685,15 +742,16 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
           fitness_function: experiment.fitness_function
         }
         
-        # Start the population
-        case PopulationManagerSupervisor.start_population(population_id, population_config) do
+        # Start the population, use the configured module (allows testing with mocks)
+        population_manager = __MODULE__.population_manager_module()
+        case population_manager.start_population(population_id, population_config) do
           {:ok, _pid} ->
             # Record the active run
             run_info = %{
               experiment_id: experiment_id,
               run_number: run_number,
               population_id: population_id,
-              started_at: DateTime.utc_now(),
+              started_at: System.os_time(:second),
               status: :running
             }
             
@@ -707,7 +765,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             pending_run = %{
               experiment_id: experiment_id,
               run_number: run_number,
-              retry_at: DateTime.utc_now() |> DateTime.add(60, :second)
+              retry_at: System.os_time(:second) + 60
             }
             
             updated_state = %{state | pending_runs: Map.put(state.pending_runs, "#{experiment_id}_#{run_number}", pending_run)}
@@ -913,6 +971,24 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
     :math.sqrt(variance)
   end
   
+  # Helper functions for module configuration and mocks
+
+  @doc """
+  Get the configured population manager module.
+  This is used primarily for testing to allow mocks.
+  """
+  def population_manager_module do
+    Application.get_env(:bardo, :population_manager_module, PopulationManagerSupervisor)
+  end
+
+  @doc """
+  Set the population manager module.
+  This is used primarily for testing to allow mocks.
+  """
+  def set_population_manager_module(module) do
+    Application.put_env(:bardo, :population_manager_module, module)
+  end
+
   # Export experiment results to a file
   defp export_experiment_results(experiment, file_path, format) do
     # Get results based on experiment status

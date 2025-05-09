@@ -1,13 +1,104 @@
 defmodule Bardo.Examples.Applications.Flatland.FlatlandSensor do
   @moduledoc """
   Sensor implementation for the Flatland simulation.
-  
-  This module provides sensors that agents can use to perceive 
-  the Flatland environment, including distance and color sensors.
+
+  This module provides sensors that agents can use to perceive
+  the Flatland environment, including vision, smell, and energy sensors.
   """
-  
+
+  @doc """
+  Creates a vision sensor configuration.
+
+  ## Parameters
+    * `angle_count` - The number of different angles to look in
+    * `range` - The maximum vision range
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec vision(pos_integer(), pos_integer(), binary() | atom(), atom()) :: map()
+  def vision(angle_count, range, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :vision_sensor,
+      type: :vision,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: angle_count,
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        angle_count: angle_count,
+        range: range
+      }
+    }
+  end
+
+  @doc """
+  Creates a smell sensor configuration.
+
+  ## Parameters
+    * `radius` - The radius of the smell detection area
+    * `types` - The number of different object types to detect
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec smell(pos_integer(), pos_integer(), binary() | atom(), atom()) :: map()
+  def smell(radius, types, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :smell_sensor,
+      type: :smell,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: types,
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        radius: radius,
+        types: types
+      }
+    }
+  end
+
+  @doc """
+  Creates an energy sensor configuration.
+
+  ## Parameters
+    * `resolution` - The number of energy level ranges to detect
+    * `cortex_id` - The ID of the cortex this sensor is connected to
+    * `scape_name` - The name of the scape this sensor will read from
+
+  ## Returns
+    * A sensor specification map
+  """
+  @spec energy(pos_integer(), binary() | atom(), atom()) :: map()
+  def energy(resolution, cortex_id, scape_name) do
+    %{
+      id: nil,
+      name: :energy_sensor,
+      type: :energy,
+      cx_id: cortex_id,
+      scape: scape_name,
+      vl: resolution,
+      fanout_ids: [],
+      generation: nil,
+      format: nil,
+      parameters: %{
+        resolution: resolution
+      }
+    }
+  end
+
   alias Bardo.AgentManager.Sensor
-  
+
   @behaviour Sensor
   
   @doc """

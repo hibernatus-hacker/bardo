@@ -108,7 +108,7 @@ defmodule Bardo.AgentManager.Neuron do
   activation function. After fanning out the output signal, the neuron
   again returns to waiting for incoming signals.
   """
-  @spec forward(pid(), pid(), float()) :: :ok
+  @spec forward(pid(), pid(), [float()]) :: :ok
   def forward(pid, i_pid, input) do
     send(pid, {:handle, {:forward, i_pid, input}})
     :ok

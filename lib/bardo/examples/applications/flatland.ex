@@ -165,12 +165,12 @@ defmodule Bardo.Examples.Applications.Flatland do
             IO.puts("Retrieving best predator and prey genotypes...")
             
             # Get the best genotypes or create mock ones if not found
-            predator_genotype = case fetch_best_genotype(predator_pop_id) do
+            _predator_genotype = case fetch_best_genotype(predator_pop_id) do
               {:ok, genotype} -> genotype
               _ -> create_mock_genotype(:predator)
             end
             
-            prey_genotype = case fetch_best_genotype(prey_pop_id) do
+            _prey_genotype = case fetch_best_genotype(prey_pop_id) do
               {:ok, genotype} -> genotype
               _ -> create_mock_genotype(:prey)
             end

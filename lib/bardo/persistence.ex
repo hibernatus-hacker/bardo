@@ -128,7 +128,10 @@ defmodule Bardo.Persistence do
   """
   @spec delete(atom(), binary()) :: :ok | {:error, term()}
   def delete(type, id) do
-    Models.delete(id, type)
+    # Bug fix: The Models.delete function has the parameters in the wrong order
+    # compared to how Models.exists? calls DB.fetch
+    # We should call DB.delete directly with the correct parameter order
+    Bardo.DB.delete(type, id)
   end
   
   @doc """

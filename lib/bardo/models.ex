@@ -362,14 +362,22 @@ defmodule Bardo.Models do
   def exists?(id, type) do
     try do
       db_adapter = get_db_adapter()
-      
+
       if function_exported?(db_adapter, :exists?, 2) do
         apply(db_adapter, :exists?, [id, type])
       else
-        DB.fetch(type, id) != nil
+        # Make sure we always use the same parameter order as the DB module expects
+        result = DB.fetch(type, id)
+        # Add debug logging to help identify the issue
+        require Logger
+        Logger.debug("[Models.exists?] type=#{inspect(type)}, id=#{inspect(id)}, result=#{inspect(result != nil)}")
+        result != nil
       end
     rescue
-      _ -> false
+      e ->
+        require Logger
+        Logger.error("[Models.exists?] Error checking if model exists: #{inspect(e)}")
+        false
     end
   end
   

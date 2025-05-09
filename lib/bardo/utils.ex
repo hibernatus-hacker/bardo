@@ -5,7 +5,7 @@ defmodule Bardo.Utils do
 
   @doc """
   Seed PRNG for the current process.
-  
+
   Uses exs1024s (not cryptographically strong, but fast).
   """
   @spec random_seed() :: {map(), any()}
@@ -15,6 +15,28 @@ defmodule Bardo.Utils do
     # <<i1::32-unsigned-integer, i2::32-unsigned-integer, i3::32-unsigned-integer>> = :crypto.strong_rand_bytes(12)
     # :rand.seed(:exsplus, {i1, i2, i3})
     :rand.seed(:exs1024s)
+  end
+
+  @doc """
+  Generate a random string of the specified length.
+
+  ## Parameters
+    * `length` - The length of the random string to generate
+
+  ## Returns
+    * A random string of the specified length
+  """
+  @spec random_string(non_neg_integer()) :: String.t()
+  def random_string(length) when is_integer(length) and length > 0 do
+    # Make sure PRNG is seeded
+    :rand.seed(:exs1024s)
+
+    # Generate random string from alphanumeric characters
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    1..length
+    |> Enum.map(fn _ -> String.at(chars, :rand.uniform(String.length(chars)) - 1) end)
+    |> Enum.join()
   end
   
   @doc """

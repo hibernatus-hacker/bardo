@@ -1,9 +1,10 @@
 defmodule Bardo.Test.Distributed.DistributedTradingTest do
   use ExUnit.Case
-  
+
   alias Bardo.Test.Distributed.DistributedTesting
-  
+
   @moduletag :distributed
+  @moduletag :skip  # Skip these tests by default, as they require distributed setup
   @moduletag timeout: 120_000  # 2 minutes timeout for trading tests
   
   setup do

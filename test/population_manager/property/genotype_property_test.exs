@@ -179,6 +179,7 @@ defmodule Bardo.PopulationManager.GenotypePropertyTest do
   end
   
   # Test that the new function creates a valid genotype
+  @tag property: true
   property "new/0 creates a valid empty genotype" do
     genotype = Genotype.new()
     
@@ -192,6 +193,7 @@ defmodule Bardo.PopulationManager.GenotypePropertyTest do
   end
   
   # Test that add_neuron maintains genotype validity
+  @tag property: true
   property "add_neuron/3 creates valid neurons" do
     check all(
       layer <- layer_generator(),
@@ -210,6 +212,7 @@ defmodule Bardo.PopulationManager.GenotypePropertyTest do
   end
   
   # Test that add_connection maintains genotype validity
+  @tag property: true
   property "add_connection/4 creates valid connections" do
     check all genotype <- minimal_genotype_generator() do
       # Pick random input and output neurons
@@ -238,6 +241,7 @@ defmodule Bardo.PopulationManager.GenotypePropertyTest do
   end
   
   # Test that mutations maintain genotype validity
+  @tag property: true
   property "simple_mutate/2 produces valid genotypes" do
     check all genotype <- complex_genotype_generator() do
       opts = %{
@@ -281,6 +285,7 @@ defmodule Bardo.PopulationManager.GenotypePropertyTest do
   end
   
   # Test that get_layer_neuron_ids/2 returns correct neurons
+  @tag property: true
   property "get_layer_neuron_ids/2 returns correct neurons for each layer" do
     check all genotype <- complex_genotype_generator() do
       input_ids = Genotype.get_layer_neuron_ids(genotype, :input)

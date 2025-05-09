@@ -79,11 +79,35 @@ defmodule Bardo.PopulationManager.PopulationManager do
   def start(node) do
     pmp = AppConfig.get_env(:pmp)
     constraints = AppConfig.get_env(:constraints)
-    
+
     pid = Node.spawn_link(node, __MODULE__, :init, [{pmp, constraints}])
     Process.register(pid, :population_mgr)
-    
+
     pid
+  end
+
+  @doc """
+  Starts a linked GenServer process for the PopulationManager.
+  This function is used by supervision trees.
+  """
+  def start_link(args \\ []) do
+    # Extract options
+    opts = Keyword.get(args, :opts, [])
+    name = Keyword.get(opts, :name, __MODULE__)
+    
+    # Start the GenServer
+    GenServer.start_link(__MODULE__, args, name: name)
+  end
+
+  # Child spec implementation for supervisor
+  def child_spec(args) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, [args]},
+      type: :worker,
+      restart: :permanent,
+      shutdown: 500
+    }
   end
 
   @doc """
@@ -171,6 +195,54 @@ defmodule Bardo.PopulationManager.PopulationManager do
     send(self(), {:handle, {:init_phase2, pmp}})
     loop()
   end
+  
+  @doc false
+  def init(args) do
+    # Initialize for GenServer - this is used when started via Supervisor
+    Utils.random_seed()
+    Process.flag(:trap_exit, true)
+    
+    # Create ETS tables needed for the population manager if they don't exist
+    initialize_ets_tables()
+    
+    # Return initial state
+    {:ok, %State{
+      op_modes: [:normal],  # Default mode
+      evo_alg: :generational,  # Default evolution algorithm
+      population_id: nil,  # Will be set later
+      step_size: 500,  # Default step size
+      selection_algorithm: :competition,  # Default selection algorithm
+      survival_percentage: 0.5,  # Default survival percentage
+      specie_size_limit: 100,  # Default specie size limit
+      init_specie_size: 10,  # Default initial specie size
+      generation_limit: 100,  # Default generation limit
+      evaluations_limit: 5000,  # Default evaluations limit
+      fitness_goal: :inf  # Default fitness goal
+    }}
+  end
+  
+  # Initialize ETS tables needed for the population manager
+  defp initialize_ets_tables do
+    # Create :active_agents table if it doesn't exist
+    if :ets.whereis(:active_agents) == :undefined do
+      :ets.new(:active_agents, [:set, :public, :named_table])
+    end
+    
+    # Create :inactive_agents table if it doesn't exist
+    if :ets.whereis(:inactive_agents) == :undefined do
+      :ets.new(:inactive_agents, [:set, :public, :named_table])
+    end
+    
+    # Create :population_status table if it doesn't exist
+    if :ets.whereis(:population_status) == :undefined do
+      :ets.new(:population_status, [:set, :public, :named_table])
+    end
+    
+    # Create :evaluations table if it doesn't exist
+    if :ets.whereis(:evaluations) == :undefined do
+      :ets.new(:evaluations, [:set, :public, :named_table])
+    end
+  end
 
   @doc false
   def loop do
@@ -212,25 +284,149 @@ defmodule Bardo.PopulationManager.PopulationManager do
         terminate(:normal, state)
     end
   end
-
+  
+  # GenServer Callbacks
+  
+  @doc false
+  def handle_call(:status, _from, state) do
+    # Return current status
+    {:reply, {:ok, state}, state}
+  end
+  
+  @doc false
+  def handle_call({:start_population, population_id, config}, _from, state) do
+    # Initialize ETS tables if not already done
+    initialize_ets_tables()
+    
+    # Create constraints from config
+    constraint = %{
+      morphology: Map.get(config, :morphology, :xor),
+      population_evo_alg_f: Map.get(config, :evo_alg, :generational),
+      population_selection_f: Map.get(config, :selection_algorithm, :competition)
+    }
+    
+    # Create PMP from config
+    pmp = %{
+      population_id: population_id,
+      init_specie_size: Map.get(config, :population_size, 10),
+      survival_percentage: Map.get(config, :survival_percentage, 0.5),
+      specie_size_limit: Map.get(config, :specie_size_limit, 100),
+      generation_limit: Map.get(config, :generation_limit, 100),
+      evaluations_limit: Map.get(config, :evaluations_limit, 5000),
+      fitness_goal: Map.get(config, :fitness_goal, :inf),
+      op_modes: Map.get(config, :op_modes, [:normal])
+    }
+    
+    # Initialize population
+    init_population(population_id, pmp.init_specie_size, [constraint])
+    
+    # Update state
+    new_state = %{state | 
+      population_id: population_id,
+      op_modes: pmp.op_modes,
+      generation_limit: pmp.generation_limit,
+      evaluations_limit: pmp.evaluations_limit,
+      fitness_goal: pmp.fitness_goal,
+      init_specie_size: pmp.init_specie_size,
+      specie_size_limit: pmp.specie_size_limit,
+      survival_percentage: pmp.survival_percentage,
+      evo_alg: constraint.population_evo_alg_f,
+      selection_algorithm: constraint.population_selection_f
+    }
+    
+    # Start agents
+    summon_agents()
+    
+    # Create population status
+    ps = Models.population_status(%{
+      op_tag: :continue,
+      pop_gen: 0,
+      eval_acc: 0,
+      cycle_acc: 0,
+      time_acc: 0,
+      tot_evaluations: 0,
+      goal_reached: false
+    })
+    
+    # Insert population status
+    :ets.insert(:population_status, {population_id, ps})
+    
+    # Initialize evaluations for each specie
+    p = DB.read(population_id, :population)
+    for specie_id <- Models.get(p, :specie_ids) do
+      :ets.insert(:evaluations, {specie_id, 0})
+    end
+    
+    {:reply, {:ok, population_id}, new_state}
+  end
+  
+  @doc false
+  def handle_cast(:stop, state) do
+    # Stop all agents
+    :ets.foldl(fn {k, v, _}, :ok -> stop_agent({v, k}) end, :ok, :active_agents)
+    
+    # Return :stop to terminate the GenServer
+    {:stop, :normal, state}
+  end
+  
+  @doc false
+  def handle_info({:EXIT, _pid, :normal}, state) do
+    # Ignore normal exits
+    {:noreply, state}
+  end
+  
+  @doc false
+  def handle_info({:EXIT, pid, reason}, state) do
+    # Log abnormal exits
+    LogR.debug({:population_mgr, :msg, :ok, "exit received", [pid, reason]})
+    
+    # Return :stop to terminate the GenServer
+    {:stop, reason, state}
+  end
+  
+  @doc false
+  def handle_info(:stop, state) do
+    # Stop all agents
+    :ets.foldl(fn {k, v, _}, :ok -> stop_agent({v, k}) end, :ok, :active_agents)
+    
+    # Return :stop to terminate the GenServer
+    {:stop, :normal, state}
+  end
+  
+  @doc false
+  def handle_info(_info, state) do
+    # Ignore unexpected messages
+    {:noreply, state}
+  end
+  
   @doc false
   def terminate(reason, state) do
-    population_id = state.population_id
-    ps = :ets.lookup_element(:population_status, population_id, 2)
-    tot_evaluations = Models.get(ps, :tot_evaluations)
+    # For GenServer termination
+    if is_map(state) && Map.has_key?(state, :population_id) && state.population_id do
+      # Regular termination with population
+      population_id = state.population_id
+      
+      # Only gather stats if we have a valid population
+      if population_id do
+        ps = :ets.lookup_element(:population_status, population_id, 2)
+        tot_evaluations = Models.get(ps, :tot_evaluations)
+        
+        gather_stats(population_id, 0, state)
+        
+        p = DB.read(population_id, :population)
+        t = Models.get(p, :trace)
+        ut = Models.set(t, [{:tot_evaluations, tot_evaluations}])
+        up = Models.set(p, [{:trace, ut}])
+        
+        DB.write(up, :population)
+        
+        # Notify experiment manager
+        ExperimentManagerClient.run_complete(population_id, ut)
+      end
+    end
     
-    gather_stats(population_id, 0, state)
-    
-    p = DB.read(population_id, :population)
-    t = Models.get(p, :trace)
-    ut = Models.set(t, [{:tot_evaluations, tot_evaluations}])
-    up = Models.set(p, [{:trace, ut}])
-    
-    DB.write(up, :population)
     LogR.info({:population_mgr, :status, :ok, "population_mgr terminated", [reason]})
-    
-    ExperimentManagerClient.run_complete(population_id, ut)
-    exit(reason)
+    :ok
   end
 
   # Handler functions
