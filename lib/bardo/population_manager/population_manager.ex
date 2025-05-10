@@ -197,7 +197,7 @@ defmodule Bardo.PopulationManager.PopulationManager do
   end
   
   @doc false
-  def init(args) do
+  def init(_args) do
     # Initialize for GenServer - this is used when started via Supervisor
     Utils.random_seed()
     Process.flag(:trap_exit, true)

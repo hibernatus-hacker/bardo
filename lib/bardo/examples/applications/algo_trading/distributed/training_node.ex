@@ -115,7 +115,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Distributed.TrainingNode do
     if config.coordinator_node do
       schedule_heartbeat(config.heartbeat_interval)
       spawn(fn -> connect_to_coordinator(config.coordinator_node) end)
+      # Update state with coordinator info
       state = %{state | coordinator: config.coordinator_node}
+      state
     end
     
     # Initialize EPMD if not already started
@@ -335,7 +337,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Distributed.TrainingNode do
   end
   
   # Process a training job
-  defp process_training_job(job_id, job_config, state) do
+  defp process_training_job(job_id, job_config, _state) do
     Logger.info("Processing training job #{job_id}")
     
     # Run the training algorithm based on job configuration
@@ -409,7 +411,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Distributed.TrainingNode do
   end
   
   # Store a trained agent
-  defp store_trained_agent(job_id, agent_result, job_config) do
+  defp store_trained_agent(job_id, agent_result, _job_config) do
     # Generate a unique agent ID
     agent_id = "agent_#{job_id}_#{:erlang.system_time(:millisecond)}"
     

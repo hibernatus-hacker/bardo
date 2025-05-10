@@ -25,7 +25,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
   # Default HTTP headers
   @default_headers [
     {"Content-Type", "application/json"},
-    {"Accept-Encoding", "gzip, deflate"},
     {"Connection", "keep-alive"},
     {"Accept", "application/json"}
   ]
@@ -113,7 +112,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.get(url, state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Jason.decode!(body)}
+        decoded_body = decode_response_body(body)
+        {:ok, decoded_body}
         
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         Logger.error("[OANDA] Error getting account info: #{status_code}, #{body}")
@@ -143,10 +143,12 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.get(url, state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, 
-          Jason.decode!(body)
+        decoded_body = decode_response_body(body)
+
+        {:ok,
+          decoded_body
           |> Map.get("instruments", [])
-          |> Enum.map(fn instrument -> 
+          |> Enum.map(fn instrument ->
             %{
               name: Map.get(instrument, "name"),
               type: Map.get(instrument, "type"),
@@ -231,9 +233,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.get(url, state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        response = Jason.decode!(body)
-        
-        candles = Enum.map(response["candles"], fn candle ->
+        decoded_body = decode_response_body(body)
+
+        candles = Enum.map(decoded_body["candles"], fn candle ->
           %{
             time: candle["time"],
             open: get_float(candle["mid"], "o"),
@@ -244,10 +246,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
             complete: candle["complete"]
           }
         end)
-        
+
         {:ok, %{
-          instrument: response["instrument"],
-          granularity: response["granularity"],
+          instrument: decoded_body["instrument"],
+          granularity: decoded_body["granularity"],
           candles: candles
         }}
         
@@ -376,11 +378,11 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.get(url, state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        response = Jason.decode!(body)
-        
-        prices = Enum.reduce(response["prices"], %{}, fn price, acc ->
+        decoded_body = decode_response_body(body)
+
+        prices = Enum.reduce(decoded_body["prices"], %{}, fn price, acc ->
           instrument = price["instrument"]
-          
+
           quote_data = %{
             instrument: instrument,
             time: price["time"],
@@ -389,10 +391,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
             spread: get_float(price, "closeoutAsk") - get_float(price, "closeoutBid"),
             status: price["status"]
           }
-          
+
           Map.put(acc, instrument, quote_data)
         end)
-        
+
         {:ok, prices}
         
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
@@ -488,7 +490,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.post(url, Jason.encode!(payload), state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} when status_code in 200..201 ->
-        {:ok, Jason.decode!(body)}
+        decoded_body = decode_response_body(body)
+        {:ok, decoded_body}
         
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         Logger.error("[OANDA] Error executing order: #{status_code}, #{body}")
@@ -518,9 +521,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.get(url, state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        response = Jason.decode!(body)
-        
-        positions = Enum.map(response["positions"], fn position ->
+        decoded_body = decode_response_body(body)
+
+        positions = Enum.map(decoded_body["positions"], fn position ->
           %{
             instrument: position["instrument"],
             long_units: Map.get(position["long"], "units", "0") |> String.to_integer(),
@@ -531,7 +534,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
             unrealized_pl: get_float(position, "unrealizedPL")
           }
         end)
-        
+
         {:ok, positions}
         
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
@@ -585,7 +588,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
     
     case HTTPoison.put(url, Jason.encode!(payload), state.headers, state.opts) do
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} when status_code in 200..201 ->
-        {:ok, Jason.decode!(body)}
+        decoded_body = decode_response_body(body)
+        {:ok, decoded_body}
         
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         Logger.error("[OANDA] Error closing position: #{status_code}, #{body}")
@@ -598,31 +602,73 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
   end
   
   # Private helper functions
-  
+
+  # Helper function to decode gzipped JSON responses
+  defp decode_response_body(body) do
+    case body do
+      <<31, 139, _::binary>> -> # gzip magic bytes
+        :zlib.gunzip(body) |> Jason.decode!()
+      _ ->
+        Jason.decode!(body)
+    end
+  end
+
   # Download data in chunks
   defp download_data_chunks(state, instrument, timeframe, from, to, chunk_size) do
     Logger.info("[OANDA] Starting chunk download from #{from} to #{to}")
     
-    # Helper function to recursively get all chunks
-    get_all_chunks = fn
-      _get_chunks, _state, _instrument, _timeframe, _from, to, _chunk_size, acc, current_from when current_from >= to ->
-        # We've downloaded all chunks
+    # Maximum number of chunks to download as a safety measure
+    max_requests = 100
+    
+    # Download data with recursion limit
+    download_with_limit(state, instrument, timeframe, from, to, chunk_size, [], 0, max_requests)
+  end
+  
+  # Helper function to download data with request limit
+  defp download_with_limit(state, instrument, timeframe, from, to, chunk_size, acc, request_count, max_requests) do
+    # Safety check: Stop if we exceed max requests
+    if request_count >= max_requests do
+      Logger.warn("[OANDA] Maximum request limit (#{max_requests}) reached, stopping download")
+      {:ok, List.flatten(acc)}
+    else
+      # Safety check: Stop if from >= to
+      if from >= to do
+        Logger.info("[OANDA] End date reached, download complete")
         {:ok, List.flatten(acc)}
-        
-      get_chunks, state, instrument, timeframe, _from, to, chunk_size, acc, current_from ->
+      else
         # Get a chunk of data
+        Logger.info("[OANDA] Downloading chunk #{request_count + 1}/#{max_requests} from #{from}")
+        
         case get_historical_data(state, instrument, timeframe, %{
-          from: current_from,
+          from: from,
           count: chunk_size
         }) do
+          {:ok, %{candles: []}} ->
+            # No more candles available
+            Logger.info("[OANDA] No more candles available, download complete")
+            {:ok, List.flatten(acc)}
+            
           {:ok, %{candles: candles}} ->
-            # Break if no more candles
-            if length(candles) == 0 do
+            # Get the time of the last candle for next batch
+            last_candle = List.last(candles)
+            
+            # Log progress
+            Logger.info("[OANDA] Downloaded chunk with #{length(candles)} candles, next from: #{last_candle.time}")
+            
+            # Detect when we're getting the same data repeatedly
+            is_repeating = if length(candles) == 1 && length(acc) > 0 do
+              # Check if this single candle matches the last candle from previous request
+              prev_candles = hd(acc)
+              prev_last = List.last(prev_candles)
+              prev_last.time == last_candle.time
+            else
+              false
+            end
+            
+            if is_repeating do
+              Logger.info("[OANDA] Detected repeating data point, download complete")
               {:ok, List.flatten(acc)}
             else
-              # Get the time of the last candle for next batch
-              last_candle = List.last(candles)
-              
               # Calculate new from time (add 1 second to avoid duplicates)
               next_from = case DateTime.from_iso8601(last_candle.time) do
                 {:ok, dt, _} ->
@@ -634,20 +680,26 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
                   to
               end
               
-              Logger.info("[OANDA] Downloaded chunk with #{length(candles)} candles, next from: #{next_from}")
-              
-              # Download next chunk
-              get_chunks.(get_chunks, state, instrument, timeframe, from, to, chunk_size, [candles | acc], next_from)
+              # Continue downloading
+              download_with_limit(
+                state, 
+                instrument, 
+                timeframe, 
+                next_from, 
+                to, 
+                chunk_size, 
+                [candles | acc],
+                request_count + 1,
+                max_requests
+              )
             end
             
           {:error, reason} ->
             Logger.error("[OANDA] Error downloading chunk: #{inspect(reason)}")
             {:error, reason}
         end
+      end
     end
-    
-    # Start the recursive download
-    get_all_chunks.(get_all_chunks, state, instrument, timeframe, from, to, chunk_size, [], from)
   end
   
   # Helper to get a float value from a map with a default

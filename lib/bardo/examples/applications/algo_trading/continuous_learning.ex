@@ -10,7 +10,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.ContinuousLearning do
   
   require Logger
   alias Bardo.Examples.Applications.AlgoTrading.AgentSerializer
-  alias Bardo.PopulationManager.GenomeMutator
   
   @doc """
   Initialize continuous learning for an agent.

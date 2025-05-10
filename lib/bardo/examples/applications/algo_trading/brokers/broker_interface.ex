@@ -9,13 +9,37 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
   # Private scape not used directly
   require Logger
   
+  # Core callbacks
+  @callback init(map()) :: {:ok, map()} | {:error, any()}
+  @callback get_account_info(map()) :: {:ok, map()} | {:error, any()}
+
+  # Instrument and market data callbacks
+  @callback get_instruments(map()) :: {:ok, list(map())} | {:error, any()}
+  @callback get_historical_data(map(), String.t(), String.t(), map()) :: {:ok, map()} | {:error, any()}
+  @callback get_quotes(map(), String.t() | list(String.t())) :: {:ok, map()} | {:error, any()}
+
+  # Trading callbacks
+  @callback execute_order(map(), map()) :: {:ok, map()} | {:error, any()}
+  @callback get_positions(map()) :: {:ok, list(map())} | {:error, any()}
+  @callback close_position(map(), String.t(), map()) :: {:ok, map()} | {:error, any()}
+
+  # Legacy callbacks (for backward compatibility)
   @callback connect(map()) :: {:ok, map()} | {:error, any()}
   @callback disconnect(map()) :: :ok | {:error, any()}
-  @callback get_account_info(map()) :: {:ok, map()} | {:error, any()}
   @callback get_market_data(map(), String.t(), integer(), map()) :: {:ok, list(map())} | {:error, any()}
   @callback place_order(map(), String.t(), integer(), float(), map()) :: {:ok, map()} | {:error, any()}
   @callback close_order(map(), String.t()) :: {:ok, map()} | {:error, any()}
   @callback modify_order(map(), String.t(), map()) :: {:ok, map()} | {:error, any()}
+
+  # Define optional callbacks to make them not required
+  @optional_callbacks [
+    connect: 1,
+    disconnect: 1,
+    get_market_data: 4,
+    place_order: 5,
+    close_order: 2,
+    modify_order: 3
+  ]
   
   @doc """
   Convert standard order direction to broker-specific format.
@@ -35,19 +59,19 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface do
     case broker_type do
       :metatrader ->
         # MT4/MT5 uses 0 for buy, 1 for sell
-        if direction > 0, do: 0, else: 1
+        (if direction > 0, do: 0, else: 1)
         
       :oanda ->
         # Oanda uses "BUY"/"SELL" strings
-        if direction > 0, do: "BUY", else: "SELL"
+        (if direction > 0, do: "BUY", else: "SELL")
         
       :binance ->
         # Binance uses "BUY"/"SELL" strings
-        if direction > 0, do: "BUY", else: "SELL"
+        (if direction > 0, do: "BUY", else: "SELL")
         
       _ ->
         # Default format
-        if direction > 0, do: :buy, else: :sell
+        (if direction > 0, do: :buy, else: :sell)
     end
   end
   

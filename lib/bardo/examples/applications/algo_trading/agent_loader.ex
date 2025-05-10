@@ -182,11 +182,13 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentLoader do
       agent_ids = Enum.map(results, fn {:ok, agent_id} -> agent_id end)
       
       # Store pool information (could be persisted to database)
-      pool_info = %{
+      _pool_info = %{
         id: pool_id,
         agents: agent_ids,
         created_at: DateTime.utc_now() |> DateTime.to_iso8601()
       }
+
+      # TODO: Implement database persistence for pool information
       
       Logger.info("Agent pool #{pool_id} created with #{length(agent_ids)} agents")
       {:ok, pool_id}
@@ -237,6 +239,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentLoader do
   # Generate an agent ID from a file path
   defp generate_agent_id(file_path) do
     basename = Path.basename(file_path, ".json")
-    "agent_#{basename}_#{System.system_time(:second)}"
+    timestamp = System.system_time(:second)
+    uuid_part = UUID.uuid4(:hex) |> String.slice(0, 8)
+    "agent_#{basename}_#{timestamp}_#{uuid_part}"
   end
 end

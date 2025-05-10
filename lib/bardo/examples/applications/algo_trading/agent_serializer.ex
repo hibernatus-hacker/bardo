@@ -9,7 +9,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentSerializer do
   """
   
   require Logger
-  alias Bardo.Examples.Applications.AlgoTrading.Morphology
   alias Bardo.Models
   
   @current_schema_version "1.0"

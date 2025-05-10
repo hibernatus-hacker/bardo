@@ -36,6 +36,10 @@ defmodule Bardo.MixProject do
     [
       # JSON parsing
       {:jason, "~> 1.4"},
+      # HTTP client for API requests
+      {:httpoison, "~> 2.0"},
+      # UUID generation
+      {:uuid, "~> 1.1"},
       # Ecto and PostgreSQL
       {:ecto_sql, "~> 3.9"},
       {:postgrex, "~> 0.16.0"},

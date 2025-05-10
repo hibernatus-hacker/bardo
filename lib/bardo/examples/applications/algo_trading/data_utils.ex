@@ -181,9 +181,12 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DataUtils do
       all_candles = Enum.flat_map(data_results, fn {:ok, candles} -> candles end)
       
       # Process candles
-      processed_candles = all_candles
-                          |> (if remove_duplicates, do: remove_duplicate_candles(&1), else: &1)
-                          |> (if sort, do: sort_candles_by_time(&1), else: &1)
+      processed_candles = if remove_duplicates do
+        sorted_candles = if sort, do: sort_candles_by_time(all_candles), else: all_candles
+        remove_duplicate_candles(sorted_candles)
+      else
+        if sort, do: sort_candles_by_time(all_candles), else: all_candles
+      end
       
       # Save processed data
       save_result = case format do
