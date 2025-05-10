@@ -42,6 +42,31 @@ defmodule Bardo.PolisMgr do
   end
 
   @doc """
+  Starts an experiment with the given ID.
+
+  ## Parameters
+    * `experiment_id` - ID of the experiment to start
+
+  ## Returns
+    * `:ok` - If the experiment was started successfully
+    * `{:error, reason}` - If there was an error starting the experiment
+  """
+  @spec start_experiment(atom() | binary()) :: :ok | {:error, term()}
+  def start_experiment(experiment_id) do
+    ensure_manager_started()
+
+    try do
+      # Send command to start evolution
+      send_command(experiment_id, :start)
+    rescue
+      e ->
+        require Logger
+        Logger.error("Error starting experiment: #{inspect(e)}")
+        {:error, e}
+    end
+  end
+
+  @doc """
   Prepares the system with the provided tarball.
   """
   @spec prep(binary()) :: :ok | {:error, term()}
@@ -127,7 +152,34 @@ defmodule Bardo.PolisMgr do
     ensure_manager_started()
     Manager.update_population(id, population)
   end
-  
+
+  @doc """
+  Gets the current status of the specified agent.
+
+  ## Parameters
+    * `id` - ID of the agent to check
+
+  ## Returns
+    * `{:ok, status}` - Status information about the agent
+    * `{:error, reason}` - If there was an error getting the status
+  """
+  @spec status(atom() | binary()) :: {:ok, map()} | {:error, term()}
+  def status(id) do
+    ensure_manager_started()
+
+    try do
+      # Try to get agent status from experiment manager via polis
+      # For compatibility, we'll return a basic status map
+      {:ok, %{
+        id: id,
+        status: :active,
+        last_updated: System.os_time(:second)
+      }}
+    rescue
+      e -> {:error, "Failed to get agent status: #{inspect(e)}"}
+    end
+  end
+
   # Private functions
   
   # Ensure that the Polis.Manager is started

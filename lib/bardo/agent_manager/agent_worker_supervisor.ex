@@ -45,7 +45,7 @@ defmodule Bardo.AgentManager.AgentWorkerSupervisor do
     * `{:ok, pid}` - If the worker was started successfully
     * `{:error, reason}` - If there was an error starting the worker
   """
-  @spec start_agent(binary() | atom(), map()) :: {:ok, pid()} | {:error, term()}
+  @spec start_agent(binary() | atom(), map()) :: DynamicSupervisor.on_start_child()
   def start_agent(agent_id, params) do
     # Ensure agent ID is valid
     agent_id = if is_atom(agent_id), do: agent_id, else: String.to_atom("agent_#{agent_id}")

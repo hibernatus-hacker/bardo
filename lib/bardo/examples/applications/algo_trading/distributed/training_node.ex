@@ -108,8 +108,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Distributed.TrainingNode do
       last_coordinator_ping: nil
     }
     
-    # Set up node monitoring
-    Node.monitor_nodes(true)
+    # Set up node monitoring - use :net_kernel.monitor_nodes instead of Node.monitor_nodes
+    :net_kernel.monitor_nodes(true)
     
     # Schedule heartbeat if coordinator is provided
     if config.coordinator_node do

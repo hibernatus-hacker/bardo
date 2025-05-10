@@ -254,30 +254,64 @@ defmodule Bardo.PopulationManager.Genotype do
   """
   @spec update_fingerprint(Models.agent_id()) :: :ok
   def update_fingerprint(agent_id) do
-    a = DB.read(agent_id, :agent)
-    cx = DB.read(Models.get(a, :cx_id), :cortex)
+    agent_result = DB.read(agent_id, :agent)
+
+    # Handle DB.read's {:ok, value} or {:error, reason} pattern
+    a = case agent_result do
+      {:ok, agent} -> agent
+      {:error, _} -> %{data: %{}}  # Use empty map as fallback
+      nil -> %{data: %{}}
+      agent -> agent  # Legacy case
+    end
+
+    cx_id = Models.get(a, :cx_id)
+    cortex_result = if cx_id, do: DB.read(cx_id, :cortex), else: {:error, :not_found}
+
+    cx = case cortex_result do
+      {:ok, cortex} -> cortex
+      {:error, _} -> %{data: %{}}
+      nil -> %{data: %{}}
+      cortex -> cortex  # Legacy case
+    end
+
     s_ids = Models.get(cx, :sensor_ids)
     a_ids = Models.get(cx, :actuator_ids)
-    
+
     # Handle :not_found for sensor_ids
     generalized_sensors = case s_ids do
       :not_found -> []
+      nil -> []
       ids when is_list(ids) ->
         Enum.map(ids, fn s_id ->
-          s = DB.read(s_id, :sensor)
+          sensor_result = DB.read(s_id, :sensor)
+          s = case sensor_result do
+            {:ok, sensor} -> sensor
+            {:error, _} -> %{data: %{}}
+            nil -> %{data: %{}}
+            sensor -> sensor  # Legacy case
+          end
+
           Models.set(s, [
             {:id, nil}, {:cx_id, nil},
             {:fanout_ids, []}, {:generation, nil}
           ])
         end)
     end
-    
+
     # Handle :not_found for actuator_ids
     generalized_actuators = case a_ids do
       :not_found -> []
+      nil -> []
       ids when is_list(ids) ->
         Enum.map(ids, fn a_id ->
-          a = DB.read(a_id, :actuator)
+          actuator_result = DB.read(a_id, :actuator)
+          a = case actuator_result do
+            {:ok, actuator} -> actuator
+            {:error, _} -> %{data: %{}}
+            nil -> %{data: %{}}
+            actuator -> actuator  # Legacy case
+          end
+
           Models.set(a, [
             {:id, nil}, {:cx_id, nil},
             {:fanin_ids, []}, {:generation, nil}
@@ -289,24 +323,35 @@ defmodule Bardo.PopulationManager.Genotype do
     pattern = Models.get(a, :pattern)
     generalized_pattern = case pattern do
       :not_found -> []
+      nil -> []
       pattern when is_list(pattern) ->
         Enum.map(pattern, fn {layer_index, ln_ids} ->
-          {layer_index, length(ln_ids)}
+          ln_ids_list = if is_list(ln_ids), do: ln_ids, else: []
+          {layer_index, length(ln_ids_list)}
         end)
     end
-    
+
     # Handle :not_found for evo_hist
     evo_hist = Models.get(a, :evo_hist)
     generalized_evo_hist = case evo_hist do
       :not_found -> []
+      nil -> []
       hist when is_list(hist) -> generalize_evo_hist(hist)
     end
-    
+
     n_ids = Models.get(cx, :neuron_ids)
-    n_ids = if n_ids == :not_found, do: [], else: n_ids
-    
+    n_ids = cond do
+      n_ids == :not_found -> []
+      n_ids == nil -> []
+      true -> n_ids
+    end
+
     type = Models.get(a, :encoding_type)
-    type = if type == :not_found, do: :neural, else: type
+    type = cond do
+      type == :not_found -> :neural
+      type == nil -> :neural
+      true -> type
+    end
     
     {tot_neuron_ils, tot_neuron_ols, tot_neuron_ros, af_distribution} = get_node_summary(n_ids)
     

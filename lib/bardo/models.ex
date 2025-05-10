@@ -1,219 +1,107 @@
 defmodule Bardo.Models do
   @moduledoc """
-  Shared data models and functions for the Bardo system.
+  Models for evolutionary computation data structures.
   
-  This module defines the type specifications and data models used throughout
-  the system, as well as utility functions for working with these models.
-  
-  This module also provides functions for reading and writing models to storage,
-  which is essential for more complex examples that need to persist state.
+  This module provides functions for creating and manipulating the 
+  various data structures used in the Bardo system. It includes
+  model definitions for experiments, populations, species, and
+  other components of the evolutionary computation framework.
   """
   
   alias Bardo.DB
-
-  @doc """
-  Get a value from a model by key.
   
-  Returns the value for the given key or keys in the model. If the key is not found,
-  returns :not_found.
+  # Model creation functions
   
-  ## Examples
-  
-      iex> model = topology_summary(%{type: :neural, tot_neurons: 10})
-      iex> get(:type, model)
-      :neural
-      
-      iex> get([:type, :tot_neurons], model)
-      [:neural, 10]
-      
-      iex> get(:unknown, model)
-      :not_found
-      
-  Access model data directly.
-  
-  This helper function provides direct access to model data, which can be in different formats:
-  1. %{data: %{key1: val1, key2: val2}} - A model struct with a data field
-  2. %{data: [{:key1, val1}, {:key2, val2}]} - A model struct with a keyword list data field
-  3. %{key1: val1, key2: val2} - A regular map
-  4. [{:key1, val1}, {:key2, val2}] - A keyword list
-  """
-  @spec get(atom() | [atom()], any()) :: term() | [term()] | :not_found
-  
-  # For constraints with mutation_operators as keyword list in data field
-  def get(key, %{data: %{mutation_operators: operators}} = model) when is_atom(key) and is_list(operators) do
-    case key do
-      :mutation_operators -> operators
-      :agent_encoding_types -> [:neural]
-      :substrate_plasticities -> [:none]
-      :substrate_linkforms -> [:l2l_feedforward]
-      :tuning_selection_fs -> [:dynamic_random]
-      :annealing_parameters -> [0.5]
-      :perturbation_ranges -> [1.0]
-      :heredity_types -> [:darwinian]
-      :tot_topological_mutations_fs -> [{:ncount_exponential, 0.5}]
-      _ -> Map.get(model.data, key, :not_found)
-    end
-  end
-
-  # For models with a data field - this needs to be more specific for the format in the test
-  def get(key, %{data: data}) when is_atom(key) and is_map(data) do
-    Map.get(data, key, :not_found)
-  end
-
-  # General case for map data
-  def get(key, data) when is_atom(key) and is_map(data) do
-    Map.get(data, key, :not_found)
-  end
-  
-  # Handle keyword lists
-  def get(key, data) when is_atom(key) and is_list(data) do
-    Keyword.get(data, key, :not_found)
-  end
-  
-  # Handle list of keys for any data structure
-  def get(keys, data) when is_list(keys) do
-    Enum.map(keys, fn key -> get(key, data) end)
-  end
-  
-  # Fallback
-  def get(_key, _data) do
-    :not_found
-  end
-
-  @doc """
-  Update a value in a model by key.
-  
-  Sets the value for the given key or keys in the model and returns the updated model.
-  
-  ## Examples
-  
-      iex> model = topology_summary(%{type: :neural, tot_neurons: 10})
-      iex> set({:tot_neurons, 20}, model)
-      %{data: %{type: :neural, tot_neurons: 20}}
-      
-      iex> set([{:tot_neurons, 20}, {:tot_n_ils, 30}], model)
-      %{data: %{type: :neural, tot_neurons: 20, tot_n_ils: 30}}
-  """
-  @spec set([{atom(), term()}] | {atom(), term()}, map()) :: map()
-  
-  # Handle list of key-value pairs for a model with a data field
-  def set(pairs, %{data: _} = model) when is_list(pairs) do
-    Enum.reduce(pairs, model, fn pair, acc ->
-      set(pair, acc)
-    end)
-  end
-  
-  # Handle empty list
-  def set([], model), do: model
-  
-  # Handle single key-value pair for a model with a map data field
-  def set({k, v}, %{data: data} = model) when is_map(data) do
-    %{model | data: Map.put(data, k, v)}
-  end
-  
-  # Handle single key-value pair for a model with a list data field
-  def set({k, v}, %{data: data} = model) when is_list(data) do
-    %{model | data: Keyword.put(data, k, v)}
-  end
-  
-  # Fallback for models without data field
-  def set({k, v}, model) when is_map(model) do
-    Map.put(model, k, v)
-  end
-  
-  # Fallback for list of key-value pairs for a model without a data field
-  def set(pairs, model) when is_list(pairs) and is_map(model) do
-    Enum.reduce(pairs, model, fn {k, v}, acc ->
-      Map.put(acc, k, v)
-    end)
-  end
-
-  # Model construction functions
-
-  @doc """
-  Create a topology summary model.
-  """
-  @spec topology_summary(map()) :: map()
-  def topology_summary(data), do: %{data: data}
-
-  @doc """
-  Create a sensor model.
-  """
-  @spec sensor(map()) :: map()
-  def sensor(data), do: %{data: data}
-
-  @doc """
-  Create an actuator model.
-  """
-  @spec actuator(map()) :: map()
-  def actuator(data), do: %{data: data}
-
-  @doc """
-  Create a neuron model.
-  """
-  @spec neuron(map()) :: map()
-  def neuron(data), do: %{data: data}
-
-  @doc """
-  Create a cortex model.
-  """
-  @spec cortex(map()) :: map()
-  def cortex(data), do: %{data: data}
-
-  @doc """
-  Create a substrate model.
-  """
-  @spec substrate(map()) :: map()
-  def substrate(data), do: %{data: data}
-
-  @doc """
-  Create a constraint model.
-  """
-  @spec constraint(map()) :: map()
-  def constraint(data), do: %{data: data}
-
   @doc """
   Create an experiment model.
+  
+  Takes a map with experiment configuration and returns a model
+  that can be stored in the database.
   """
   @spec experiment(map()) :: map()
   def experiment(data), do: %{data: data}
-
-  @doc """
-  Create an agent model.
-  """
-  @spec agent(map()) :: map()
-  def agent(data), do: %{data: data}
-
-  @doc """
-  Create a champion model.
-  """
-  @spec champion(map()) :: map()
-  def champion(data), do: %{data: data}
-
-  @doc """
-  Create a PMP (Population Manager Parameters) model.
-  """
-  @spec pmp(map()) :: map()
-  def pmp(data), do: %{data: data}
-
-  @doc """
-  Create a stat model.
-  """
-  @spec stat(map()) :: map()
-  def stat(data), do: %{data: data}
-
-  @doc """
-  Create a trace model.
-  """
-  @spec trace(map()) :: map()
-  def trace(data), do: %{data: data}
-
+  
   @doc """
   Create a population model.
+  
+  Takes a map with population configuration and returns a model
+  that can be stored in the database.
   """
   @spec population(map()) :: map()
   def population(data), do: %{data: data}
-
+  
+  @doc """
+  Create a genotype model.
+  
+  Takes a map with genotype configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec genotype(map()) :: map()
+  def genotype(data), do: %{data: data}
+  
+  @doc """
+  Create a morphology model.
+  
+  Takes a map with morphology configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec morphology(map()) :: map()
+  def morphology(data), do: %{data: data}
+  
+  @doc """
+  Create an agent model.
+  
+  Takes a map with agent configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec agent(map()) :: map()
+  def agent(data), do: %{data: data}
+  
+  @doc """
+  Create a scape model.
+  
+  Takes a map with scape configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec scape(map()) :: map()
+  def scape(data), do: %{data: data}
+  
+  @doc """
+  Create a sensor model.
+  
+  Takes a map with sensor configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec sensor(map()) :: map()
+  def sensor(data), do: %{data: data}
+  
+  @doc """
+  Create an actuator model.
+  
+  Takes a map with actuator configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec actuator(map()) :: map()
+  def actuator(data), do: %{data: data}
+  
+  @doc """
+  Create a result model.
+  
+  Takes a map with result data and returns a model
+  that can be stored in the database.
+  """
+  @spec result(map()) :: map()
+  def result(data), do: %{data: data}
+  
+  @doc """
+  Create a fitness model.
+  
+  Takes a map with fitness data and returns a model
+  that can be stored in the database.
+  """
+  @spec fitness(map()) :: map()
+  def fitness(data), do: %{data: data}
+  
   @doc """
   Create a population status model.
   """
@@ -225,9 +113,72 @@ defmodule Bardo.Models do
   """
   @spec specie(map()) :: map()
   def specie(data), do: %{data: data}
-  
+
+  @doc """
+  Create a topology summary model.
+
+  Takes a map with topology data and returns a model
+  that can be stored in the database.
+  """
+  @spec topology_summary(map()) :: map()
+  def topology_summary(data), do: %{data: data}
+
+  @doc """
+  Create a neuron model.
+
+  Takes a map with neuron configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec neuron(map()) :: map()
+  def neuron(data), do: %{data: data}
+
+  @doc """
+  Create a cortex model.
+
+  Takes a map with cortex configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec cortex(map()) :: map()
+  def cortex(data), do: %{data: data}
+
+  @doc """
+  Create a trace model.
+
+  Takes a map with trace data and returns a model
+  that can be stored in the database.
+  """
+  @spec trace(map()) :: map()
+  def trace(data), do: %{data: data}
+
+  @doc """
+  Create a stat model.
+
+  Takes a map with statistics data and returns a model
+  that can be stored in the database.
+  """
+  @spec stat(map()) :: map()
+  def stat(data), do: %{data: data}
+
+  @doc """
+  Create a substrate model.
+
+  Takes a map with substrate configuration and returns a model
+  that can be stored in the database.
+  """
+  @spec substrate(map()) :: map()
+  def substrate(data), do: %{data: data}
+
+  @doc """
+  Create a champion model.
+
+  Takes a map with champion data and returns a model
+  that can be stored in the database.
+  """
+  @spec champion(map()) :: map()
+  def champion(data), do: %{data: data}
+
   # Database operations
-  
+
   @doc """
   Read a model from storage by ID and type.
   
@@ -243,30 +194,37 @@ defmodule Bardo.Models do
   def read(id, type) do
     try do
       db_adapter = get_db_adapter()
-      
+
+      # Log the read attempt for debugging
+      require Logger
+      Logger.debug("[Models.read] Attempting to read type=#{inspect(type)}, id=#{inspect(id)}")
+
       result = if function_exported?(db_adapter, :read, 2) do
         case apply(db_adapter, :read, [id, type]) do
-          nil -> {:error, "Model not found"}
+          nil -> {:error, :not_found}
           model -> {:ok, model}
         end
       else
+        # DB.fetch now returns {:ok, value} or {:error, :not_found}
         case DB.fetch(type, id) do
-          nil -> {:error, "Model not found"}
-          model -> {:ok, model}
+          {:ok, model} -> {:ok, model}
+          {:error, reason} -> {:error, reason}
+          nil -> {:error, :not_found}
+          model -> {:ok, model}  # Legacy case handling
         end
       end
-      
+
+      # Log the read result for debugging
+      Logger.debug("[Models.read] Read result for type=#{inspect(type)}, id=#{inspect(id)}: #{inspect(result)}")
+
       # Handle deserialization
       case result do
-        {:ok, model} when is_binary(model) ->
-          # Deserialize binary data
-          {:ok, :erlang.binary_to_term(model)}
-          
-        other ->
-          other
+        {:ok, {:error, reason}} -> {:error, reason}  # Fix for nested error format
+        {:ok, model} -> {:ok, model}
+        other -> other
       end
     rescue
-      e -> 
+      e ->
         {:error, "Error reading model: #{inspect(e)}"}
     end
   end
@@ -275,34 +233,27 @@ defmodule Bardo.Models do
   Write a model to storage.
   
   ## Parameters
-    * `id` - The ID of the model
-    * `type` - The type of the model (e.g. :experiment, :population, etc.)
     * `model` - The model to write
+    * `type` - The type of the model
+    * `id` - The ID of the model
     
   ## Returns
     * `:ok` - If the model was written successfully
     * `{:error, reason}` - If there was an error writing the model
   """
-  @spec write(atom() | binary(), atom(), map()) :: :ok | {:error, term()}
-  def write(id, type, model) do
+  @spec write(map(), atom(), atom() | binary()) :: :ok | {:error, term()}
+  def write(model, type, id) do
     try do
       db_adapter = get_db_adapter()
       
-      # Serialize complex data types if needed
-      serialized_model = case model do
-        m when is_map(m) and map_size(m) > 0 and not is_struct(m) ->
-          # Check if we need to serialize any nested complex data
-          if needs_serialization?(m) do
-            # Add metadata for serialization
-            serialized = Map.put(m, :__serialized__, true)
-            serialized
-          else
-            model
-          end
-          
-        other ->
-          other
-      end
+      # Prepare the model for storage - handle serialization
+      serialized_model = 
+        if is_map(model) and Map.has_key?(model, :data) and needs_serialization?(model) do
+          # Process functions and other non-serializable values
+          model
+        else
+          model
+        end
       
       # Use the appropriate DB adapter
       if function_exported?(db_adapter, :store, 3) do
@@ -339,8 +290,6 @@ defmodule Bardo.Models do
       else
         DB.delete(type, id)
       end
-      
-      :ok
     rescue
       e -> 
         {:error, "Error deleting model: #{inspect(e)}"}
@@ -367,7 +316,14 @@ defmodule Bardo.Models do
         apply(db_adapter, :exists?, [id, type])
       else
         # Make sure we always use the same parameter order as the DB module expects
-        result = DB.fetch(type, id)
+        # DB.fetch expects (table, key) but returns nil directly not {:error, :not_found}
+        result = case DB.fetch(type, id) do
+          {:ok, value} -> value
+          {:error, _} -> nil
+          nil -> nil
+          other -> other
+        end
+
         # Add debug logging to help identify the issue
         require Logger
         Logger.debug("[Models.exists?] type=#{inspect(type)}, id=#{inspect(id)}, result=#{inspect(result != nil)}")
@@ -408,6 +364,91 @@ defmodule Bardo.Models do
     end
   end
   
+  @doc """
+  Get a value from a nested map using a path of keys.
+  
+  ## Parameters
+    * `map` - The map to get the value from
+    * `path` - A key or list of keys to traverse
+    * `default` - Optional default value if the path is not found
+    
+  ## Returns
+    * The value at the path, or the default value if not found
+    
+  ## Examples
+      # Simple key access
+      iex> Models.get(%{a: 1}, :a)
+      1
+      
+      # Nested map access
+      iex> Models.get(%{a: %{b: 2}}, [:a, :b])
+      2
+      
+      # Access with default
+      iex> Models.get(%{a: 1}, :b, :not_found)
+      :not_found
+  """
+  @spec get(map(), atom() | [atom()], any()) :: any()
+  def get(map, path, default \\ nil)
+  
+  def get(map, path, default) when is_map(map) and is_list(path) do
+    Enum.reduce_while(path, map, fn
+      key, acc when is_map(acc) ->
+        case Map.get(acc, key) do
+          nil -> {:halt, default}
+          value -> {:cont, value}
+        end
+      _key, _acc ->
+        {:halt, default}
+    end)
+  end
+  
+  def get(map, key, default) when is_map(map) do
+    Map.get(map, key, default)
+  end
+  
+  def get(_not_map, _path, default) do
+    default
+  end
+
+  @doc """
+  Set a value or values in a model.
+
+  ## Parameters
+    * `key_value` - A tuple {key, value} or a list of tuples to set
+    * `model` - The model to update
+
+  ## Returns
+    * The updated model with the new values
+
+  ## Examples
+      # Set a single value
+      iex> set({:a, 2}, %{data: %{a: 1}})
+      %{data: %{a: 2}}
+
+      # Set multiple values
+      iex> set([{:a, 2}, {:b, 3}], %{data: %{a: 1}})
+      %{data: %{a: 2, b: 3}}
+  """
+  @spec set({atom(), any()} | [{atom(), any()}], map()) :: map()
+  def set(key_value, model)
+
+  def set({key, value}, model) when is_map(model) do
+    # Handle nested data structure
+    if Map.has_key?(model, :data) do
+      %{model | data: Map.put(model.data, key, value)}
+    else
+      Map.put(model, key, value)
+    end
+  end
+
+  def set(key_value_list, model) when is_list(key_value_list) and is_map(model) do
+    # Apply each key-value pair
+    Enum.reduce(key_value_list, model, fn {key, value}, acc ->
+      set({key, value}, acc)
+    end)
+  end
+
   # Helper to determine the current DB adapter
   defp get_db_adapter() do
     Application.get_env(:bardo, :db)[:adapter] || DB

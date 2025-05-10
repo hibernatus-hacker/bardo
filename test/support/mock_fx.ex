@@ -19,10 +19,10 @@ defmodule Bardo.TestSupport.MockFx do
     IO.puts("Starting experiment...\n")
     
     # Set up the experiment
-    Bardo.PolisMgr.setup(experiment_id, config)
-    
+    Bardo.PolisMgr.setup(%{id: experiment_id, config: config})
+
     # Start the experiment
-    Bardo.PolisMgr.start(experiment_id)
+    Bardo.PolisMgr.start_experiment(experiment_id)
     
     # Return the experiment ID
     experiment_id

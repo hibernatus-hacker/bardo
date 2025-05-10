@@ -628,7 +628,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda do
   defp download_with_limit(state, instrument, timeframe, from, to, chunk_size, acc, request_count, max_requests) do
     # Safety check: Stop if we exceed max requests
     if request_count >= max_requests do
-      Logger.warn("[OANDA] Maximum request limit (#{max_requests}) reached, stopping download")
+      Logger.warning("[OANDA] Maximum request limit (#{max_requests}) reached, stopping download")
       {:ok, List.flatten(acc)}
     else
       # Safety check: Stop if from >= to

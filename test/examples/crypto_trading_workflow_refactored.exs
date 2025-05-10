@@ -161,17 +161,40 @@ defmodule WorkflowManager do
   # Step 1: Initialize broker
   defp init_broker(config, trading_api) do
     IO.puts("\n[Step 1/7] Initializing #{config.broker_type} broker...")
-    
-    case trading_api.init_broker(config.broker_type, config.api_key, %{
+
+    # Handle different types of trading_api implementations
+    result = init_broker_with_module(trading_api, config.broker_type, config.api_key, %{
       api_secret: config.api_secret,
       live: config.live_mode
-    }) do
+    })
+
+    case result do
       {:ok, broker_state} ->
         IO.puts("✓ Successfully connected to #{config.broker_type}")
         {:ok, broker_state}
-        
+
       {:error, reason} ->
         {:error, "broker_initialization", reason}
+    end
+  end
+
+  # Handle when trading_api is a module with init_broker function
+  defp init_broker_with_module(trading_api, broker_type, api_key, opts) when is_atom(trading_api) do
+    apply(trading_api, :init_broker, [broker_type, api_key, opts])
+  end
+
+  # Handle when trading_api is a map with init_broker function
+  defp init_broker_with_module(%{init_broker: init_fn}, broker_type, api_key, opts) when is_function(init_fn, 3) do
+    init_fn.(broker_type, api_key, opts)
+  end
+
+  # Fallback for any other implementation
+  defp init_broker_with_module(trading_api, broker_type, api_key, opts) do
+    # Try to use the module's init_broker function if available
+    if is_map(trading_api) and Map.has_key?(trading_api, :init_broker) do
+      trading_api.init_broker.(broker_type, api_key, opts)
+    else
+      {:error, "Invalid trading API implementation"}
     end
   end
 

@@ -169,7 +169,7 @@ defmodule Bardo.PopulationManager.PopulationStatsTest do
     DB.write(u_agent1, :agent)
     
     # Create champion
-    champ = Models.champion(%{
+    champ = Bardo.Models.Champion.champion(%{
       hof_fingerprint: [1],
       id: @agent_id1,
       fitness: [2.7],

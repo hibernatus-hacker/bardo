@@ -443,24 +443,16 @@ defmodule Bardo.Examples.Applications.AlgoTrading.DataUtils do
         # Try alternate formats
         case Regex.run(~r/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/, timestamp) do
           [_, year, month, day, hour, minute, second] ->
-            {:ok, dt} = DateTime.new(
-              String.to_integer(year),
-              String.to_integer(month),
-              String.to_integer(day),
-              String.to_integer(hour),
-              String.to_integer(minute),
-              String.to_integer(second)
-            )
+            date = Date.new!(String.to_integer(year), String.to_integer(month), String.to_integer(day))
+            time = Time.new!(String.to_integer(hour), String.to_integer(minute), String.to_integer(second))
+            {:ok, dt} = DateTime.new(date, time, "Etc/UTC")
             dt
           _ -> 
             case Regex.run(~r/(\d{4})(\d{2})(\d{2})/, timestamp) do
               [_, year, month, day] ->
-                {:ok, dt} = DateTime.new(
-                  String.to_integer(year),
-                  String.to_integer(month),
-                  String.to_integer(day),
-                  0, 0, 0
-                )
+                date = Date.new!(String.to_integer(year), String.to_integer(month), String.to_integer(day))
+                time = Time.new!(0, 0, 0)
+                {:ok, dt} = DateTime.new(date, time, "Etc/UTC")
                 dt
               _ -> DateTime.utc_now()  # Default
             end

@@ -315,10 +315,23 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
     
     # Load active experiments from storage
     experiments = case Persistence.list(:experiment) do
-      {:ok, exps} -> 
+      {:ok, exps} when is_list(exps) ->
         # Filter to only include active experiments
-        Enum.filter(exps, fn {_, exp} -> 
-          Map.get(exp, :status) in [:not_started, :in_progress] 
+        Enum.filter(exps, fn {_, exp} ->
+          status = Map.get(exp, :status)
+          status == "pending" || status == "running" ||
+          status == :not_started || status == :in_progress
+        end)
+        |> Map.new()
+      {:ok, []} ->
+        # Handle empty list specifically
+        %{}
+      exps when is_list(exps) ->
+        # Handle case where some DB adapters return list directly
+        Enum.filter(exps, fn {_, exp} ->
+          status = Map.get(exp, :status)
+          status == "pending" || status == "running" ||
+          status == :not_started || status == :in_progress
         end)
         |> Map.new()
       _ -> %{}
@@ -589,7 +602,8 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
   def handle_call(:list_all, _from, state) do
     # First load all experiments
     all_experiments = case Persistence.list(:experiment) do
-      {:ok, list} -> list
+      {:ok, list} when is_list(list) -> list
+      {:ok, []} -> []
       _ -> []
     end
 

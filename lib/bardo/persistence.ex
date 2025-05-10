@@ -50,7 +50,8 @@ defmodule Bardo.Persistence do
       prepared_model = prepare_model_for_storage(model, opts)
       
       # Save to database
-      Models.write(model_id, type, prepared_model)
+      # Models.write expects (model, type, id) - fixing the order
+      Models.write(prepared_model, type, model_id)
     end
   end
   
@@ -108,6 +109,7 @@ defmodule Bardo.Persistence do
   """
   @spec exists?(atom(), binary()) :: boolean()
   def exists?(type, id) do
+    # The Models.exists? function expects (id, type), so we need to swap parameters
     Models.exists?(id, type)
   end
   
@@ -152,8 +154,17 @@ defmodule Bardo.Persistence do
   def list(type) do
     try do
       case Bardo.DB do
-        Bardo.DBPostgres -> Bardo.DBPostgres.list(type)
-        _ -> {:ok, Bardo.DB.list(type) || []}
+        Bardo.DBPostgres ->
+          Bardo.DBPostgres.list(type)
+        _ ->
+          case Bardo.DB.list(type) do
+            {:ok, results} when is_list(results) -> {:ok, results}
+            {:ok, []} -> {:ok, []}
+            [] -> {:ok, []}
+            nil -> {:ok, []}
+            results when is_list(results) -> {:ok, results}
+            error -> {:error, "Unexpected response format: #{inspect(error)}"}
+          end
       end
     rescue
       e -> {:error, "Error listing #{type}: #{inspect(e)}"}
@@ -184,11 +195,13 @@ defmodule Bardo.Persistence do
           File.mkdir_p!(path)
           timestamp = DateTime.utc_now() |> DateTime.to_iso8601() |> String.replace(":", "-")
           backup_file = Path.join(path, "bardo_backup_#{timestamp}.db")
-          
-          :ok = Bardo.DB.backup()
+
+          # Pass the path to DB.backup()
+          result = Bardo.DB.backup(path)
           File.write!(backup_file, "ETS backup created at #{timestamp}")
-          
-          {:ok, backup_file}
+
+          # Return the result from DB.backup instead of creating our own success response
+          result
       end
     rescue
       e -> {:error, "Error creating backup: #{inspect(e)}"}

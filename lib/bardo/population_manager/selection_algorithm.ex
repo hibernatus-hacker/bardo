@@ -57,7 +57,7 @@ defmodule Bardo.PopulationManager.SelectionAlgorithm do
   @doc """
   Implementation of the 'hof_competition' selection algorithm.
   """
-  @spec hof_competition(Models.specie_id(), [Models.champion()], non_neg_integer()) :: :ok
+  @spec hof_competition(Models.specie_id(), [map()], non_neg_integer()) :: :ok
   def hof_competition(specie_id, remaining_champion_designators, specie_size_limit) do
     s = DB.read(specie_id, :specie)
     shof = Models.get(s, :hall_of_fame)

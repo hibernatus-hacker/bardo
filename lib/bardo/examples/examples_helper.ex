@@ -122,46 +122,75 @@ defmodule Bardo.Examples.ExamplesHelper do
     end
   end
   
-  # Update mock data for experiment tracking
+  # Update mock data for experiment tracking with better error handling
   defp update_mock_experiment_data(experiment_id, generation, fitness) do
     # Try to read experiment
     case Models.read(experiment_id, :experiment) do
-      {:ok, experiment} ->
-        # Update the experiment data
-        populations = Map.get(experiment.data, :populations, [])
+      {:ok, experiment} when is_map(experiment) ->
+        # Use proper map access
+        experiment_data = Map.get(experiment, :data, %{})
+        populations = Map.get(experiment_data, :populations, [])
         
         if length(populations) > 0 do
-          # Update the population
+          # Update population
           population_id = List.first(populations) |> Map.get(:id)
-          
-          # Try to read the population
-          case Models.read(population_id, :population) do
-            {:ok, population} ->
-              # Update population fitness
-              updated_population = %{
-                population | 
-                data: Map.update(population.data, :population, [], fn pop ->
-                  [%{generation: generation, fitness: fitness} | pop]
-                end)
-              }
-              
-              # Save updated population
-              DB.store(:population, population_id, updated_population)
-              
-            _ ->
-              # Create new population if not found
-              new_population = Models.population(%{
-                id: population_id,
-                population: [%{generation: generation, fitness: fitness}]
-              })
-              
-              DB.store(:population, population_id, new_population)
-          end
+          update_population_data(population_id, generation, fitness)
+        end
+        
+      {:ok, experiment_data} when is_map(experiment_data) ->
+        # Handle case where the data is directly returned
+        populations = Map.get(experiment_data, :populations, [])
+        
+        if length(populations) > 0 do
+          # Update population
+          population_id = List.first(populations) |> Map.get(:id)
+          update_population_data(population_id, generation, fitness)
         end
         
       _ ->
-        # Do nothing if experiment not found
+        # Unknown response format, do nothing
         :ok
+    end
+  end
+  
+  # Helper function to update population data
+  defp update_population_data(population_id, generation, fitness) do
+    case Models.read(population_id, :population) do
+      {:ok, population} when is_map(population) ->
+        population_data = Map.get(population, :data, %{})
+        
+        # Update population fitness
+        updated_data = Map.update(population_data, :population, [], fn pop ->
+          [%{generation: generation, fitness: fitness} | pop]
+        end)
+        
+        # Create updated population with correct structure
+        updated_population = Map.put(population, :data, updated_data)
+        
+        # Save updated population
+        DB.store(:population, population_id, updated_population)
+        
+      {:ok, population_data} when is_map(population_data) ->
+        # Handle case where the data is directly returned
+        updated_data = Map.update(population_data, :population, [], fn pop ->
+          [%{generation: generation, fitness: fitness} | pop]
+        end)
+        
+        # Wrap data in proper structure
+        updated_population = %{data: updated_data}
+        
+        # Save updated population
+        DB.store(:population, population_id, updated_population)
+        
+      _ ->
+        # Create new population if not found or unknown format
+        new_population = Models.population(%{
+          id: population_id,
+          population: [%{generation: generation, fitness: fitness}]
+        })
+        
+        # Save new population
+        DB.store(:population, population_id, new_population)
     end
   end
 end

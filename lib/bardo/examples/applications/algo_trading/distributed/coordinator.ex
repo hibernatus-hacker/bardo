@@ -196,8 +196,8 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Distributed.Coordinator do
     schedule_heartbeat(config.heartbeat_interval)
     schedule_status_check(config.status_check_interval)
     
-    # Set up node monitoring
-    Node.monitor_nodes(true, [:nodedown_reason])
+    # Set up node monitoring - use :net_kernel.monitor_nodes instead of Node.monitor_nodes
+    :net_kernel.monitor_nodes(true, [:nodedown_reason])
     
     {:ok, state}
   end

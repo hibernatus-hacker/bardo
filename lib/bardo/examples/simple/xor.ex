@@ -192,8 +192,9 @@ defmodule Bardo.Examples.Simple.Xor do
   
   # Select parents for reproduction
   defp select_parents(sorted_population) do
-    # Take the top 25% of the population as parents
-    count = max(2, ceil(length(sorted_population) * 0.25))
+    # Take the top 30% of the population as parents (increased from 25%)
+    # This gives more diversity in the gene pool for selection
+    count = max(4, ceil(length(sorted_population) * 0.30))
     Enum.take(sorted_population, count)
   end
   
@@ -201,37 +202,48 @@ defmodule Bardo.Examples.Simple.Xor do
   defp create_new_generation(parents, population_size) do
     # Keep the parents (elitism)
     elites = parents
-    
+
     # Create offspring to fill the population
     offspring_count = population_size - length(elites)
-    
+
+    # Use more than one parent - tournament selection
     offspring = for _ <- 1..offspring_count do
-      # Select a random parent
-      {parent_genotype, _fitness} = Enum.random(parents)
-      
-      # Create a mutated offspring
+      # Select a random parent using tournament selection (better than just random selection)
+      {parent_genotype, _fitness} = select_parent_by_tournament(parents)
+
+      # Create a mutated offspring with improved mutation probabilities
       mutated_genotype = GenomeMutator.simple_mutate(parent_genotype, %{
-        add_neuron_probability: 0.1,
-        add_link_probability: 0.3,
-        mutate_weights_probability: 0.8
+        add_neuron_probability: 0.15,  # Slightly increased to promote structural innovation
+        add_link_probability: 0.4,     # Increased to ensure better connectivity
+        mutate_weights_probability: 0.9 # Very high to fine-tune weights
       })
-      
+
       # Evaluate the new genotype
       fitness = fitness_function(mutated_genotype)
-      
+
       # Return the genotype and its fitness
       {mutated_genotype, fitness}
     end
-    
+
     # Combine elites and offspring
     elites ++ offspring
+  end
+
+  # Tournament selection - select the best from a random subset
+  defp select_parent_by_tournament(parents) do
+    # Take 3 random parents for tournament
+    tournament_size = min(3, length(parents))
+    tournament = for _ <- 1..tournament_size, do: Enum.random(parents)
+
+    # Select the best one
+    Enum.max_by(tournament, fn {_genotype, fitness} -> fitness end)
   end
   
   # XOR fitness function
   defp fitness_function(genotype) do
     # Convert genotype to neural network
     nn = Cortex.from_genotype(genotype)
-    
+
     # Test cases for XOR
     test_cases = [
       {[0.0, 0.0], [0.0]},
@@ -239,23 +251,37 @@ defmodule Bardo.Examples.Simple.Xor do
       {[1.0, 0.0], [1.0]},
       {[1.0, 1.0], [0.0]}
     ]
-    
+
     # Calculate error across all test cases
-    total_error = Enum.reduce(test_cases, 0.0, fn {inputs, expected}, acc ->
+    {total_error, correct_outputs} = Enum.reduce(test_cases, {0.0, 0}, fn {inputs, expected}, {error_acc, correct_acc} ->
       # Activate the network
       outputs = Cortex.activate(nn, inputs)
-      
+
       # Calculate squared error
       error = Enum.zip(outputs, expected)
               |> Enum.map(fn {output, target} -> (output - target) * (output - target) end)
               |> Enum.sum()
-      
-      # Add to total error
-      acc + error
+
+      # Count correct outputs (less than 0.3 error is considered correct)
+      # This helps drive evolution toward the correct solutions faster
+      is_correct = error < 0.3
+      correct_count = if is_correct, do: correct_acc + 1, else: correct_acc
+
+      # Add to total error - weigh cases with high error more
+      # to encourage fixing the harder cases
+      weighted_error = if error > 0.5, do: error * 1.2, else: error
+
+      {error_acc + weighted_error, correct_count}
     end)
-    
-    # Convert error to fitness (lower error = higher fitness)
-    4.0 - total_error
+
+    # Calculate base fitness (lower error = higher fitness)
+    base_fitness = 4.0 - total_error
+
+    # Add bonus for getting correct outputs to encourage correct solutions
+    bonus = correct_outputs * 0.05
+
+    # Return total fitness with bonus
+    base_fitness + bonus
   end
   
   # Display XOR results for a given neural network

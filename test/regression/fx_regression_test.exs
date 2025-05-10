@@ -87,13 +87,22 @@ defmodule Bardo.Regression.FxRegressionTest do
     MockHelper.setup_mocks([Bardo.PolisMgr, Bardo.DB], [passthrough: false, non_strict: true])
     
     # Define expectations for the PolisMgr mock
-    :meck.expect(Bardo.PolisMgr, :setup, fn experiment_id, config ->
+    :meck.expect(Bardo.PolisMgr, :setup, fn config_map ->
       # Log the setup call for verification
+      experiment_id = config_map.id
+      config = config_map.config
       send(self(), {:setup_called, experiment_id, config})
-      :ok
+      {:ok, experiment_id}
     end)
     
     :meck.expect(Bardo.PolisMgr, :start, fn experiment_id ->
+      # Log the start call for verification
+      send(self(), {:start_called, experiment_id})
+      :ok
+    end)
+
+    # Add expectation for start_experiment which is used in the current code
+    :meck.expect(Bardo.PolisMgr, :start_experiment, fn experiment_id ->
       # Log the start call for verification
       send(self(), {:start_called, experiment_id})
       :ok

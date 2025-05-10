@@ -1288,7 +1288,7 @@ defmodule Bardo.PopulationManager.PopulationManager do
 
   defp to_champion_form(_shof, agent_id, distinguishers) do
     a = DB.read(agent_id, :agent)
-    
+
     Models.champion(%{
       hof_fingerprint: Enum.map(distinguishers, fn d -> apply(SpecieIdentifier, d, [agent_id]) end),
       id: agent_id,

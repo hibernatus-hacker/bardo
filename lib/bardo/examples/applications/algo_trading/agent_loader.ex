@@ -126,10 +126,11 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentLoader do
   - `{:error, reason}` - If getting status fails
   """
   def get_agent_status(agent_id) do
-    case PolisMgr.get_status(agent_id) do
+    # Use status/1 instead of undefined get_status/1
+    case PolisMgr.status(agent_id) do
       {:ok, status} ->
         {:ok, status}
-        
+
       {:error, reason} ->
         {:error, "Failed to get agent status: #{inspect(reason)}"}
     end
