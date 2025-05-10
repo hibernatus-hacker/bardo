@@ -13,7 +13,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   
   alias Bardo.Examples.Applications.AlgoTrading.DataUtils
   alias Bardo.Examples.Applications.AlgoTrading.AgentSerializer
-  alias Bardo.Examples.Applications.AlgoTrading.AgentRepository
   
   @doc """
   Run a comprehensive backtest for an agent.
@@ -41,10 +40,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
     commission = Map.get(options, :commission, 0.1)
     slippage = Map.get(options, :slippage, 1.0)
     report_file = Map.get(options, :report_file)
-    
+
     # Load agent
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Load historical data
         case DataUtils.load_historical_data(data_file) do
           {:ok, candles} ->
@@ -93,9 +92,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   def test_robustness(agent_path, data_files, options \\ %{}) do
     # Load agent once
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Get segment names
-        segment_names = Map.get(options, :segment_names) || 
+        segment_names = Map.get(options, :segment_names) ||
                         Enum.map(data_files, &Path.basename/1)
         
         # Ensure we have matching names for each data file
@@ -178,7 +177,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
                 commission: Map.get(options, :commission, 0.1),
                 slippage: Map.get(options, :slippage, 1.0)
               })
-              
+
               # Return with agent ID
               agent_id = Path.basename(path, ".json")
               {agent_id, %{
@@ -242,7 +241,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
     
     # Load agent
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Load base data
         case DataUtils.load_historical_data(base_data_file) do
           {:ok, base_candles} ->
@@ -312,7 +311,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
     
     # Load agent
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Load historical data
         case DataUtils.load_historical_data(data_file) do
           {:ok, candles} ->
@@ -320,7 +319,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
             window_data = create_walk_forward_windows(candles, windows, train_ratio)
             
             # Test each window
-            window_results = Enum.map(window_data, fn {window_num, {train_candles, test_candles}} ->
+            window_results = Enum.map(window_data, fn {window_num, {_train_candles, test_candles}} ->
               # Run simulation on test data (out-of-sample)
               results = run_trading_simulation(genotype, test_candles, %{
                 initial_balance: Map.get(options, :initial_balance, 10000.0),
@@ -358,12 +357,12 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   # Private helper functions
   
   # Run trading simulation
-  defp run_trading_simulation(genotype, candles, options) do
+  defp run_trading_simulation(_genotype, _candles, options) do
     # Extract options with defaults
     initial_balance = Map.get(options, :initial_balance, 10000.0)
-    risk_per_trade = Map.get(options, :risk_per_trade, 1.0)
-    commission = Map.get(options, :commission, 0.1)
-    slippage = Map.get(options, :slippage, 1.0)
+    _risk_per_trade = Map.get(options, :risk_per_trade, 1.0)
+    _commission = Map.get(options, :commission, 0.1)
+    _slippage = Map.get(options, :slippage, 1.0)
     
     # Placeholder for simulation implementation
     # This should be replaced with actual simulation logic
@@ -571,7 +570,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
     gap_scenarios = Map.get(options, :gap_scenarios, [0.0, 0.01, 0.02])
     
     # Generate scenarios
-    scenarios = []
+    _scenarios = []
     
     # Add volatility scenarios
     volatility_scenarios = Enum.map(volatility_factors, fn factor ->
@@ -669,7 +668,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   end
   
   # Generate report for robustness test
-  defp generate_robustness_report(segments, summary, agent_path, options, report_file) do
+  defp generate_robustness_report(segments, summary, agent_path, _options, report_file) do
     # Create report content
     segment_details = Enum.map_join(segments, "\n\n", fn {name, results} ->
       """
@@ -760,7 +759,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   end
   
   # Generate report for stress test
-  defp generate_stress_test_report(scenarios, summary, agent_path, data_file, options, report_file) do
+  defp generate_stress_test_report(_scenarios, _summary, _agent_path, _data_file, _options, report_file) do
     # Create report content - not implemented in this simplified version
     content = "# Stress Test Report\n\nPlaceholder for stress test report"
     
@@ -770,7 +769,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   end
   
   # Generate report for walk-forward test
-  defp generate_walk_forward_report(windows, summary, agent_path, data_file, options, report_file) do
+  defp generate_walk_forward_report(_windows, _summary, _agent_path, _data_file, _options, report_file) do
     # Create report content - not implemented in this simplified version
     content = "# Walk-Forward Test Report\n\nPlaceholder for walk-forward test report"
     
@@ -852,7 +851,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.VerificationTools do
   # Add trend to candles
   defp add_trend(candles, trend_factor) do
     # Running price modifier that accumulates over time
-    Enum.reduce(Enum.with_index(candles), {[], 1.0}, fn {candle, idx}, {acc_candles, modifier} ->
+    Enum.reduce(Enum.with_index(candles), {[], 1.0}, fn {candle, _idx}, {acc_candles, modifier} ->
       # Update price modifier with trend
       new_modifier = modifier * (1 + trend_factor)
       

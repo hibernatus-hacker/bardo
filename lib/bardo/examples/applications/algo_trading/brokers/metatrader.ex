@@ -25,11 +25,10 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   - Position management
   """
   
-  alias Bardo.AgentManager.PrivateScape
   alias Bardo.Examples.Applications.AlgoTrading.Brokers.BrokerInterface
   require Logger
-  
-  @behaviour PrivateScape
+
+  # Only implement BrokerInterface in this module
   @behaviour BrokerInterface
   
   # Define constants
@@ -64,12 +63,50 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   end
   
   @doc """
-  Initialize the PrivateScape for MetaTrader connectivity.
-  
-  Required by the PrivateScape behavior.
+  Initialize the broker connection.
+
+  Required by the BrokerInterface behavior.
   """
-  @impl PrivateScape
+  @impl BrokerInterface
   def init(params) do
+    # Extract connection parameters
+    api_url = Map.get(params, :api_url, @default_url)
+    api_key = Map.get(params, :api_key)
+    account_id = Map.get(params, :account_id)
+
+    # Validate required parameters
+    cond do
+      account_id == nil ->
+        {:error, "Account ID is required"}
+
+      true ->
+        # Connect to the broker
+        connect_result = connect(%{
+          api_url: api_url,
+          api_key: api_key,
+          account_id: account_id
+        })
+
+        # Return connection result
+        case connect_result do
+          {:ok, account_info} ->
+            {:ok, %{
+              api_url: api_url,
+              api_key: api_key,
+              account_id: account_id,
+              account_info: account_info
+            }}
+
+          {:error, reason} ->
+            {:error, reason}
+        end
+    end
+  end
+
+  # Note: The PrivateScape implementation has been moved to a separate module
+  # to avoid behavior conflicts. See MetaTraderPrivateScape module.
+  # This function is kept for compatibility but is no longer used.
+  def init_private_scape(params) do
     # Extract configuration parameters
     account_id = Map.get(params, :account_id)
     api_key = Map.get(params, :api_key)
@@ -142,10 +179,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   
   @doc """
   Handle a sensor request from an agent.
-  
-  Required by the PrivateScape behavior.
+
+  Originally part of the PrivateScape behavior.
   """
-  @impl PrivateScape
   def sense(params, state) do
     # Extract agent ID and sensor type from params
     agent_id = Map.get(params, :agent_id)
@@ -187,10 +223,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   
   @doc """
   Handle an actuator request from an agent.
-  
-  Required by the PrivateScape behavior.
+
+  Originally part of the PrivateScape behavior.
   """
-  @impl PrivateScape
   def actuate(function, params, agent_id, state) do
     case function do
       :trade ->
@@ -210,10 +245,9 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
   
   @doc """
   Clean up resources when terminating the scape.
-  
-  Required by the PrivateScape behavior.
+
+  Originally part of the PrivateScape behavior.
   """
-  @impl PrivateScape
   def terminate(reason, state) do
     Logger.info("[MT] Disconnecting from MetaTrader, reason: #{inspect(reason)}")
     
@@ -443,34 +477,199 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
     # Extract connection parameters
     api_url = Map.get(params, :api_url, @default_url)
     api_key = Map.get(params, :api_key)
-    
+
     # Extract modification parameters
     stop_loss = Map.get(options, :stop_loss)
     take_profit = Map.get(options, :take_profit)
-    
+
     # Build modification parameters
     modifications = %{}
     modifications = if stop_loss, do: Map.put(modifications, "sl", stop_loss), else: modifications
     modifications = if take_profit, do: Map.put(modifications, "tp", take_profit), else: modifications
-    
+
     # Convert to JSON
     modifications_json = Jason.encode!(modifications)
-    
+
     # Build request URL
     url = "#{api_url}/api/trade/order/#{order_id}/modify"
-    
+
     # Add authorization header if API key is provided
     headers = if api_key do
       [{"Content-Type", "application/json"}, {"X-API-KEY", api_key}]
     else
       [{"Content-Type", "application/json"}]
     end
-    
+
     # Make API request
     case make_request(:post, url, modifications_json, headers) do
       {:ok, response} ->
         {:ok, response}
-        
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Get instruments from the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def get_instruments(params) do
+    # Extract connection parameters
+    api_url = Map.get(params, :api_url, @default_url)
+    api_key = Map.get(params, :api_key)
+
+    # Build request URL
+    url = "#{api_url}/api/symbols"
+
+    # Add authorization header if API key is provided
+    headers = if api_key do
+      [{"Content-Type", "application/json"}, {"X-API-KEY", api_key}]
+    else
+      [{"Content-Type", "application/json"}]
+    end
+
+    # Make API request
+    case make_request(:get, url, "", headers) do
+      {:ok, response} ->
+        {:ok, response}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Get historical price data from the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def get_historical_data(params, symbol, timeframe, options) do
+    # This is essentially the same as get_market_data but with updated parameter names
+    get_market_data(params, symbol, convert_timeframe_string_to_minutes(timeframe), options)
+  end
+
+  @doc """
+  Get current quotes from the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def get_quotes(params, symbols) do
+    # Extract connection parameters
+    api_url = Map.get(params, :api_url, @default_url)
+    api_key = Map.get(params, :api_key)
+
+    # Ensure symbols is a list
+    symbols_list = if is_list(symbols), do: symbols, else: [symbols]
+
+    # Build request URL
+    symbols_param = Enum.join(symbols_list, ",")
+    url = "#{api_url}/api/market/quotes?symbols=#{symbols_param}"
+
+    # Add authorization header if API key is provided
+    headers = if api_key do
+      [{"Content-Type", "application/json"}, {"X-API-KEY", api_key}]
+    else
+      [{"Content-Type", "application/json"}]
+    end
+
+    # Make API request
+    case make_request(:get, url, "", headers) do
+      {:ok, response} ->
+        {:ok, response}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Execute a trading order on the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def execute_order(params, order_params) do
+    # Extract order parameters and call place_order
+    place_order(
+      params,
+      Map.get(order_params, :symbol),
+      Map.get(order_params, :direction),
+      Map.get(order_params, :size),
+      Map.drop(order_params, [:symbol, :direction, :size])
+    )
+  end
+
+  @doc """
+  Get open positions from the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def get_positions(params) do
+    # Extract connection parameters
+    api_url = Map.get(params, :api_url, @default_url)
+    api_key = Map.get(params, :api_key)
+    # Account ID is not needed for this endpoint
+    _account_id = Map.get(params, :account_id)
+
+    # Build request URL
+    url = "#{api_url}/api/trade/positions"
+
+    # Add authorization header if API key is provided
+    headers = if api_key do
+      [{"Content-Type", "application/json"}, {"X-API-KEY", api_key}]
+    else
+      [{"Content-Type", "application/json"}]
+    end
+
+    # Make API request
+    case make_request(:get, url, "", headers) do
+      {:ok, response} ->
+        {:ok, response}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Close an open position on the MetaTrader platform.
+
+  Required by the BrokerInterface behavior.
+  """
+  @impl BrokerInterface
+  def close_position(params, symbol, options) do
+    # Extract connection parameters
+    api_url = Map.get(params, :api_url, @default_url)
+    api_key = Map.get(params, :api_key)
+
+    # Build request URL
+    url = "#{api_url}/api/trade/position/#{symbol}/close"
+
+    # Add authorization header if API key is provided
+    headers = if api_key do
+      [{"Content-Type", "application/json"}, {"X-API-KEY", api_key}]
+    else
+      [{"Content-Type", "application/json"}]
+    end
+
+    # Add options as body if provided
+    body = if options && map_size(options) > 0 do
+      Jason.encode!(options)
+    else
+      ""
+    end
+
+    # Make API request
+    case make_request(:post, url, body, headers) do
+      {:ok, response} ->
+        {:ok, response}
+
       {:error, reason} ->
         {:error, reason}
     end
@@ -611,6 +810,28 @@ defmodule Bardo.Examples.Applications.AlgoTrading.Brokers.MetaTrader do
       10080 -> "W1"
       43200 -> "MN1"
       _ -> "M15"  # Default to M15
+    end
+  end
+
+  # Convert timeframe string to minutes
+  defp convert_timeframe_string_to_minutes(timeframe_str) do
+    case timeframe_str do
+      "M1" -> 1
+      "M5" -> 5
+      "M15" -> 15
+      "M30" -> 30
+      "H1" -> 60
+      "H4" -> 240
+      "D1" -> 1440
+      "W1" -> 10080
+      "MN1" -> 43200
+      # Try to parse numeric timeframe (in minutes)
+      numeric when is_binary(numeric) ->
+        case Integer.parse(numeric) do
+          {minutes, ""} -> minutes
+          _ -> @default_timeframe
+        end
+      _ -> @default_timeframe  # Default to M15
     end
   end
   

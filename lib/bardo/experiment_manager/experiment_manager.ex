@@ -679,9 +679,12 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             # Check if all runs are completed
             total_runs = experiment.config.runs
             
+            # Ensure we have a default value for completed_at
+            experiment_with_completed_at = Map.put_new(updated_experiment, :completed_at, nil)
+
             updated_experiment = if run_number >= total_runs do
               # All runs completed, update status and compute statistics
-              %{updated_experiment |
+              %{experiment_with_completed_at |
                 status: :completed,
                 completed_at: System.os_time(:second),
                 results: compute_experiment_results(updated_runs)
@@ -689,7 +692,7 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
             else
               # Start the next run
               Process.send(self(), {:start_run, experiment_id, run_number + 1}, [])
-              updated_experiment
+              experiment_with_completed_at
             end
             
             # Save to storage (without the function)

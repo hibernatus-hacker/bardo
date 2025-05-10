@@ -18,7 +18,6 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
   alias Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding
   alias Bardo.Examples.Applications.AlgoTrading.AgentLoader
   alias Bardo.Examples.Applications.AlgoTrading.AgentSerializer
-  alias Bardo.Examples.Applications.AlgoTrading.ContinuousLearning
   alias Bardo.Examples.Applications.AlgoTrading.Brokers.Oanda
   alias Bardo.Examples.Applications.AlgoTrading.Brokers.Gemini
   
@@ -174,7 +173,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
     case DataUtils.load_historical_data(data_file) do
       {:ok, candles} ->
         # Create experiment ID
-        experiment_id = "#{instrument}_#{DateTime.utc_now() |> DateTime.to_unix()}"
+        _experiment_id = "#{instrument}_#{DateTime.utc_now() |> DateTime.to_unix()}"
         
         # Create initial population
         initial_population = create_initial_population(population_size, substrate_config)
@@ -319,7 +318,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
     
     # Load agent
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Load historical data
         case DataUtils.load_historical_data(data_file) do
           {:ok, candles} ->
@@ -385,7 +384,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
           
           # Extract training date
           trained_at = Map.get(metadata, "trained_at", "")
-          {trained_date, _} = DateTime.from_iso8601(trained_at)
+          {_trained_date, _} = DateTime.from_iso8601(trained_at)
           
           # Create agent info
           %{
@@ -475,7 +474,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
   end
   
   # Run evolution simulation
-  defp run_evolution_simulation(population, candles, generations) do
+  defp run_evolution_simulation(population, _candles, _generations) do
     # Implementation details would be added here
     # This is a placeholder for actual evolution algorithm
     
@@ -484,7 +483,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.TradingAPI do
   end
   
   # Run backtest simulation
-  defp run_backtest_simulation(genotype, candles, options) do
+  defp run_backtest_simulation(_genotype, _candles, _options) do
     # Implementation details would be added here
     # This is a placeholder for actual backtest simulation
     

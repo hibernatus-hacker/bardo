@@ -1,0 +1,9 @@
+{
+  "pair": "BTCUSD",
+  "timeframe": "M15",
+  "start_date": "2025-02-09T12:13:34.712317Z",
+  "end_date": "2025-05-10T12:13:34.712317Z",
+  "data_source": "gemini",
+  "last_updated": "2025-05-10T12:13:35.654005Z",
+  "total_records": 1344
+}

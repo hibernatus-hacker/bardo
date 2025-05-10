@@ -182,7 +182,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
 
     # Load agent
     case AgentSerializer.load_agent(agent_path) do
-      {:ok, {genotype, metadata}} ->
+      {:ok, {genotype, _metadata}} ->
         # Load historical data
         case DataUtils.load_historical_data(data_file) do
           {:ok, candles} ->
@@ -391,7 +391,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
 
     # Recursive function to evolve through all generations
     evolve_generations = fn
-      _evolve_fn, pop, 0, stats, progress, _opts -> {pop, stats}
+      _evolve_fn, pop, 0, stats, _progress, _opts -> {pop, stats}
       evolve_fn, pop, gens_left, stats, progress, opts ->
         gen_num = options.stats.generation + (options.generations - gens_left) + 1
 
@@ -445,7 +445,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
     drawdown = Map.get(sim_results, :max_drawdown, 100.0)
 
     # Calculate Sharpe ratio or similar metric
-    sharpe = calculate_sharpe_ratio(sim_results)
+    _sharpe = calculate_sharpe_ratio(sim_results)
 
     # Trade count factor (penalize strategies with too few trades)
     trade_count = Map.get(sim_results, :total_trades, 0)
@@ -522,7 +522,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
   defp crossover(genotype1, genotype2) do
     # Extract neurons and connections
     neurons1 = Map.get(genotype1, :neurons, %{})
-    neurons2 = Map.get(genotype2, :neurons, %{})
+    _neurons2 = Map.get(genotype2, :neurons, %{})
     connections1 = Map.get(genotype1, :connections, %{})
     connections2 = Map.get(genotype2, :connections, %{})
 
@@ -747,7 +747,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
     outputs = activate_neural_network(genotype, inputs)
 
     # Interpret outputs
-    [direction, size, risk] = outputs
+    [direction, size, _risk] = outputs
 
     # Convert to trading decision
     # Direction: < -0.33 = sell, > 0.33 = buy, otherwise hold
@@ -911,7 +911,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
   end
 
   # Activate neural network
-  defp activate_neural_network(genotype, inputs) do
+  defp activate_neural_network(_genotype, _inputs) do
     # This is a simplified implementation - in a real system, we would use the actual
     # neural network activation code from the cortex module
 
@@ -924,7 +924,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentTrainer do
   end
 
   # Prepare neural inputs from candles
-  defp prepare_neural_inputs(candles, genotype) do
+  defp prepare_neural_inputs(_candles, _genotype) do
     # In a real implementation, this would convert the candles to a substrate grid
     # and then flatten it for the neural network inputs
 

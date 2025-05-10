@@ -234,7 +234,7 @@ defmodule Bardo.Examples.Applications.AlgoTrading.AgentRepository do
             if Map.get(options, :with_genotype, false) do
               # Load full agent with genotype
               case AgentSerializer.load_agent(agent.file_path) do
-                {:ok, {genotype, metadata}} ->
+                {:ok, {genotype, _metadata}} ->
                   {:ok, Map.put(agent, :genotype, genotype)}
                   
                 error -> error

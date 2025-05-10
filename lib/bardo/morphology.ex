@@ -755,7 +755,7 @@ defmodule Bardo.Morphology do
   
   # Get the appropriate module for a sensor type
   defp get_module_for_sensor(sensor) do
-    case sensor.type do
+    case Map.get(sensor, :type) do
       :trading -> Bardo.Examples.Applications.AlgoTrading.TradingSensor
       :substrate -> Bardo.AgentManager.Sensor
       _ -> Bardo.AgentManager.Sensor
@@ -764,7 +764,7 @@ defmodule Bardo.Morphology do
   
   # Get the appropriate module for an actuator type
   defp get_module_for_actuator(actuator) do
-    case actuator.type do
+    case Map.get(actuator, :type) do
       :trading -> Bardo.Examples.Applications.AlgoTrading.TradingActuator
       :substrate -> Bardo.AgentManager.Actuator
       _ -> Bardo.AgentManager.Actuator

@@ -1,0 +1,9 @@
+{
+  "pair": "EUR_USD",
+  "timeframe": "M15",
+  "start_date": "2025-05-03T01:51:43.834174Z",
+  "end_date": "2025-05-10T01:51:43.834174Z",
+  "data_source": "OANDA",
+  "last_updated": "2025-05-10T01:51:44.799203Z",
+  "total_records": 480
+}

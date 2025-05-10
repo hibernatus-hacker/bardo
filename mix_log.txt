@@ -1,0 +1,391 @@
+Running ExUnit with seed: 350856, max_cases: 8
+Excluding tags: [:skip, :pending]
+
+..............
+
+  1) test run functions using mocks run_with_damping calls the right functions (Bardo.Examples.Benchmarks.DpbTest)
+     test/bardo/examples/benchmarks/dpb_test.exs:85
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:setup, 1}, [{{:args_matcher, [:_], #Reference<0.741239105.72220674.177587>, false}, {:meck_exec, #Function<42.81571850/1 in :erl_eval.expr/6>}}]}})
+         ** (EXIT) normal
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/support/mock_helper.ex:153: anonymous fn/3 in Bardo.TestSupport.MockHelper.redirect_module/2
+       (elixir 1.17.2) lib/enum.ex:987: Enum."-each/2-lists^foreach/1-0-"/2
+       test/support/mock_helper.ex:142: Bardo.TestSupport.MockHelper.redirect_module/2
+       test/bardo/examples/benchmarks/dpb_test.exs:80: Bardo.Examples.Benchmarks.DpbTest.__ex_unit_setup_2_0/1
+       Bardo.Examples.Benchmarks.DpbTest.__ex_unit_describe_2/1
+
+
+=== Double Pole Balancing Experiment (Without Damping) ===
+Experiment ID: dpb_without_damping_test
+Population size: 50
+Generations: 25
+Max steps: 5000
+Starting experiment...
+
+
+DPB experiment is running. Progress will be shown in the logs.
+After completion, you can test the best solution with:
+  Bardo.Examples.Benchmarks.Dpb.test_best_solution(:dpb_without_damping_test)
+
+...
+
+  2) test Fx example configure/4 creates a valid experiment configuration (Bardo.Regression.FxRegressionTest)
+     test/regression/fx_regression_test.exs:233
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:setup, 2}, [{{:args_matcher, [:_, :_], #Reference<0.741239105.72220675.178141>, false}, {:meck_exec, #Function<0.131395046/2 in Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1>}}]}})
+         ** (EXIT) shutdown
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/regression/fx_regression_test.exs:90: Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1
+       test/regression/fx_regression_test.exs:1: Bardo.Regression.FxRegressionTest.__ex_unit__/2
+
+.......................
+
+  3) test run/4 using mocks sets up and starts the experiment (Bardo.Examples.Applications.FxTest)
+     test/bardo/examples/applications/fx_test.exs:78
+     ** (ErlangError) Erlang error: {:already_started, #PID<0.758.0>}
+     stacktrace:
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:93: :meck_proc.start(Bardo.PolisMgr, [:passthrough, :non_strict])
+       test/support/mock_helper.ex:137: Bardo.TestSupport.MockHelper.redirect_module/2
+       test/bardo/examples/applications/fx_test.exs:73: Bardo.Examples.Applications.FxTest.__ex_unit_setup_1_0/1
+       Bardo.Examples.Applications.FxTest.__ex_unit_describe_1/1
+
+
+
+  4) test FxSensor sensor types generate correct specifications (Bardo.Regression.FxRegressionTest)
+     test/regression/fx_regression_test.exs:282
+     ** (ErlangError) Erlang error: {:undefined_function, {Bardo.PolisMgr, :setup, 2}}
+     stacktrace:
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:764: :meck.check_expect_result/1
+       test/regression/fx_regression_test.exs:90: Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1
+       test/regression/fx_regression_test.exs:1: Bardo.Regression.FxRegressionTest.__ex_unit__/2
+
+.......................................................Trial 1/10... fitness: 3.140707837319128, generations: 100
+Trial 2/10... fitness: 3.134685888358824, generations: 100
+Trial 3/10........ fitness: 3.2286911151199718, generations: 100
+Trial 4/10..... fitness: 3.174337407177859, generations: 100
+Trial 5/10.................Creating initial population of size 20...
+Starting evolution for 50 generations...
+. fitness: 3.1787528884986216, generations: 100
+Trial 6/10...
+Evolution completed after 50 generations
+Best fitness: 3.215250446065186
+
+Testing best solution on XOR:
+Input: [0.0000, 0.0000] => Output: [0.4238] (Expected: [0.0000], Error: 0.4238)
+Input: [0.0000, 1.0000] => Output: [0.5513] (Expected: [1.0000], Error: 0.4487)
+Input: [1.0000, 0.0000] => Output: [0.5363] (Expected: [1.0000], Error: 0.4637)
+Input: [1.0000, 1.0000] => Output: [0.4345] (Expected: [0.0000], Error: 0.4345)
+..... fitness: 3.245306679393947, generations: 100
+.Trial 7/10....... fitness: 3.2416881745184254, generations: 100
+Trial 8/10.... fitness: 3.3466462001212216, generations: 100
+Trial 9/10.... fitness: 3.1456678160853224, generations: 100
+
+
+Trial 10/10...  5) test FlatlandSensor sensor types generate correct specifications (Bardo.Regression.FlatlandRegressionTest)
+     test/regression/flatland_regression_test.exs:136
+     ** (KeyError) key :sensor_type not found in: %{
+       id: nil,
+       name: :vision_sensor,
+       type: :vision,
+       format: nil,
+       parameters: %{range: 5, angle_count: 1},
+       generation: nil,
+       scape: :scape_name,
+       vl: 1,
+       cx_id: :cortex_id,
+       fanout_ids: []
+     }
+     code: assert vision_spec.sensor_type == :vision
+     stacktrace:
+       test/regression/flatland_regression_test.exs:143: (test)
+
+
+
+  6) test FxMorphology morphology provides correct physical configuration (Bardo.Regression.FxRegressionTest)
+     test/regression/fx_regression_test.exs:393
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:setup, 2}, [{{:args_matcher, [:_, :_], #Reference<0.741239105.72220675.179187>, false}, {:meck_exec, #Function<0.131395046/2 in Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1>}}]}})
+         ** (EXIT) shutdown
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/regression/fx_regression_test.exs:90: Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1
+       test/regression/fx_regression_test.exs:1: Bardo.Regression.FxRegressionTest.__ex_unit__/2
+
+.
+
+  7) test FlatlandActuator actuator types generate correct specifications (Bardo.Regression.FlatlandRegressionTest)
+     test/regression/flatland_regression_test.exs:172
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:get_best_agent, 1}, [{{:args_matcher, [:_], #Reference<0.741239105.72220674.180072>, false}, {:meck_exec, #Function<42.81571850/1 in :erl_eval.expr/6>}}]}})
+         ** (EXIT) normal
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/support/mock_helper.ex:153: anonymous fn/3 in Bardo.TestSupport.MockHelper.redirect_module/2
+       (elixir 1.17.2) lib/enum.ex:987: Enum."-each/2-lists^foreach/1-0-"/2
+       test/support/mock_helper.ex:142: Bardo.TestSupport.MockHelper.redirect_module/2
+       test/regression/flatland_regression_test.exs:70: Bardo.Regression.FlatlandRegressionTest.__ex_unit_setup_0/1
+       test/regression/flatland_regression_test.exs:1: Bardo.Regression.FlatlandRegressionTest.__ex_unit__/2
+
+....... fitness: 3.2887105729944404, generations: 100
+Trial 1/10..................... fitness: 3.3977826282341232, generations: 100
+Trial 2/10..... fitness: 3.313977654004365, generations: 100
+Trial 3/10....
+=== Flatland Predator-Prey Simulation ===
+Experiment ID: flatland_test
+Predator population: 20
+Prey population: 20
+Plant quantity: 40
+Simulation steps: 1000
+Generations: 50
+Starting experiment...
+
+ fitness: 3.3717263040324847, generations: 100
+Trial 4/10...
+
+  8) test Flatland example run/1 with default parameters sets up experiment correctly (Bardo.Regression.FlatlandRegressionTest)
+     test/regression/flatland_regression_test.exs:78
+     ** (UndefinedFunctionError) function Bardo.DB.store/3 is undefined or private
+     code: Flatland.run(:flatland_test)
+     stacktrace:
+       (bardo 0.1.0) Bardo.DB.store(:experiment, :flatland_test, %{data: %{id: :flatland_test, iterations: 50, backup_frequency: 5, scapes: [%{module: Bardo.ScapeManager.Scape, name: :flatland, type: :private, module_parameters: %{plant_quantity: 40}, sector_module: Bardo.Examples.Applications.Flatland.Flatland}], populations: [%{id: :predator_population, size: 20, mutation_rate: 0.1, morphology: Bardo.Examples.Applications.Flatland.Predator, mutation_operators: [{:mutate_weights, :gaussian, 0.3}, {:add_neuron, 0.05}, {:add_connection, 0.1}, {:remove_connection, 0.05}, {:remove_neuron, 0.02}], selection_algorithm: "TournamentSelectionAlgorithm", tournament_size: 5, elite_fraction: 0.1, evaluations_per_generation: 1, population_to_evaluate: 1.0, scape_list: [:flatland]}, %{id: :prey_population, size: 20, mutation_rate: 0.1, morphology: Bardo.Examples.Applications.Flatland.Prey, mutation_operators: [{:mutate_weights, :gaussian, 0.3}, {:add_neuron, 0.05}, {:add_connection, 0.1}, {:remove_connection, 0.05}, {:remove_neuron, 0.02}], selection_algorithm: "TournamentSelectionAlgorithm", tournament_size: 5, elite_fraction: 0.1, evaluations_per_generation: 1, population_to_evaluate: 1.0, scape_list: [:flatland]}], simulation_steps: 1000}})
+       (bardo 0.1.0) lib/bardo/examples/examples_helper.ex:44: Bardo.Examples.ExamplesHelper.run_experiment/2
+       (bardo 0.1.0) lib/bardo/examples/applications/flatland.ex:122: Bardo.Examples.Applications.Flatland.run/6
+       test/regression/flatland_regression_test.exs:80: (test)
+
+.
+
+  9) test FxMorphology neuron pattern creates correct mapping (Bardo.Regression.FxRegressionTest)
+     test/regression/fx_regression_test.exs:445
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:setup, 2}, [{{:args_matcher, [:_, :_], #Reference<0.741239105.72220676.180972>, false}, {:meck_exec, #Function<0.131395046/2 in Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1>}}]}})
+         ** (EXIT) shutdown
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/regression/fx_regression_test.exs:90: Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1
+       test/regression/fx_regression_test.exs:1: Bardo.Regression.FxRegressionTest.__ex_unit__/2
+
+
+
+ 10) test Flatland example run/6 with custom parameters sets up experiment correctly (Bardo.Regression.FlatlandRegressionTest)
+     test/regression/flatland_regression_test.exs:99
+     ** (exit) exited in: :gen_server.call(Bardo.PolisMgr_meck, {:set_expect, {{:get_best_agent, 1}, [{{:args_matcher, [:_], #Reference<0.741239105.72220674.180758>, false}, {:meck_exec, #Function<42.81571850/1 in :erl_eval.expr/6>}}]}})
+         ** (EXIT) normal
+     stacktrace:
+       (stdlib 6.2.2) gen_server.erl:1142: :gen_server.call/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:106: :meck_proc.set_expect/2
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:254: :meck.expect/3
+       test/support/mock_helper.ex:153: anonymous fn/3 in Bardo.TestSupport.MockHelper.redirect_module/2
+       (elixir 1.17.2) lib/enum.ex:987: Enum."-each/2-lists^foreach/1-0-"/2
+       test/support/mock_helper.ex:142: Bardo.TestSupport.MockHelper.redirect_module/2
+       test/regression/flatland_regression_test.exs:70: Bardo.Regression.FlatlandRegressionTest.__ex_unit_setup_0/1
+       test/regression/flatland_regression_test.exs:1: Bardo.Regression.FlatlandRegressionTest.__ex_unit__/2
+
+ fitness: 3.289972347677465, generations: 100
+Trial 5/10....
+
+ 11) test Flatland example visualize/1 requests visualization of results (Bardo.Regression.FlatlandRegressionTest)
+     test/regression/flatland_regression_test.exs:123
+     ** (ErlangError) Erlang error: {:already_started, #PID<0.1305.0>}
+     stacktrace:
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck_proc.erl:93: :meck_proc.start(Bardo.PolisMgr, [:passthrough, :non_strict])
+       test/support/mock_helper.ex:137: Bardo.TestSupport.MockHelper.redirect_module/2
+       test/regression/flatland_regression_test.exs:70: Bardo.Regression.FlatlandRegressionTest.__ex_unit_setup_0/1
+       test/regression/flatland_regression_test.exs:1: Bardo.Regression.FlatlandRegressionTest.__ex_unit__/2
+
+     The following output was logged:
+     [error] Module 'Elixir.Bardo.PolisMgr' must be purged before deleting
+     
+     
+     
+
+
+ 12) test Fx example run/1 with default parameters sets up experiment correctly (Bardo.Regression.FxRegressionTest)
+     test/regression/fx_regression_test.exs:171
+     ** (ErlangError) Erlang error: {:undefined_function, {Bardo.PolisMgr, :setup, 2}}
+     stacktrace:
+       (meck 0.9.2) /home/user/Desktop/neuroevolution/bardo/deps/meck/src/meck.erl:764: :meck.check_expect_result/1
+       test/regression/fx_regression_test.exs:90: Bardo.Regression.FxRegressionTest.__ex_unit_setup_0/1
+       test/regression/fx_regression_test.exs:1: Bardo.Regression.FxRegressionTest.__ex_unit__/2
+
+     The following output was logged:
+     [error] Module 'Elixir.Bardo.PolisMgr' must be purged before deleting
+     
+     
+     
+ fitness: 3.4509229294845727, generations: 100
+Trial 6/10....
+Evolution completed after 200 generations
+Best fitness: 3.703068368342544
+
+Testing best solution on XOR:
+Input: [0.0000, 0.0000] => Output: [0.2771] (Expected: [0.0000], Error: 0.2771)
+Input: [0.0000, 1.0000] => Output: [0.7257] (Expected: [1.0000], Error: 0.2743)
+Input: [1.0000, 0.0000] => Output: [0.7265] (Expected: [1.0000], Error: 0.2735)
+Input: [1.0000, 1.0000] => Output: [0.2647] (Expected: [0.0000], Error: 0.2647)
+
+Fitness progression:
+  3.7031 |                                        
+         |                                        
+         |                                        
+         |                                        
+         |                                        
+  3.3519 |                                        
+         |                                        
+         |                                     ***
+         |                ************************
+  3.0007 |****************************************
+          ----------------------------------------
+          0                100              200
+ fitness: 3.394129293699449, generations: 100
+.Trial 7/10.... fitness: 3.3791416310848965, generations: 100
+Trial 8/10...
+=== Forex (FX) Trading Experiment ===
+Experiment ID: custom_test
+Population size: 20
+Data window size: 1000
+Generations: 15
+Starting experiment...
+
+. fitness: 3.3740757121306735, generations: 100
+Trial 9/10... fitness: 3.496536161215171, generations: 100
+Trial 10/10...
+=== Testing Best FX Trading Agent ===
+Experiment ID: fx_test
+Test window start: 5000
+Test window size: 1000
+Loading best agent from experiment...
+
+⚠️ Using mock genotype for demonstration
+Running backtesting on out-of-sample data...
+
+. fitness: 3.487057799612035, generations: 100
+
+Effect of Population Size on Solution Quality:
+Small Population (10): mean=3.212519457958776, stddev=0.07013049189086179
+Large Population (50): mean=3.3955322461175235, stddev=0.06728354574354067
+.Trial 1/10... fitness: 3.302612803933701, generations: 100
+Trial 2/10... fitness: 3.2794628377099357, generations: 100
+Trial 3/10... fitness: 3.366559681093583, generations: 100
+Trial 4/10... fitness: 3.1869252078312638, generations: 100
+Trial 5/10... fitness: 3.1524817601668094, generations: 100
+Trial 6/10... fitness: 3.4065622884868603, generations: 100
+Trial 7/10... fitness: 3.219097795044128, generations: 100
+Trial 8/10... fitness: 3.34315616592749, generations: 100
+Trial 9/10... fitness: 3.344378070076213, generations: 100
+Trial 10/10... fitness: 3.390778929307544, generations: 100
+
+Evolutionary Performance Statistics (10 trials):
+Final Fitness: mean=3.299201553957752, stddev=0.08779605618516563, min=3.1524817601668094, max=3.4065622884868603
+Generations: mean=100.0, stddev=0.0, min=100, max=100
+Convergence Rate (fitness gain per generation): mean=0.0029940999478573578, stddev=8.851873210786403e-4
+.Random trial 1/10... fitness: 3.029325532928457
+Random trial 2/10... fitness: 3.053881461893355
+Random trial 3/10... fitness: 3.0473900095821804
+Random trial 4/10... fitness: 3.043641759404935
+Random trial 5/10... fitness: 3.029004994529104
+Random trial 6/10... fitness: 3.0609063551284548
+Random trial 7/10... fitness: 3.026183569854601
+Random trial 8/10... fitness: 3.0409622449505544
+Random trial 9/10... fitness: 3.0465208018438936
+Random trial 10/10... fitness: 3.050407077508562
+Trial 1/10... fitness: 3.3207310307035893, generations: 100
+Trial 2/10... fitness: 3.4246219029549585, generations: 100
+Trial 3/10... fitness: 3.372333695249131, generations: 100
+Trial 4/10... fitness: 3.3582048525370247, generations: 100
+Trial 5/10... fitness: 3.4543738455658297, generations: 100
+Trial 6/10... fitness: 3.3740064235593903, generations: 100
+Trial 7/10... fitness: 3.387842194506607, generations: 100
+Trial 8/10... fitness: 3.343438001704865, generations: 100
+Trial 9/10... fitness: 3.1824187535386446, generations: 100
+Trial 10/10... fitness: 3.41628253481327, generations: 100
+
+Comparison of Random Search vs. Evolution:
+Random Search: mean=3.04282238076241, stddev=0.011525185751177386, min=3.026183569854601, max=3.0609063551284548
+Evolution: mean=3.3634253235133316, stddev=0.07498960631860963, min=3.1824187535386446, max=3.4543738455658297
+.Trial 1/10... fitness: 3.1243461748355337, generations: 100
+Trial 2/10... fitness: 3.1274259433270024, generations: 100
+Trial 3/10... fitness: 3.1435170171872935, generations: 100
+Trial 4/10... fitness: 3.212726668335832, generations: 100
+Trial 5/10... fitness: 3.205184588921144, generations: 100
+Trial 6/10... fitness: 3.1754092059193173, generations: 100
+Trial 7/10... fitness: 3.0894331739779153, generations: 100
+Trial 8/10... fitness: 3.147435701484688, generations: 100
+Trial 9/10... fitness: 3.238713832050847, generations: 100
+Trial 10/10... fitness: 3.1618264914841534, generations: 100
+Trial 1/10... fitness: 3.1778303431170585, generations: 100
+Trial 2/10... fitness: 3.246118308608861, generations: 100
+Trial 3/10... fitness: 3.3043634625555196, generations: 100
+Trial 4/10... fitness: 3.2240740581923006, generations: 100
+Trial 5/10... fitness: 3.352595608612365, generations: 100
+Trial 6/10... fitness: 3.326245791250365, generations: 100
+Trial 7/10... fitness: 3.3295177255483446, generations: 100
+Trial 8/10... fitness: 3.250800126405129, generations: 100
+Trial 9/10... fitness: 3.39027701408893, generations: 100
+Trial 10/10... fitness: 3.3580489369192463, generations: 100
+
+Effect of Mutation Parameters on Convergence:
+Low Mutation: generations mean=100.0, fitness mean=3.162601879752373
+High Mutation: generations mean=100.0, fitness mean=3.295987137529812
+......................................................
+
+ 13) test new_run starts a new population manager run (Bardo.PopulationManager.PopulationManagerClientTest)
+     test/bardo/population_manager/population_manager_client_test.exs:22
+     ** (exit) exited in: GenServer.call(Bardo.PopulationManager.PopulationManagerSupervisor, {:start_child, {{Bardo.PopulationManager.PopulationManagerWorker, :start_link, [:population_default_population, %{population_size: 50, morphology: :default, experiment_id: "default_experiment", run_number: 1}]}, :transient, 30000, :worker, [Bardo.PopulationManager.PopulationManagerWorker]}}, :infinity)
+         ** (EXIT) no process: the process is not alive or there's no process currently associated with the given name, possibly because its application isn't started
+     code: assert :ok = PopulationManagerClient.new_run()
+     stacktrace:
+       (elixir 1.17.2) lib/gen_server.ex:1121: GenServer.call/3
+       (bardo 0.1.0) lib/bardo/population_manager/population_manager_client.ex:16: Bardo.PopulationManager.PopulationManagerClient.new_run/0
+       test/bardo/population_manager/population_manager_client_test.exs:27: (test)
+
+.
+
+ 14) test restart_run restarts the population manager (Bardo.PopulationManager.PopulationManagerClientTest)
+     test/bardo/population_manager/population_manager_client_test.exs:33
+     ** (exit) exited in: GenServer.call(Bardo.PopulationManager.PopulationManagerSupervisor, :which_children, :infinity)
+         ** (EXIT) no process: the process is not alive or there's no process currently associated with the given name, possibly because its application isn't started
+     code: assert :ok = PopulationManagerClient.restart_run()
+     stacktrace:
+       (elixir 1.17.2) lib/gen_server.ex:1121: GenServer.call/3
+       lib/bardo/population_manager/population_manager_supervisor.ex:115: Bardo.PopulationManager.PopulationManagerSupervisor_meck_original.list_populations/0
+       (bardo 0.1.0) lib/bardo/population_manager/population_manager_client.ex:31: Bardo.PopulationManager.PopulationManagerClient.restart_run/0
+       test/bardo/population_manager/population_manager_client_test.exs:38: (test)
+
+.........
+
+ 15) test workflow execution run/2 handles broker initialization failures (Bardo.Examples.CryptoWorkflowTest)
+     test/bardo/examples/crypto_workflow_test.exs:142
+     ** (ArgumentError) you attempted to apply a function named :init_broker on a map/struct. If you are using Kernel.apply/3, make sure the module is an atom. If you are trying to invoke an anonymous function in a map/struct, add a dot between the function name and the parenthesis: map.init_broker.()
+     code: output = capture_io(fn ->
+     stacktrace:
+       (erts 15.2.6) :erlang.apply(%{init_broker: #Function<1.15412909/3 in Bardo.Examples.CryptoWorkflowTest."test workflow execution run/2 handles broker initialization failures"/1>}, :init_broker, [:gemini, "test_key", %{live: false, api_secret: "test_secret"}])
+       test/examples/crypto_trading_workflow_refactored.exs:165: WorkflowManager.init_broker/2
+       test/examples/crypto_trading_workflow_refactored.exs:124: WorkflowManager.run/2
+       test/bardo/examples/crypto_workflow_test.exs:177: anonymous fn/1 in Bardo.Examples.CryptoWorkflowTest."test workflow execution run/2 handles broker initialization failures"/1
+       (ex_unit 1.17.2) lib/ex_unit/capture_io.ex:315: ExUnit.CaptureIO.do_capture_gl/2
+       (ex_unit 1.17.2) lib/ex_unit/capture_io.ex:273: ExUnit.CaptureIO.do_with_io/3
+       (ex_unit 1.17.2) lib/ex_unit/capture_io.ex:142: ExUnit.CaptureIO.capture_io/1
+       test/bardo/examples/crypto_workflow_test.exs:175: (test)
+
+.................................
+
+ 16) test Bardo.AgentManager.AgentWorkerSupervisor helper functions for dynamic supervision (Bardo.SupervisorTest)
+     test/bardo/supervisor_test.exs:109
+     Expected truthy, got false
+     code: assert function_exported?(Bardo.AgentManager.AgentWorkerSupervisor, :start_agent, 2)
+     stacktrace:
+       test/bardo/supervisor_test.exs:111: (test)
+
+......[error] [polis_mgr:stop] (error) polis_mgr not online
+.[error] [polis_mgr:stop] (error) polis_mgr not online
+.............
+Finished in 12.2 seconds (7.6s async, 4.5s sync)
+2 doctests, 10 properties, 292 tests, 16 failures, 23 excluded
