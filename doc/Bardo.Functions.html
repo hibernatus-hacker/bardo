@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.Functions — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.Functions</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The Functions module contains the activation functions used by the
+neuron, and other mathematical functions used by the system. Through
+the Functions module, the activation functions are fully decoupled
+from the neurons using them. A neuron can use any activation
+function, no matter its form, as long as it returns a properly
+formatted value.</p><p>NOTE: While the activation functions are all stored in the Functions module,
+the aggregation and the plasticity functions are stored in the SignalAggregator
+and Plasticity modules respectively.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#absolute/1" data-no-tooltip="" translate="no">absolute(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#avg/1" data-no-tooltip="" translate="no">avg(list)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The avg/1 function accepts a list for a parameter, and then returns
+the average of the list to the caller.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bin/1" data-no-tooltip="" translate="no">bin(val)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The bin/1 function converts val into a binary value, 1 if val &gt; 0,
+and 0 if val &lt;= 0.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian2polar/1" data-no-tooltip="" translate="no">cartesian2polar(arg)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian2spherical/1" data-no-tooltip="" translate="no">cartesian2spherical(arg)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian/2" data-no-tooltip="" translate="no">cartesian(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian/3" data-no-tooltip="" translate="no">cartesian(icoord, coord, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_coord_diffs/2" data-no-tooltip="" translate="no">cartesian_coord_diffs(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_coord_diffs/3" data-no-tooltip="" translate="no">cartesian_coord_diffs(from_coords, to_coords, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_distance/2" data-no-tooltip="" translate="no">cartesian_distance(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_distance/3" data-no-tooltip="" translate="no">cartesian_distance(icoord, coord, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_gaussed_coord_diffs1/3" data-no-tooltip="" translate="no">cartesian_gaussed_coord_diffs1(list1, list2, acc)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_gaussed_coord_diffs/2" data-no-tooltip="" translate="no">cartesian_gaussed_coord_diffs(from_coords, to_coords)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cartesian_gaussed_coord_diffs/3" data-no-tooltip="" translate="no">cartesian_gaussed_coord_diffs(from_coords, to_coords, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#centripital_distances/2" data-no-tooltip="" translate="no">centripital_distances(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#centripital_distances/3" data-no-tooltip="" translate="no">centripital_distances(icoord, coord, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cos/1" data-no-tooltip="" translate="no">cos(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#distance/2" data-no-tooltip="" translate="no">distance(vector1, vector2)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#distance/3" data-no-tooltip="" translate="no">distance(list1, list2, acc)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#gaussian/1" data-no-tooltip="" translate="no">gaussian(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#gaussian/2" data-no-tooltip="" translate="no">gaussian(const, val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#iow/3" data-no-tooltip="" translate="no">iow(icoord, coord, iow)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#linear/1" data-no-tooltip="" translate="no">linear(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#log/1" data-no-tooltip="" translate="no">log(value)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#multiquadric/1" data-no-tooltip="" translate="no">multiquadric(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#normalize/1" data-no-tooltip="" translate="no">normalize(vector)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#polar2cartesian/1" data-no-tooltip="" translate="no">polar2cartesian(arg)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#polar/2" data-no-tooltip="" translate="no">polar(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#polar/3" data-no-tooltip="" translate="no">polar(icoord, coord, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#quadratic/1" data-no-tooltip="" translate="no">quadratic(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#relu/1" data-no-tooltip="" translate="no">relu(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sat/3" data-no-tooltip="" translate="no">sat(val, min, max)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The sat/3 function is similar to saturation/2 function, but here the
+max and min can be different, and are specified by the caller.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sat_dzone/5" data-no-tooltip="" translate="no">sat_dzone(val, max, min, dzmax, dzmin)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The sat_dzone/5 function is similar to the sat/3 function, but here,
+if val is between dzmin and dzmax, it is zeroed.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#saturation/1" data-no-tooltip="" translate="no">saturation(val)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The function saturation/1 accepts a value val, and returns the same if
+its magnitude is below 1000. Otherwise it returns -1000 or 1000, if
+it's less than or greater than -1000 or 1000 respectively. Thus val
+saturates at -1000 and 1000.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#saturation/2" data-no-tooltip="" translate="no">saturation(val, spread)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The saturation/2 function is similar to saturation/1, but here the
+spread (symmetric max and min values) is specified by the caller.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#scale/3" data-no-tooltip="" translate="no">scale(val, max, min)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The scale/3 function accepts a list of values, and scales them to be
+between the specified min and max values.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sgn/1" data-no-tooltip="" translate="no">sgn(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sigmoid1/1" data-no-tooltip="" translate="no">sigmoid1(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sigmoid/1" data-no-tooltip="" translate="no">sigmoid(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sin/1" data-no-tooltip="" translate="no">sin(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#spherical2cartesian/1" data-no-tooltip="" translate="no">spherical2cartesian(arg)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#spherical/2" data-no-tooltip="" translate="no">spherical(icoord, coord)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#spherical/3" data-no-tooltip="" translate="no">spherical(icoord, coord, list)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sqrt/1" data-no-tooltip="" translate="no">sqrt(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#std/1" data-no-tooltip="" translate="no">std(list)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The std/1 function accepts a list for a parameter, and then returns to
+the caller the standard deviation of the list.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#std/3" data-no-tooltip="" translate="no">std(list, avg, acc)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#tanh/1" data-no-tooltip="" translate="no">tanh(val)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#to_cartesian/1" data-no-tooltip="" translate="no">to_cartesian(direction)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#trinary/1" data-no-tooltip="" translate="no">trinary(val)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The trinary/1 function converts val into a trinary value.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#vector_difference/2" data-no-tooltip="" translate="no">vector_difference(vector1, vector2)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#vector_difference/3" data-no-tooltip="" translate="no">vector_difference(list1, list2, acc)</a>
+
+      </div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="absolute/1">
+
+  <div class="detail-header">
+    <a href="#absolute/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">absolute(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L121" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> absolute(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="avg/1">
+
+  <div class="detail-header">
+    <a href="#avg/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">avg(list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L167" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> avg([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The avg/1 function accepts a list for a parameter, and then returns
+the average of the list to the caller.</p>
+  </section>
+</section>
+<section class="detail" id="bin/1">
+
+  <div class="detail-header">
+    <a href="#bin/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bin(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L106" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bin(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: 0 | 1</pre>
+
+      </div>
+
+<p>The bin/1 function converts val into a binary value, 1 if val &gt; 0,
+and 0 if val &lt;= 0.</p>
+  </section>
+</section>
+<section class="detail" id="cartesian2polar/1">
+
+  <div class="detail-header">
+    <a href="#cartesian2polar/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian2polar(arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L300" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian2polar({<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()} | {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}) ::
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian2spherical/1">
+
+  <div class="detail-header">
+    <a href="#cartesian2spherical/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian2spherical(arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L282" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian2spherical({<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()} | {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}) ::
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian/2">
+
+  <div class="detail-header">
+    <a href="#cartesian/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L192" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian/3">
+
+  <div class="detail-header">
+    <a href="#cartesian/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian(icoord, coord, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L224" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_coord_diffs/2">
+
+  <div class="detail-header">
+    <a href="#cartesian_coord_diffs/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_coord_diffs(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L209" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_coord_diffs([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_coord_diffs/3">
+
+  <div class="detail-header">
+    <a href="#cartesian_coord_diffs/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_coord_diffs(from_coords, to_coords, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L243" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_coord_diffs([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_distance/2">
+
+  <div class="detail-header">
+    <a href="#cartesian_distance/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_distance(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L206" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_distance([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_distance/3">
+
+  <div class="detail-header">
+    <a href="#cartesian_distance/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_distance(icoord, coord, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L238" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_distance([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_gaussed_coord_diffs1/3">
+
+  <div class="detail-header">
+    <a href="#cartesian_gaussed_coord_diffs1/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_gaussed_coord_diffs1(list1, list2, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L217" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_gaussed_coord_diffs1([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_gaussed_coord_diffs/2">
+
+  <div class="detail-header">
+    <a href="#cartesian_gaussed_coord_diffs/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_gaussed_coord_diffs(from_coords, to_coords)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L212" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_gaussed_coord_diffs([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cartesian_gaussed_coord_diffs/3">
+
+  <div class="detail-header">
+    <a href="#cartesian_gaussed_coord_diffs/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cartesian_gaussed_coord_diffs(from_coords, to_coords, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L248" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cartesian_gaussed_coord_diffs([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="centripital_distances/2">
+
+  <div class="detail-header">
+    <a href="#centripital_distances/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">centripital_distances(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L201" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> centripital_distances([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="centripital_distances/3">
+
+  <div class="detail-header">
+    <a href="#centripital_distances/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">centripital_distances(icoord, coord, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L233" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> centripital_distances([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="cos/1">
+
+  <div class="detail-header">
+    <a href="#cos/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cos(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L91" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cos(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="distance/2">
+
+  <div class="detail-header">
+    <a href="#distance/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">distance(vector1, vector2)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L308" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> distance([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="distance/3">
+
+  <div class="detail-header">
+    <a href="#distance/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">distance(list1, list2, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L311" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> distance([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="gaussian/1">
+
+  <div class="detail-header">
+    <a href="#gaussian/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">gaussian(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L130" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> gaussian(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="gaussian/2">
+
+  <div class="detail-header">
+    <a href="#gaussian/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">gaussian(const, val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L133" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> gaussian(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="iow/3">
+
+  <div class="detail-header">
+    <a href="#iow/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">iow(icoord, coord, iow)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L253" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> iow([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="linear/1">
+
+  <div class="detail-header">
+    <a href="#linear/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">linear(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L124" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> linear(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="log/1">
+
+  <div class="detail-header">
+    <a href="#log/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">log(value)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L146" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> log(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="multiquadric/1">
+
+  <div class="detail-header">
+    <a href="#multiquadric/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">multiquadric(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L118" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> multiquadric(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="normalize/1">
+
+  <div class="detail-header">
+    <a href="#normalize/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">normalize(vector)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L268" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> normalize([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="polar2cartesian/1">
+
+  <div class="detail-header">
+    <a href="#polar2cartesian/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">polar2cartesian(arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L293" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> polar2cartesian({<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}) :: {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="polar/2">
+
+  <div class="detail-header">
+    <a href="#polar/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">polar(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L195" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> polar([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="polar/3">
+
+  <div class="detail-header">
+    <a href="#polar/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">polar(icoord, coord, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L227" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> polar([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="quadratic/1">
+
+  <div class="detail-header">
+    <a href="#quadratic/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">quadratic(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L127" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> quadratic(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="relu/1">
+
+  <div class="detail-header">
+    <a href="#relu/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">relu(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L88" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> relu(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="sat/3">
+
+  <div class="detail-header">
+    <a href="#sat/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sat(val, min, max)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L65" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sat(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The sat/3 function is similar to saturation/2 function, but here the
+max and min can be different, and are specified by the caller.</p>
+  </section>
+</section>
+<section class="detail" id="sat_dzone/5">
+
+  <div class="detail-header">
+    <a href="#sat_dzone/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sat_dzone(val, max, min, dzmax, dzmin)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L74" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sat_dzone(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The sat_dzone/5 function is similar to the sat/3 function, but here,
+if val is between dzmin and dzmax, it is zeroed.</p>
+  </section>
+</section>
+<section class="detail" id="saturation/1">
+
+  <div class="detail-header">
+    <a href="#saturation/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">saturation(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L22" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> saturation(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The function saturation/1 accepts a value val, and returns the same if
+its magnitude is below 1000. Otherwise it returns -1000 or 1000, if
+it's less than or greater than -1000 or 1000 respectively. Thus val
+saturates at -1000 and 1000.</p>
+  </section>
+</section>
+<section class="detail" id="saturation/2">
+
+  <div class="detail-header">
+    <a href="#saturation/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">saturation(val, spread)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L35" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> saturation(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The saturation/2 function is similar to saturation/1, but here the
+spread (symmetric max and min values) is specified by the caller.</p>
+  </section>
+</section>
+<section class="detail" id="scale/3">
+
+  <div class="detail-header">
+    <a href="#scale/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">scale(val, max, min)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L48" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> scale(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>() | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>() | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+<p>The scale/3 function accepts a list of values, and scales them to be
+between the specified min and max values.</p>
+  </section>
+</section>
+<section class="detail" id="sgn/1">
+
+  <div class="detail-header">
+    <a href="#sgn/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sgn(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L97" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sgn(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: -1 | 0 | 1</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="sigmoid1/1">
+
+  <div class="detail-header">
+    <a href="#sigmoid1/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sigmoid1(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L160" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sigmoid1(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="sigmoid/1">
+
+  <div class="detail-header">
+    <a href="#sigmoid/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sigmoid(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L150" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sigmoid(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="sin/1">
+
+  <div class="detail-header">
+    <a href="#sin/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sin(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L94" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sin(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="spherical2cartesian/1">
+
+  <div class="detail-header">
+    <a href="#spherical2cartesian/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">spherical2cartesian(arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L274" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> spherical2cartesian({<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}) :: {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="spherical/2">
+
+  <div class="detail-header">
+    <a href="#spherical/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">spherical(icoord, coord)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L198" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> spherical([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="spherical/3">
+
+  <div class="detail-header">
+    <a href="#spherical/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">spherical(icoord, coord, list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L230" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> spherical([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="sqrt/1">
+
+  <div class="detail-header">
+    <a href="#sqrt/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sqrt(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L143" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sqrt(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="std/1">
+
+  <div class="detail-header">
+    <a href="#std/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">std(list)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L174" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> std([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The std/1 function accepts a list for a parameter, and then returns to
+the caller the standard deviation of the list.</p>
+  </section>
+</section>
+<section class="detail" id="std/3">
+
+  <div class="detail-header">
+    <a href="#std/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">std(list, avg, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L180" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> std([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="tanh/1">
+
+  <div class="detail-header">
+    <a href="#tanh/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">tanh(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L85" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> tanh(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="to_cartesian/1">
+
+  <div class="detail-header">
+    <a href="#to_cartesian/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">to_cartesian(direction)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L256" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> to_cartesian(
+  {:cartesian, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}
+  | {:polar, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}
+  | {:spherical, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}
+) :: {:cartesian, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="trinary/1">
+
+  <div class="detail-header">
+    <a href="#trinary/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">trinary(val)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L113" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> trinary(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: -1 | 0 | 1</pre>
+
+      </div>
+
+<p>The trinary/1 function converts val into a trinary value.</p>
+  </section>
+</section>
+<section class="detail" id="vector_difference/2">
+
+  <div class="detail-header">
+    <a href="#vector_difference/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">vector_difference(vector1, vector2)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L317" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> vector_difference([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="vector_difference/3">
+
+  <div class="detail-header">
+    <a href="#vector_difference/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">vector_difference(list1, list2, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/functions.ex#L320" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> vector_difference([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

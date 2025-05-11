@@ -390,24 +390,27 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
       nil ->
         # Try to load from storage
         case Persistence.load(:experiment, experiment_id) do
-          {:ok, experiment} ->
+          {:ok, experiment} when experiment != :not_found ->
             # Merge new config with existing config
             merged_config = Map.merge(experiment.config || @default_config, config)
             updated_experiment = %{experiment | config: merged_config, updated_at: System.os_time(:second)}
-            
+
             # Save changes
             case Persistence.save(updated_experiment, :experiment) do
               :ok ->
                 # Update state
                 updated_state = put_in(state.experiments[experiment_id], updated_experiment)
                 {:reply, :ok, updated_state}
-                
+
               error ->
                 {:reply, error, state}
             end
-            
-          _ ->
+
+          {:ok, :not_found} ->
             {:reply, {:error, "Experiment not found"}, state}
+
+          error ->
+            {:reply, error, state}
         end
         
       experiment ->
@@ -498,10 +501,13 @@ defmodule Bardo.ExperimentManager.ExperimentManager do
       nil ->
         # Try to load from storage
         case Persistence.load(:experiment, experiment_id) do
-          {:ok, experiment} ->
+          {:ok, experiment} when experiment != :not_found ->
             status_response = get_experiment_status(experiment)
             {:reply, status_response, state}
-            
+
+          {:ok, :not_found} ->
+            {:reply, {:error, :not_found}, state}
+
           error ->
             {:reply, error, state}
         end

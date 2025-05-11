@@ -42,16 +42,16 @@ defmodule Bardo.Persistence do
   def save(model, type, id \\ nil, opts \\ []) do
     # Extract ID from model if not provided
     model_id = id || extract_id(model)
-    
+
     if is_nil(model_id) do
       {:error, "No ID provided and could not extract ID from model"}
     else
       # Prepare model for storage
       prepared_model = prepare_model_for_storage(model, opts)
-      
-      # Save to database
-      # Models.write expects (model, type, id) - fixing the order
-      Models.write(prepared_model, type, model_id)
+
+      # Save directly to the database rather than through Models
+      # This avoids potential inconsistencies in how Models and DB interact
+      Bardo.DB.store(type, model_id, prepared_model)
     end
   end
   
@@ -83,7 +83,10 @@ defmodule Bardo.Persistence do
         # Process loaded model
         processed_model = process_loaded_model(model, opts)
         {:ok, processed_model}
-        
+
+      :not_found ->
+        {:ok, :not_found}
+
       error ->
         error
     end
@@ -109,8 +112,9 @@ defmodule Bardo.Persistence do
   """
   @spec exists?(atom(), binary()) :: boolean()
   def exists?(type, id) do
-    # The Models.exists? function expects (id, type), so we need to swap parameters
-    Models.exists?(id, type)
+    # Use direct DB function with correct parameter order
+    # This makes it more reliable than going through Models layer
+    Bardo.DB.exists?(type, id)
   end
   
   @doc """
@@ -130,10 +134,14 @@ defmodule Bardo.Persistence do
   """
   @spec delete(atom(), binary()) :: :ok | {:error, term()}
   def delete(type, id) do
-    # Bug fix: The Models.delete function has the parameters in the wrong order
-    # compared to how Models.exists? calls DB.fetch
-    # We should call DB.delete directly with the correct parameter order
-    Bardo.DB.delete(type, id)
+    # We call DB.delete directly with the correct parameter order
+    # Make sure the table exists first by checking exists?
+    if exists?(type, id) do
+      Bardo.DB.delete(type, id)
+    else
+      # Still return :ok if it doesn't exist (idempotent delete)
+      :ok
+    end
   end
   
   @doc """

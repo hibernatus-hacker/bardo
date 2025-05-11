@@ -11,14 +11,18 @@ defmodule Bardo.ModelsTest do
       tot_n_ros: 5,
       af_distribution: [tanh: 5, sigmoid: 5]
     }
-    
+
     model = topology_summary(data)
+
+    # Debug the model structure
+    IO.inspect(model, label: "Model structure")
+
     assert get(:type, model) == :neural
     assert get(:tot_neurons, model) == 10
-    
+
     updated = set({:tot_neurons, 15}, model)
     assert get(:tot_neurons, updated) == 15
-    
+
     multi_updated = set([{:tot_n_ils, 25}, {:tot_n_ols, 35}], model)
     assert get(:tot_n_ils, multi_updated) == 25
     assert get(:tot_n_ols, multi_updated) == 35

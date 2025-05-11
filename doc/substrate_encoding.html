@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Substrate Encoding for Neural Networks in Algorithmic Trading — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Substrate Encoding for Neural Networks in Algorithmic Trading</h1>
+
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/docs/substrate_encoding.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+<h2 id="introduction" class="section-heading"><a href="#introduction" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Introduction</span></h2><p>Substrate encoding is a powerful neural network encoding technique that provides significant advantages for trading applications. This document explains how substrate encoding works in Bardo's algorithmic trading framework and how to use it effectively.</p><h2 id="what-is-substrate-encoding" class="section-heading"><a href="#what-is-substrate-encoding" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">What is Substrate Encoding?</span></h2><p>Substrate encoding (also known as Hypercube-based Neuroevolution of Augmenting Topologies or HyperNEAT) is a technique that encodes neural networks with a geometric interpretation of the problem domain. Rather than directly evolving connection weights in a fixed topology, substrate encoding evolves patterns of connectivity between neurons placed in a geometric space.</p><h2 id="why-use-substrate-encoding-for-trading" class="section-heading"><a href="#why-use-substrate-encoding-for-trading" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Why Use Substrate Encoding for Trading?</span></h2><p>Traditional neural networks for trading face several challenges:</p><ol><li><strong>Time series complexity</strong>: Market data contains complex temporal patterns</li><li><strong>Multi-scale patterns</strong>: Important patterns exist at different timeframes</li><li><strong>Sparse relationships</strong>: Only certain combinations of inputs matter</li><li><strong>Overfitting</strong>: It's easy to fit to noise rather than signal</li></ol><p>Substrate encoding helps address these challenges by:</p><ol><li><strong>Geometric interpretation</strong>: Maps market data to a coordinate space</li><li><strong>Regular patterns</strong>: Captures geometric regularities in data</li><li><strong>Efficient representation</strong>: Compresses complex patterns into fewer parameters</li><li><strong>Built-in regularization</strong>: Provides natural constraints on model complexity</li></ol><h2 id="how-substrate-encoding-works-in-bardo" class="section-heading"><a href="#how-substrate-encoding-works-in-bardo" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">How Substrate Encoding Works in Bardo</span></h2><p>In Bardo's algorithmic trading system, substrate encoding maps market data into a 3D coordinate space:</p><ul><li><strong>X-axis (time)</strong>: From recent to older candles</li><li><strong>Y-axis (price)</strong>: From high to low price levels</li><li><strong>Z-axis (data type)</strong>: Different types of data (OHLC, volume, indicators)</li></ul><p><img src="../erlang/docs/substrate_encoding.png" alt="Substrate Encoding"/></p><h3 id="key-components" class="section-heading"><a href="#key-components" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Key Components</span></h3><ol><li><strong>Input Encoding</strong>: Market data is converted into a 3D grid</li><li><strong>Neuron Placement</strong>: Neurons are placed at specific coordinates</li><li><strong>Connectivity Patterns</strong>: Connections are established based on geometric rules</li><li><strong>Weight Assignment</strong>: Connection weights are derived from patterns</li></ol><h2 id="implementation-details" class="section-heading"><a href="#implementation-details" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementation Details</span></h2><h3 id="1-creating-a-substrate-encoded-genotype" class="section-heading"><a href="#1-creating-a-substrate-encoded-genotype" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">1. Creating a Substrate-Encoded Genotype</span></h3><p>The first step is to create a genotype that uses substrate encoding:</p><pre><code class="makeup elixir" translate="no"><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding</span><span class="o">.</span><span class="n">create_substrate_genotype</span><span class="p" data-group-id="5263325404-1">(</span><span class="p" data-group-id="5263325404-2">%{</span><span class="w">
+  </span><span class="ss">input_time_points</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">    </span><span class="c1"># 60 time periods of data</span><span class="w">
+  </span><span class="ss">input_price_levels</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">   </span><span class="c1"># 20 price levels</span><span class="w">
+  </span><span class="ss">input_data_types</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">     </span><span class="c1"># 10 different data types</span><span class="w">
+  </span><span class="ss">hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">         </span><span class="c1"># 2 hidden layers</span><span class="w">
+  </span><span class="ss">hidden_neurons_per_layer</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="c1"># 20 neurons per hidden layer</span><span class="w">
+  </span><span class="ss">output_neurons</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">         </span><span class="c1"># 3 outputs (direction, size, risk)</span><span class="w">
+</span><span class="p" data-group-id="5263325404-2">}</span><span class="p" data-group-id="5263325404-1">)</span></code></pre><p>This function:</p><ul><li>Creates input neurons arranged in a 3D grid</li><li>Adds hidden layers with neurons in geometric patterns</li><li>Adds output neurons at appropriate coordinates</li><li>Establishes initial connectivity based on geometric rules</li></ul><h3 id="2-converting-market-data-to-substrate-format" class="section-heading"><a href="#2-converting-market-data-to-substrate-format" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">2. Converting Market Data to Substrate Format</span></h3><p>When processing market data, you need to convert it to the substrate format:</p><pre><code class="makeup elixir" translate="no"><span class="n">grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding</span><span class="o">.</span><span class="n">convert_price_data_to_substrate</span><span class="p" data-group-id="3312079041-1">(</span><span class="w">
+  </span><span class="n">price_data</span><span class="p">,</span><span class="w">    </span><span class="c1"># List of price candles</span><span class="w">
+  </span><span class="n">indicators</span><span class="p">,</span><span class="w">    </span><span class="c1"># Map of technical indicators</span><span class="w">
+  </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="w">     </span><span class="c1"># Dimensions matching the genotype</span><span class="w">
+</span><span class="p" data-group-id="3312079041-1">)</span></code></pre><p>This function:</p><ul><li>Maps price data into a 3D grid representation</li><li>Places different data types along the Z-axis</li><li>Uses activation functions to represent price levels</li><li>Normalizes all values to appropriate ranges</li></ul><h3 id="3-activating-the-neural-network" class="section-heading"><a href="#3-activating-the-neural-network" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">3. Activating the Neural Network</span></h3><p>Before activating the neural network, the grid needs to be flattened to match the input neurons:</p><pre><code class="makeup elixir" translate="no"><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding</span><span class="o">.</span><span class="n">flatten_substrate_grid</span><span class="p" data-group-id="1902281118-1">(</span><span class="w">
+  </span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">genotype</span><span class="w">
+</span><span class="p" data-group-id="1902281118-1">)</span><span class="w">
+
+</span><span class="c1"># Activate the neural network with the inputs</span><span class="w">
+</span><span class="p" data-group-id="1902281118-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">outputs</span><span class="p" data-group-id="1902281118-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">activate</span><span class="p" data-group-id="1902281118-3">(</span><span class="n">cortex</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p" data-group-id="1902281118-3">)</span></code></pre><p>The flattening process:</p><ul><li>Maps each point in the 3D grid to the corresponding input neuron</li><li>Matches coordinates in the grid to substrate coordinates of neurons</li><li>Creates a map of neuron IDs to input values</li></ul><h2 id="evolutionary-process-with-substrate-encoding" class="section-heading"><a href="#evolutionary-process-with-substrate-encoding" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Evolutionary Process with Substrate Encoding</span></h2><p>When evolving substrate-encoded networks:</p><ol><li><strong>Initialization</strong>: Start with a population of substrate-encoded networks</li><li><strong>Evaluation</strong>: Test networks on the trading simulator</li><li><strong>Selection</strong>: Select the best-performing networks</li><li><strong>Mutation</strong>: Modify connectivity patterns and weights</li><li><strong>Reproduction</strong>: Create the next generation</li><li><strong>Repeat</strong>: Continue until convergence or generation limit</li></ol><p>The key advantage is that mutations affect connectivity patterns rather than individual weights, allowing for more effective exploration of the solution space.</p><h2 id="practical-example-forex-trading" class="section-heading"><a href="#practical-example-forex-trading" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Practical Example: Forex Trading</span></h2><p>Here's a complete example of using substrate encoding for forex trading:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Configure experiment with substrate encoding</span><span class="w">
+</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8509086561-1">%{</span><span class="w">
+  </span><span class="ss">market</span><span class="p">:</span><span class="w"> </span><span class="ss">:forex</span><span class="p">,</span><span class="w">
+  </span><span class="ss">symbol</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;EURUSD&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">timeframe</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">use_substrate</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">  </span><span class="c1"># Enable substrate encoding</span><span class="w">
+  </span><span class="ss">input_time_points</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+  </span><span class="ss">input_price_levels</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="ss">input_data_types</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p" data-group-id="8509086561-1">}</span><span class="w">
+
+</span><span class="c1"># Run the experiment</span><span class="w">
+</span><span class="nc">Bardo.Examples.Applications.AlgoTrading</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="8509086561-2">(</span><span class="ss">:substrate_experiment</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p" data-group-id="8509086561-2">)</span><span class="w">
+
+</span><span class="c1"># Test the best agent</span><span class="w">
+</span><span class="nc">Bardo.Examples.Applications.AlgoTrading</span><span class="o">.</span><span class="n">test_best_agent</span><span class="p" data-group-id="8509086561-3">(</span><span class="ss">:substrate_experiment</span><span class="p" data-group-id="8509086561-3">)</span><span class="w">
+
+</span><span class="c1"># Get the best agent for deployment</span><span class="w">
+</span><span class="p" data-group-id="8509086561-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">best_agent</span><span class="p" data-group-id="8509086561-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.DistributedTraining</span><span class="o">.</span><span class="n">get_best_agent</span><span class="p" data-group-id="8509086561-5">(</span><span class="ss">:substrate_experiment</span><span class="p" data-group-id="8509086561-5">)</span><span class="w">
+
+</span><span class="c1"># Deploy to live trading</span><span class="w">
+</span><span class="p" data-group-id="8509086561-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">agent_id</span><span class="p" data-group-id="8509086561-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.LiveAgent</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="8509086561-7">(</span><span class="w">
+  </span><span class="ss">:live_agent</span><span class="p">,</span><span class="w">
+  </span><span class="n">best_agent</span><span class="p">,</span><span class="w">
+  </span><span class="n">broker_module</span><span class="p">,</span><span class="w">
+  </span><span class="n">broker_config</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="8509086561-8">[</span><span class="ss">substrate_encoding</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="8509086561-8">]</span><span class="w">  </span><span class="c1"># Important to use substrate encoding for live data too</span><span class="w">
+</span><span class="p" data-group-id="8509086561-7">)</span></code></pre><h2 id="advanced-customization" class="section-heading"><a href="#advanced-customization" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Advanced Customization</span></h2><p>You can customize substrate encoding for specific trading applications:</p><h3 id="custom-coordinate-mappings" class="section-heading"><a href="#custom-coordinate-mappings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Coordinate Mappings</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Use a different coordinate system</span><span class="w">
+</span><span class="n">custom_mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k" data-group-id="8087821358-1">fn</span><span class="w"> </span><span class="n">price_data</span><span class="p">,</span><span class="w"> </span><span class="n">indicators</span><span class="p">,</span><span class="w"> </span><span class="n">dims</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="c1"># Custom mapping logic...</span><span class="w">
+  </span><span class="n">grid</span><span class="w">
+</span><span class="k" data-group-id="8087821358-1">end</span><span class="w">
+
+</span><span class="c1"># Use the custom mapping in your configuration</span><span class="w">
+</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8087821358-2">%{</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  </span><span class="ss">use_substrate</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
+  </span><span class="ss">substrate_mapping</span><span class="p">:</span><span class="w"> </span><span class="n">custom_mapping</span><span class="w">
+</span><span class="p" data-group-id="8087821358-2">}</span></code></pre><h3 id="different-activation-functions" class="section-heading"><a href="#different-activation-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Different Activation Functions</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Create substrate with different activation functions</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding</span><span class="o">.</span><span class="n">create_substrate_genotype</span><span class="p" data-group-id="1671321054-1">(</span><span class="p" data-group-id="1671321054-2">%{</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  </span><span class="ss">activation_functions</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1671321054-3">%{</span><span class="w">
+    </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="ss">:tanh</span><span class="p">,</span><span class="w">
+    </span><span class="ss">hidden</span><span class="p">:</span><span class="w"> </span><span class="ss">:relu</span><span class="p">,</span><span class="w">
+    </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="ss">:sigmoid</span><span class="w">
+  </span><span class="p" data-group-id="1671321054-3">}</span><span class="w">
+</span><span class="p" data-group-id="1671321054-2">}</span><span class="p" data-group-id="1671321054-1">)</span></code></pre><h3 id="irregular-neuron-distributions" class="section-heading"><a href="#irregular-neuron-distributions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Irregular Neuron Distributions</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Create substrate with custom neuron placement</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Examples.Applications.AlgoTrading.SubstrateEncoding</span><span class="o">.</span><span class="n">create_substrate_genotype</span><span class="p" data-group-id="4601550142-1">(</span><span class="p" data-group-id="4601550142-2">%{</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  </span><span class="ss">neuron_placement</span><span class="p">:</span><span class="w"> </span><span class="ss">:concentrated</span><span class="p">,</span><span class="w">  </span><span class="c1"># More neurons in recent timeframes</span><span class="w">
+  </span><span class="ss">concentration_factor</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="w">         </span><span class="c1"># How concentrated neurons are</span><span class="w">
+</span><span class="p" data-group-id="4601550142-2">}</span><span class="p" data-group-id="4601550142-1">)</span></code></pre><h2 id="performance-considerations" class="section-heading"><a href="#performance-considerations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Performance Considerations</span></h2><p>Substrate encoding has some implications for performance:</p><ul><li><strong>Training time</strong>: Typically requires more generations than direct encoding</li><li><strong>Evaluation efficiency</strong>: Faster evaluation due to more regular structure</li><li><strong>Memory usage</strong>: Can be higher due to the geometric representation</li><li><strong>Runtime performance</strong>: Usually comparable to standard neural networks</li></ul><p>For best results:</p><ol><li>Use distributed training for larger population sizes</li><li>Start with smaller networks and gradually increase complexity</li><li>Tune mutation rates for substrate-specific operations</li><li>Consider population diversity to avoid premature convergence</li></ol><h2 id="conclusion" class="section-heading"><a href="#conclusion" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Conclusion</span></h2><p>Substrate encoding is a powerful technique for algorithmic trading that leverages geometric patterns in market data. By using this approach, you can create trading systems that are more robust, adaptable, and capable of capturing complex market dynamics.</p><p>For more information, see the <a href="algo_trading_guide.md">Algorithmic Trading Guide</a> and <a href="example_configs/substrate_forex.exs">Example Configurations</a>.</p>
+
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="advanced.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Advanced Bardo Usage
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="release.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Bardo Release Notes
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/bardo/0.1.0/show/docs/substrate_encoding.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

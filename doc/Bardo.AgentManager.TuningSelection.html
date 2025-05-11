@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.AgentManager.TuningSelection — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.AgentManager.TuningSelection</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The TuningSelection module contains all the tuning selection functions,
+which accept as input four parameters:</p><ol><li>All NIds belonging to the NN.</li><li>The agent's generation, which is the number of topological
+mutation phases that it has undergone.</li><li>The perturbation range, the multiplier of math:pi(), which when
+used produces the spread value.</li><li>The annealing parameter, which is used to indicate how the
+perturbation range decays with the age of the neuron to which synaptic
+weight perturbation is applied.</li></ol><p>It makes less sense to perturb the more stable elements of the NN system, 
+less so than those elements which have just recently been added to the NN system, 
+and which still need to be tuned and modified to work well with the already existing
+larger system. The concept is that of simulated annealing.</p><p>We gather all these selection functions in their own module because there
+are many ways to select neurons which should be perturbed in local
+search during the tuning phase. This makes it easier for us to add new
+selection functions later on, and see if a new function can improve
+the performance.</p><p>The tuning selection function must not only select the neuron ids for
+synaptic perturbation, but also compute the perturbation intensity,
+the available range of the perturbation intensity, from which the
+neuron will then randomly generate a weight perturbation value. Thus,
+the selection_function creates a list of tuples rather than simply a
+list of neuron ids. The selection_function outputs a list of the
+following form: [{NId, Spread},...], where NId is the neuron id, and
+Spread is the spread above and below 0, the value within which the
+neuron generates the actual perturbation. The Spread equals the
+perturbation_range value if there is no annealing, if annealing is
+present (annealing_parameter =&lt; 1), then the Spread is further
+modified. The annealing factor must scale the Spread, proportional to
+the age of the neuron whose synaptic weights are to be perturbed. In
+tuning selection algorithms, the spread value is calculated as follows:</p><p><code class="inline">Spread = PerurbationRange * math:pi() * math:pow(AnnealingParam, NAge)</code></p><p>When AnnealingParameter = 1, there is no annealing. But when the
+AnnealingParameter is set to a number lower than 1, then annealing is
+exponentially proportional to the neuron's age.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#active/4" data-no-tooltip="" translate="no">active(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>active selection algorithm composes a neuron id pool from all
+neurons who are younger than 3 generations.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#active_random/4" data-no-tooltip="" translate="no">active_random(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>active_random is a selection algorithm that composes an id pool by
+first creating a list of all neurons who are younger than 3
+generations, and then composing a sub list from it by randomly
+choosing elements from this list with a probability of
+1/math:sqrt(Tot_Neurons).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#all/4" data-no-tooltip="" translate="no">all(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>all returns a list of tuples composed of all ids (and their spread
+values) belonging to the NN, to the caller.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#all_random/4" data-no-tooltip="" translate="no">all_random(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>all_random first composes a list of tuples from NIds and their
+spreads, and then creates a sublist by choosing each element with a
+probability of 1/math:sqrt(Tot_neurons).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#current/4" data-no-tooltip="" translate="no">current(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>current is a selection algorithm that returns a list of all neurons
+which have been added to the NN, or affected by mutation, during the
+last generation.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#current_random/4" data-no-tooltip="" translate="no">current_random(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>current_random composes the list of tuples in the same way as
+current does, but then composes a sublist by randomly selecting
+elements from that list with a probability of
+1/math:sqrt(Tot_Neurons), and returning that to the caller.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#dynamic/4" data-no-tooltip="" translate="no">dynamic(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The dynamic selection function randomly selects an age limit for
+its neuron id pool. The age limit is chosen by executing
+math:sqrt(1/rand:uniform()), which creates a value between 1 and
+infinity. Using this function there is 75% that the number will be
+=&lt; 2, 25% that it will be &gt;= 2, 11% that it will be &gt;= 3...Every time
+this selection function is executed, the AgeLimit is generated anew,
+thus different times it will produce different neuron id pools for
+tuning.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#dynamic_random/4" data-no-tooltip="" translate="no">dynamic_random(ids, agent_generation, perturbation_range, annealing_parameter)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>dyanimic_random selection function composes the neuron id pool the
+same way as the dynamic/4 selection function, but after this id pool
+is generated, this selection function extracts ids from it randomly
+with a probability of 1/math:sqrt(Tot_Neurons). Thus the probability
+of a neuron being selected from this pool is proportional to the
+number of ids in that pool. If through chance no ids are selected,
+then the first element in the id pool is automatically selected, and
+given the highest spread.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="active/4">
+
+  <div class="detail-header">
+    <a href="#active/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">active(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L89" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> active([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: [
+  {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+]</pre>
+
+      </div>
+
+<p>active selection algorithm composes a neuron id pool from all
+neurons who are younger than 3 generations.</p>
+  </section>
+</section>
+<section class="detail" id="active_random/4">
+
+  <div class="detail-header">
+    <a href="#active_random/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">active_random(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L102" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> active_random([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) ::
+  [
+    {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+  ]</pre>
+
+      </div>
+
+<p>active_random is a selection algorithm that composes an id pool by
+first creating a list of all neurons who are younger than 3
+generations, and then composing a sub list from it by randomly
+choosing elements from this list with a probability of
+1/math:sqrt(Tot_Neurons).</p>
+  </section>
+</section>
+<section class="detail" id="all/4">
+
+  <div class="detail-header">
+    <a href="#all/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">all(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L152" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> all([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: [
+  {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+]</pre>
+
+      </div>
+
+<p>all returns a list of tuples composed of all ids (and their spread
+values) belonging to the NN, to the caller.</p>
+  </section>
+</section>
+<section class="detail" id="all_random/4">
+
+  <div class="detail-header">
+    <a href="#all_random/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">all_random(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L163" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> all_random([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: [
+  {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+]</pre>
+
+      </div>
+
+<p>all_random first composes a list of tuples from NIds and their
+spreads, and then creates a sublist by choosing each element with a
+probability of 1/math:sqrt(Tot_neurons).</p>
+  </section>
+</section>
+<section class="detail" id="current/4">
+
+  <div class="detail-header">
+    <a href="#current/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">current(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L122" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> current([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: [
+  {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+]</pre>
+
+      </div>
+
+<p>current is a selection algorithm that returns a list of all neurons
+which have been added to the NN, or affected by mutation, during the
+last generation.</p>
+  </section>
+</section>
+<section class="detail" id="current_random/4">
+
+  <div class="detail-header">
+    <a href="#current_random/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">current_random(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L140" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> current_random([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) ::
+  [
+    {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+  ]</pre>
+
+      </div>
+
+<p>current_random composes the list of tuples in the same way as
+current does, but then composes a sublist by randomly selecting
+elements from that list with a probability of
+1/math:sqrt(Tot_Neurons), and returning that to the caller.</p>
+  </section>
+</section>
+<section class="detail" id="dynamic/4">
+
+  <div class="detail-header">
+    <a href="#dynamic/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">dynamic(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L61" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> dynamic([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: [
+  {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+]</pre>
+
+      </div>
+
+<p>The dynamic selection function randomly selects an age limit for
+its neuron id pool. The age limit is chosen by executing
+math:sqrt(1/rand:uniform()), which creates a value between 1 and
+infinity. Using this function there is 75% that the number will be
+=&lt; 2, 25% that it will be &gt;= 2, 11% that it will be &gt;= 3...Every time
+this selection function is executed, the AgeLimit is generated anew,
+thus different times it will produce different neuron id pools for
+tuning.</p>
+  </section>
+</section>
+<section class="detail" id="dynamic_random/4">
+
+  <div class="detail-header">
+    <a href="#dynamic_random/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">dynamic_random(ids, agent_generation, perturbation_range, annealing_parameter)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/tuning_selection.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> dynamic_random([{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) ::
+  [
+    {Bardo.Models.neuron_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}
+  ]</pre>
+
+      </div>
+
+<p>dyanimic_random selection function composes the neuron id pool the
+same way as the dynamic/4 selection function, but after this id pool
+is generated, this selection function extracts ids from it randomly
+with a probability of 1/math:sqrt(Tot_Neurons). Thus the probability
+of a neuron being selected from this pool is proportional to the
+number of ids in that pool. If through chance no ids are selected,
+then the first element in the id pool is automatically selected, and
+given the highest spread.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.Models — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.Models</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Models for evolutionary computation data structures.</p><p>This module provides functions for creating and manipulating the 
+various data structures used in the Bardo system. It includes
+model definitions for experiments, populations, species, and
+other components of the evolutionary computation framework.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#actuator/1" data-no-tooltip="" translate="no">actuator(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create an actuator model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#agent/1" data-no-tooltip="" translate="no">agent(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create an agent model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#champion/1" data-no-tooltip="" translate="no">champion(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a champion model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cortex/1" data-no-tooltip="" translate="no">cortex(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a cortex model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" data-no-tooltip="" translate="no">delete(id, type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete a model from storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#exists?/2" data-no-tooltip="" translate="no">exists?(id, type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Check if a model exists in storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#experiment/1" data-no-tooltip="" translate="no">experiment(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create an experiment model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#fitness/1" data-no-tooltip="" translate="no">fitness(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a fitness model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#genotype/1" data-no-tooltip="" translate="no">genotype(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a genotype model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/3" data-no-tooltip="" translate="no">get(map, path, default \\ :not_found)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get a value from a nested map using a path of keys.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list/1" data-no-tooltip="" translate="no">list(type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>List all models of a given type.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#morphology/1" data-no-tooltip="" translate="no">morphology(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a morphology model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neuron/1" data-no-tooltip="" translate="no">neuron(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a neuron model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#population/1" data-no-tooltip="" translate="no">population(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a population model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#population_status/1" data-no-tooltip="" translate="no">population_status(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a population status model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#read/2" data-no-tooltip="" translate="no">read(id, type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Read a model from storage by ID and type.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#result/1" data-no-tooltip="" translate="no">result(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a result model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#scape/1" data-no-tooltip="" translate="no">scape(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a scape model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sensor/1" data-no-tooltip="" translate="no">sensor(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a sensor model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set/2" data-no-tooltip="" translate="no">set(key_value, model)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Set a value or values in a model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#specie/1" data-no-tooltip="" translate="no">specie(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a specie model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stat/1" data-no-tooltip="" translate="no">stat(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a stat model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#substrate/1" data-no-tooltip="" translate="no">substrate(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a substrate model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#topology_summary/1" data-no-tooltip="" translate="no">topology_summary(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a topology summary model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#trace/1" data-no-tooltip="" translate="no">trace(data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a trace model.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#write/3" data-no-tooltip="" translate="no">write(model, type, id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Write a model to storage.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="actuator/1">
+
+  <div class="detail-header">
+    <a href="#actuator/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">actuator(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L85" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> actuator(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create an actuator model.</p><p>Takes a map with actuator configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="agent/1">
+
+  <div class="detail-header">
+    <a href="#agent/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">agent(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L58" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> agent(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create an agent model.</p><p>Takes a map with agent configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="champion/1">
+
+  <div class="detail-header">
+    <a href="#champion/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">champion(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L178" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> champion(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a champion model.</p><p>Takes a map with champion data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="cortex/1">
+
+  <div class="detail-header">
+    <a href="#cortex/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cortex(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L142" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cortex(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a cortex model.</p><p>Takes a map with cortex configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete(id, type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L284" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Delete a model from storage.</p><h2 id="delete/2-parameters" class="section-heading"><a href="#delete/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">id</code> - The ID of the model to delete</li><li><code class="inline">type</code> - The type of the model (e.g. :experiment, :population, etc.)</li></ul><h2 id="delete/2-returns" class="section-heading"><a href="#delete/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the model was deleted successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error deleting the model</li></ul>
+  </section>
+</section>
+<section class="detail" id="exists?/2">
+
+  <div class="detail-header">
+    <a href="#exists?/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">exists?(id, type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L311" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> exists?(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Check if a model exists in storage.</p><h2 id="exists?/2-parameters" class="section-heading"><a href="#exists?/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">id</code> - The ID of the model to check</li><li><code class="inline">type</code> - The type of the model (e.g. :experiment, :population, etc.)</li></ul><h2 id="exists?/2-returns" class="section-heading"><a href="#exists?/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">true</code> - If the model exists</li><li><code class="inline">false</code> - If the model does not exist</li></ul>
+  </section>
+</section>
+<section class="detail" id="experiment/1">
+
+  <div class="detail-header">
+    <a href="#experiment/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">experiment(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L22" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> experiment(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create an experiment model.</p><p>Takes a map with experiment configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="fitness/1">
+
+  <div class="detail-header">
+    <a href="#fitness/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">fitness(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L103" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> fitness(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a fitness model.</p><p>Takes a map with fitness data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="genotype/1">
+
+  <div class="detail-header">
+    <a href="#genotype/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">genotype(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L40" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> genotype(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a genotype model.</p><p>Takes a map with genotype configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="get/3">
+
+    <span id="get/2"></span>
+
+  <div class="detail-header">
+    <a href="#get/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get(map, path, default \\ :not_found)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L392" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+
+      </div>
+
+<p>Get a value from a nested map using a path of keys.</p><h2 id="get/3-parameters" class="section-heading"><a href="#get/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">map</code> - The map to get the value from</li><li><code class="inline">path</code> - A key or list of keys to traverse</li><li><code class="inline">default</code> - Optional default value if the path is not found</li></ul><h2 id="get/3-returns" class="section-heading"><a href="#get/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>The value at the path, or the default value if not found</li></ul><h2 id="get/3-examples" class="section-heading"><a href="#get/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Simple key access</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Models</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7295621245-1">(</span><span class="p" data-group-id="7295621245-2">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7295621245-2">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:a</span><span class="p" data-group-id="7295621245-1">)</span><span class="w">
+</span><span class="mi">1</span><span class="w">
+
+</span><span class="c1"># Nested map access</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Models</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7295621245-3">(</span><span class="p" data-group-id="7295621245-4">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7295621245-5">%{</span><span class="ss">b</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7295621245-5">}</span><span class="p" data-group-id="7295621245-4">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7295621245-6">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="ss">:b</span><span class="p" data-group-id="7295621245-6">]</span><span class="p" data-group-id="7295621245-3">)</span><span class="w">
+</span><span class="mi">2</span><span class="w">
+
+</span><span class="c1"># Access with default</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Models</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7295621245-7">(</span><span class="p" data-group-id="7295621245-8">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7295621245-8">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:b</span><span class="p">,</span><span class="w"> </span><span class="ss">:not_found</span><span class="p" data-group-id="7295621245-7">)</span><span class="w">
+</span><span class="ss">:not_found</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list/1">
+
+  <div class="detail-header">
+    <a href="#list/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list(type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L350" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]</pre>
+
+      </div>
+
+<p>List all models of a given type.</p><h2 id="list/1-parameters" class="section-heading"><a href="#list/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">type</code> - The type of models to list</li></ul><h2 id="list/1-returns" class="section-heading"><a href="#list/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">[models]</code> - List of models, or empty list if none found</li></ul>
+  </section>
+</section>
+<section class="detail" id="morphology/1">
+
+  <div class="detail-header">
+    <a href="#morphology/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">morphology(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L49" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> morphology(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a morphology model.</p><p>Takes a map with morphology configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="neuron/1">
+
+  <div class="detail-header">
+    <a href="#neuron/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">neuron(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L133" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neuron(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a neuron model.</p><p>Takes a map with neuron configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="population/1">
+
+  <div class="detail-header">
+    <a href="#population/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">population(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L31" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> population(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a population model.</p><p>Takes a map with population configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="population_status/1">
+
+  <div class="detail-header">
+    <a href="#population_status/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">population_status(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L109" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> population_status(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a population status model.</p>
+  </section>
+</section>
+<section class="detail" id="read/2">
+
+  <div class="detail-header">
+    <a href="#read/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">read(id, type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L194" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> read(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Read a model from storage by ID and type.</p><h2 id="read/2-parameters" class="section-heading"><a href="#read/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">id</code> - The ID of the model to read</li><li><code class="inline">type</code> - The type of the model (e.g. :experiment, :population, etc.)</li></ul><h2 id="read/2-returns" class="section-heading"><a href="#read/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, model}</code> - If the model was found</li><li><code class="inline">{:error, reason}</code> - If the model was not found or there was an error</li></ul>
+  </section>
+</section>
+<section class="detail" id="result/1">
+
+  <div class="detail-header">
+    <a href="#result/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">result(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L94" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> result(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a result model.</p><p>Takes a map with result data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="scape/1">
+
+  <div class="detail-header">
+    <a href="#scape/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">scape(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L67" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> scape(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a scape model.</p><p>Takes a map with scape configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="sensor/1">
+
+  <div class="detail-header">
+    <a href="#sensor/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sensor(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L76" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sensor(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a sensor model.</p><p>Takes a map with sensor configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="set/2">
+
+  <div class="detail-header">
+    <a href="#set/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set(key_value, model)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L450" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set({<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Set a value or values in a model.</p><h2 id="set/2-parameters" class="section-heading"><a href="#set/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">key_value</code> - A tuple {key, value} or a list of tuples to set</li><li><code class="inline">model</code> - The model to update</li></ul><h2 id="set/2-returns" class="section-heading"><a href="#set/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>The updated model with the new values</li></ul><h2 id="set/2-examples" class="section-heading"><a href="#set/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Set a single value</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">set</span><span class="p" data-group-id="1131807554-1">(</span><span class="p" data-group-id="1131807554-2">{</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="1131807554-2">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1131807554-3">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1131807554-4">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1131807554-4">}</span><span class="p" data-group-id="1131807554-3">}</span><span class="p" data-group-id="1131807554-1">)</span><span class="w">
+</span><span class="p" data-group-id="1131807554-5">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1131807554-6">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="1131807554-6">}</span><span class="p" data-group-id="1131807554-5">}</span><span class="w">
+
+</span><span class="c1"># Set multiple values</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">set</span><span class="p" data-group-id="1131807554-7">(</span><span class="p" data-group-id="1131807554-8">[</span><span class="p" data-group-id="1131807554-9">{</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="1131807554-9">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1131807554-10">{</span><span class="ss">:b</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="1131807554-10">}</span><span class="p" data-group-id="1131807554-8">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1131807554-11">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1131807554-12">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1131807554-12">}</span><span class="p" data-group-id="1131807554-11">}</span><span class="p" data-group-id="1131807554-7">)</span><span class="w">
+</span><span class="p" data-group-id="1131807554-13">%{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1131807554-14">%{</span><span class="ss">a</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">b</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="1131807554-14">}</span><span class="p" data-group-id="1131807554-13">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="specie/1">
+
+  <div class="detail-header">
+    <a href="#specie/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">specie(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L115" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> specie(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a specie model.</p>
+  </section>
+</section>
+<section class="detail" id="stat/1">
+
+  <div class="detail-header">
+    <a href="#stat/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stat(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L160" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stat(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a stat model.</p><p>Takes a map with statistics data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="substrate/1">
+
+  <div class="detail-header">
+    <a href="#substrate/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">substrate(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L169" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> substrate(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a substrate model.</p><p>Takes a map with substrate configuration and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="topology_summary/1">
+
+  <div class="detail-header">
+    <a href="#topology_summary/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">topology_summary(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L124" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> topology_summary(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a topology summary model.</p><p>Takes a map with topology data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="trace/1">
+
+  <div class="detail-header">
+    <a href="#trace/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">trace(data)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L151" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> trace(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>Create a trace model.</p><p>Takes a map with trace data and returns a model
+that can be stored in the database.</p>
+  </section>
+</section>
+<section class="detail" id="write/3">
+
+  <div class="detail-header">
+    <a href="#write/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">write(model, type, id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/models.ex#L245" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> write(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Write a model to storage.</p><h2 id="write/3-parameters" class="section-heading"><a href="#write/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">model</code> - The model to write</li><li><code class="inline">type</code> - The type of the model</li><li><code class="inline">id</code> - The ID of the model</li></ul><h2 id="write/3-returns" class="section-heading"><a href="#write/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the model was written successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error writing the model</li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

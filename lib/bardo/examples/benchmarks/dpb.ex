@@ -1,33 +1,125 @@
 defmodule Bardo.Examples.Benchmarks.Dpb do
   @moduledoc """
   Double Pole Balancing (DPB) benchmark for neuroevolution algorithms.
-  
+
   This module provides functionality for running and testing the Double
   Pole Balancing benchmark problem, a common benchmark for testing the
   efficacy of neural network controllers evolved through neuroevolution.
-  
+
   The benchmark consists of balancing a double pole system attached to a cart
-  that can move horizontally back and forth. The cart must balance two poles 
+  that can move horizontally back and forth. The cart must balance two poles
   of different lengths by applying a horizontal force to keep them upright.
-  
+
   Two versions of the benchmark are available:
-  
+
   1. DPB With Damping - Velocities are provided to the agent
   2. DPB Without Damping - A harder task where velocities are not provided
-  
+
   This module provides functionality for both versions, and includes
   features for:
-  
+
   - Running a complete evolutionary experiment with the DPB benchmark
   - Testing evolved controllers
   - Visualizing the behavior of the controllers
   """
-  
+
   require Logger
   alias Bardo.PolisMgr
   alias Bardo.Models
   alias Bardo.Examples.ExamplesHelper
   alias Bardo.Examples.Benchmarks.Dpb.{DpbWDamping, DpbWoDamping}
+
+  @doc """
+  Creates a configuration for a DPB experiment with damping.
+
+  ## Parameters
+    * `id` - Identifier for this experiment
+    * `population_size` - Number of individuals per generation (default: 100)
+    * `iterations` - Maximum number of generations to evolve (default: 50)
+    * `max_steps` - Maximum simulation steps in fitness evaluation (default: 100000)
+
+  ## Returns
+    * Map with experiment configuration
+  """
+  @spec configure_with_damping(atom(), pos_integer(), pos_integer(), pos_integer()) :: map()
+  def configure_with_damping(id, population_size \\ 100, iterations \\ 50, max_steps \\ 100000) do
+    # Convert ID to string for consistency
+    id_str = if is_atom(id), do: Atom.to_string(id), else: "#{id}"
+
+    %{
+      id: id,
+      iterations: iterations,
+      backup_frequency: 5,
+
+      # Configure populations
+      populations: [
+        %{
+          id: :dpb_population,
+          size: population_size,
+          morphology: DpbWDamping,
+          mutation_rate: 0.1,
+          mutation_operators: [
+            {:mutate_weights, :gaussian, 0.3},
+            {:add_neuron, 0.05},
+            {:add_connection, 0.1},
+            {:remove_connection, 0.05},
+            {:remove_neuron, 0.02}
+          ],
+          selection_algorithm: "TournamentSelectionAlgorithm",
+          elite_fraction: 0.1,
+          evaluations_per_generation: 1,
+          population_to_evaluate: 1.0,
+          scape_list: [:dpb_scape],
+          tournament_size: 5
+        }
+      ],
+
+      # Configure scapes
+      scapes: [
+        %{
+          module: Bardo.ScapeManager.Scape,
+          name: :dpb_scape,
+          type: :private,
+          sector_module: DpbWDamping,
+          module_parameters: %{
+            max_steps: max_steps,
+            visualize: false
+          }
+        }
+      ]
+    }
+  end
+
+  @doc """
+  Creates a configuration for a DPB experiment without damping.
+
+  ## Parameters
+    * `id` - Identifier for this experiment
+    * `population_size` - Number of individuals per generation (default: 100)
+    * `iterations` - Maximum number of generations to evolve (default: 50)
+    * `max_steps` - Maximum simulation steps in fitness evaluation (default: 100000)
+
+  ## Returns
+    * Map with experiment configuration
+  """
+  @spec configure_without_damping(atom(), pos_integer(), pos_integer(), pos_integer()) :: map()
+  def configure_without_damping(id, population_size \\ 100, iterations \\ 50, max_steps \\ 100000) do
+    # Get the with damping config and modify it
+    config = configure_with_damping(id, population_size, iterations, max_steps)
+
+    # Update populations to use DpbWoDamping
+    populations = Enum.map(config.populations, fn pop ->
+      Map.put(pop, :morphology, DpbWoDamping)
+    end)
+
+    # Update scapes to use DpbWoDamping
+    scapes = Enum.map(config.scapes, fn scape ->
+      Map.put(scape, :sector_module, DpbWoDamping)
+    end)
+
+    # Return the updated config
+    %{config | populations: populations, scapes: scapes}
+  end
   
   @doc """
   Run the Double Pole Balancing benchmark with damping forces.
@@ -796,12 +888,13 @@ defmodule Bardo.Examples.Benchmarks.Dpb.Dpb do
   # ScapeManager.Sector callbacks
 
   @impl true
-  def init(args) do
+  def init(scape_pid, args) do
     # Initialize the DPB environment
     max_steps = Map.get(args, :max_steps, 100_000)
 
     # Create initial state with default values
     state = %{
+      scape_pid: scape_pid,
       x: 0.0,
       x_dot: 0.0,
       theta1: 0.07,  # start with a slight angle to make it challenging
@@ -875,14 +968,142 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWDamping do
   # Define a struct to hold the state
   defstruct [:scape_pid, :max_steps, :state]
 
+  @doc """
+  Returns the physical configuration for sensors and actuators
+  required by the DPB with damping experiment.
+
+  ## Parameters
+    * `owner` - Owner ID
+    * `cortex_id` - Cortex ID
+    * `scape_id` - Scape ID
+
+  ## Returns
+    * Map with sensor and actuator definitions
+  """
+  def get_phys_config(owner, cortex_id, scape_id) do
+    %{
+      sensors: [
+        # Position sensors
+        %{
+          id: 1,
+          cortex_id: cortex_id,
+          sensor_type: :cart_position,
+          name: :cart_position,
+          owner: owner,
+          scape: scape_id,
+          vl: -2.4,
+          vh: 2.4
+        },
+        %{
+          id: 2,
+          cortex_id: cortex_id,
+          sensor_type: :pole1_angle,
+          name: :pole1_angle,
+          owner: owner,
+          scape: scape_id,
+          vl: -0.62,
+          vh: 0.62
+        },
+        %{
+          id: 3,
+          cortex_id: cortex_id,
+          sensor_type: :pole2_angle,
+          name: :pole2_angle,
+          owner: owner,
+          scape: scape_id,
+          vl: -0.62,
+          vh: 0.62
+        },
+
+        # Velocity sensors (with damping only)
+        %{
+          id: 4,
+          cortex_id: cortex_id,
+          sensor_type: :cart_velocity,
+          name: :cart_velocity,
+          owner: owner,
+          scape: scape_id,
+          vl: -2.0,
+          vh: 2.0
+        },
+        %{
+          id: 5,
+          cortex_id: cortex_id,
+          sensor_type: :pole1_angular_velocity,
+          name: :pole1_angular_velocity,
+          owner: owner,
+          scape: scape_id,
+          vl: -2.0,
+          vh: 2.0
+        },
+        %{
+          id: 6,
+          cortex_id: cortex_id,
+          sensor_type: :pole2_angular_velocity,
+          name: :pole2_angular_velocity,
+          owner: owner,
+          scape: scape_id,
+          vl: -2.0,
+          vh: 2.0
+        }
+      ],
+      actuators: [
+        %{
+          id: 7,
+          cortex_id: cortex_id,
+          actuator_type: :force,
+          name: :force,
+          owner: owner,
+          scape: scape_id,
+          vl: -10.0,
+          vh: 10.0,
+          parameters: :with_damping
+        }
+      ]
+    }
+  end
+
+  @doc """
+  Creates a neuron pattern for the DPB with damping experiment.
+
+  ## Parameters
+    * `owner` - Owner ID
+    * `agent_id` - Agent ID
+    * `cortex_id` - Cortex ID
+    * `_substrate` - Substrate (unused in this implementation)
+
+  ## Returns
+    * Neuron pattern with mappings between sensors/actuators and neurons
+  """
+  def neuron_pattern(owner, agent_id, cortex_id, _substrate) do
+    %{
+      agent_id: agent_id,
+      owner: owner,
+      total_neuron_count: 6,  # 6 inputs for with damping
+      output_neuron_count: 1,
+      sensor_id_to_idx_map: %{
+        1 => {0, 1},  # Cart position
+        2 => {1, 2},  # Pole 1 angle
+        3 => {2, 3},  # Pole 2 angle
+        4 => {3, 4},  # Cart velocity
+        5 => {4, 5},  # Pole 1 angular velocity
+        6 => {5, 6}   # Pole 2 angular velocity
+      },
+      actuator_id_to_idx_map: %{
+        7 => {0, 1}   # Force actuator
+      }
+    }
+  end
+
   # ScapeManager.Sector callbacks
 
   @impl true
-  def init(args) do
+  def init(scape_pid, args) do
     max_steps = Map.get(args, :max_steps, 100_000)
 
     # Initialize with the same state as the base DPB module
     state = %{
+      scape_pid: scape_pid,
       x: 0.0,
       x_dot: 0.0,
       theta1: 0.07,
@@ -964,14 +1185,107 @@ defmodule Bardo.Examples.Benchmarks.Dpb.DpbWoDamping do
   # Define a struct to hold the state
   defstruct [:scape_pid, :max_steps, :state]
 
+  @doc """
+  Returns the physical configuration for sensors and actuators
+  required by the DPB without damping experiment.
+
+  ## Parameters
+    * `owner` - Owner ID
+    * `cortex_id` - Cortex ID
+    * `scape_id` - Scape ID
+
+  ## Returns
+    * Map with sensor and actuator definitions
+  """
+  def get_phys_config(owner, cortex_id, scape_id) do
+    %{
+      sensors: [
+        # Position sensors only (no velocity for without damping)
+        %{
+          id: 1,
+          cortex_id: cortex_id,
+          sensor_type: :cart_position,
+          name: :cart_position,
+          owner: owner,
+          scape: scape_id,
+          vl: -2.4,
+          vh: 2.4
+        },
+        %{
+          id: 2,
+          cortex_id: cortex_id,
+          sensor_type: :pole1_angle,
+          name: :pole1_angle,
+          owner: owner,
+          scape: scape_id,
+          vl: -0.62,
+          vh: 0.62
+        },
+        %{
+          id: 3,
+          cortex_id: cortex_id,
+          sensor_type: :pole2_angle,
+          name: :pole2_angle,
+          owner: owner,
+          scape: scape_id,
+          vl: -0.62,
+          vh: 0.62
+        }
+      ],
+      actuators: [
+        %{
+          id: 4,  # Note: ID is 4 not 7 since we have only 3 sensors
+          cortex_id: cortex_id,
+          actuator_type: :force,
+          name: :force,
+          owner: owner,
+          scape: scape_id,
+          vl: -10.0,
+          vh: 10.0,
+          parameters: :without_damping
+        }
+      ]
+    }
+  end
+
+  @doc """
+  Creates a neuron pattern for the DPB without damping experiment.
+
+  ## Parameters
+    * `owner` - Owner ID
+    * `agent_id` - Agent ID
+    * `cortex_id` - Cortex ID
+    * `_substrate` - Substrate (unused in this implementation)
+
+  ## Returns
+    * Neuron pattern with mappings between sensors/actuators and neurons
+  """
+  def neuron_pattern(owner, agent_id, cortex_id, _substrate) do
+    %{
+      agent_id: agent_id,
+      owner: owner,
+      total_neuron_count: 3,  # Only 3 inputs for without damping
+      output_neuron_count: 1,
+      sensor_id_to_idx_map: %{
+        1 => {0, 1},  # Cart position
+        2 => {1, 2},  # Pole 1 angle
+        3 => {2, 3}   # Pole 2 angle
+      },
+      actuator_id_to_idx_map: %{
+        4 => {0, 1}   # Force actuator
+      }
+    }
+  end
+
   # ScapeManager.Sector callbacks
 
   @impl true
-  def init(args) do
+  def init(scape_pid, args) do
     max_steps = Map.get(args, :max_steps, 100_000)
 
     # Initialize with the same state as the base DPB module
     state = %{
+      scape_pid: scape_pid,
       x: 0.0,
       x_dot: 0.0,
       theta1: 0.07,

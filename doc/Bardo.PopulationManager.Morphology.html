@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.PopulationManager.Morphology — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-behaviour" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.PopulationManager.Morphology</span> <small>behaviour</small>
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Defines generic morphology behavior.
+The list of morphologies defines the list of sensors and actuators
+available to the NNs in a population. Since the morphology defines
+the sensors and actuators of the NN system, this list effectively
+defines the problem or simulation to which the evolving population of
+NN systems will be applied, and for what purpose the agents will be
+evolved. The sensors/actuators/scape are a separate part from the NN
+itself, all specified through the morphology module.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-callbacks summary">
+  <h2>
+    <a href="#callbacks">Callbacks</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:actuators/0" data-no-tooltip="" translate="no">actuators()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:sensors/0" data-no-tooltip="" translate="no">sensors()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Defines the behavior for morphology modules.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_actuators/1" data-no-tooltip="" translate="no">get_actuators(mod)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_actuators starts the population off with the NN based
+agents using all available actuators from the start.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_init_actuators/1" data-no-tooltip="" translate="no">get_init_actuators(mod)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_init_actuators starts the population off with the NN based
+agents using just a single actuator, exploring other available
+actuators within the morphology as it evolves.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_init_sensors/1" data-no-tooltip="" translate="no">get_init_sensors(mod)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_init_sensors starts the population off with the NN based
+agents using just a single sensor, exploring other available sensors
+within the morphology as it evolves.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_init_substrate_ceps/2" data-no-tooltip="" translate="no">get_init_substrate_ceps(dimensions, plasticity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_init_substrate_ceps starts the population off with the NN based
+agents using just a single substrate_cep, exploring other available
+substrate_ceps within the morphology as it evolves.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_init_substrate_cpps/2" data-no-tooltip="" translate="no">get_init_substrate_cpps(dimensions, plasticity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_init_substrate_cpps starts the population off with the NN based
+agents using just a single substrate_cpp, exploring other available
+substrate_cpps within the morphology as it evolves.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_sensors/1" data-no-tooltip="" translate="no">get_sensors(mod)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_sensors starts the population off with the NN based
+agents using all available sensors from the start.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_substrate_ceps/2" data-no-tooltip="" translate="no">get_substrate_ceps(dimensions, plasticity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_substrate_ceps starts the population off with the NN based
+agents using substrate_ceps determined by the Plasticity.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_substrate_cpps/2" data-no-tooltip="" translate="no">get_substrate_cpps(dimensions, plasticity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The get_substrate_cpps starts the population off with the NN based
+agents using substrate_cpps determined by Dimensions and Plasticity.
+Substrate CPPs:
+x cartesian: The cartesian cpp simply forwards to the NN the appended
+  coordinates of the two connected neurodes. Because each neurode has
+  a coordinate specified by a list of length: Dimension, the vector
+  specifying the two appended coordinates will have
+  vl = Dimensions <em> 2. For example: [X1,Y1,Z1,X2,Y2,Z2] will have a
+  vector length of dimension: vl = 3</em>2 = 6.
+x centripetal_distances: This cpp uses the Cartesian coordinates of
+  the two neurodes to calculate the Cartesian distance of neurode_1
+  to the center of the substrate located at the origin, and the
+  Cartesian distance of neurode_2 to the center of the substrate.
+  It then fans out to the NN the vector of length 2, composed of the
+  two distances.
+x cartesian_distance: This cpp calculates the Cartesian distance
+  between the two neurodes, forwarding the resulting vector of
+  length 1 to the NN.
+x cartesian_CoordDiffs: This cpp calculates the difference between
+  each coordinate element of the two neurodes, and thus for this cpp,
+  the vl = Dimensions.
+x cartesian_GaussedCoordDiffs: Exactly the same as the above cpp, but
+  each of the values is first sent through the Gaussian function
+  before it is entered into the vector.
+x polar: This cpp converts the Cartesian coordinates to polar
+  coordinates. This can only be done if the substrate is 2d.
+x spherical: This cpp converts the Cartesian coordinates to the
+  spherical coordinates. This can only be done if the substrate is 3d.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="callbacks" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#callbacks">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Callbacks</span>
+    </h1>
+    <div class="callbacks-list">
+<section class="detail" id="c:actuators/0">
+
+  <div class="detail-header">
+    <a href="#c:actuators/0" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">actuators()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L400" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> actuators() :: [Bardo.Models.actuator()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="c:sensors/0">
+
+  <div class="detail-header">
+    <a href="#c:sensors/0" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sensors()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L399" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> sensors() :: [Bardo.Models.sensor()]</pre>
+
+      </div>
+
+<p>Defines the behavior for morphology modules.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="get_actuators/1">
+
+  <div class="detail-header">
+    <a href="#get_actuators/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_actuators(mod)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L54" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_actuators(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.actuator()]</pre>
+
+      </div>
+
+<p>The get_actuators starts the population off with the NN based
+agents using all available actuators from the start.</p>
+  </section>
+</section>
+<section class="detail" id="get_init_actuators/1">
+
+  <div class="detail-header">
+    <a href="#get_init_actuators/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_init_actuators(mod)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L33" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_init_actuators(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.actuator()]</pre>
+
+      </div>
+
+<p>The get_init_actuators starts the population off with the NN based
+agents using just a single actuator, exploring other available
+actuators within the morphology as it evolves.</p>
+  </section>
+</section>
+<section class="detail" id="get_init_sensors/1">
+
+  <div class="detail-header">
+    <a href="#get_init_sensors/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_init_sensors(mod)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L21" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_init_sensors(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.sensor()]</pre>
+
+      </div>
+
+<p>The get_init_sensors starts the population off with the NN based
+agents using just a single sensor, exploring other available sensors
+within the morphology as it evolves.</p>
+  </section>
+</section>
+<section class="detail" id="get_init_substrate_ceps/2">
+
+  <div class="detail-header">
+    <a href="#get_init_substrate_ceps/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_init_substrate_ceps(dimensions, plasticity)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L76" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_init_substrate_ceps(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.actuator()]</pre>
+
+      </div>
+
+<p>The get_init_substrate_ceps starts the population off with the NN based
+agents using just a single substrate_cep, exploring other available
+substrate_ceps within the morphology as it evolves.</p>
+  </section>
+</section>
+<section class="detail" id="get_init_substrate_cpps/2">
+
+  <div class="detail-header">
+    <a href="#get_init_substrate_cpps/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_init_substrate_cpps(dimensions, plasticity)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L65" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_init_substrate_cpps(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.sensor()]</pre>
+
+      </div>
+
+<p>The get_init_substrate_cpps starts the population off with the NN based
+agents using just a single substrate_cpp, exploring other available
+substrate_cpps within the morphology as it evolves.</p>
+  </section>
+</section>
+<section class="detail" id="get_sensors/1">
+
+  <div class="detail-header">
+    <a href="#get_sensors/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_sensors(mod)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L44" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_sensors(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.sensor()]</pre>
+
+      </div>
+
+<p>The get_sensors starts the population off with the NN based
+agents using all available sensors from the start.</p>
+  </section>
+</section>
+<section class="detail" id="get_substrate_ceps/2">
+
+  <div class="detail-header">
+    <a href="#get_substrate_ceps/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_substrate_ceps(dimensions, plasticity)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L341" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_substrate_ceps(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.actuator()]</pre>
+
+      </div>
+
+<p>The get_substrate_ceps starts the population off with the NN based
+agents using substrate_ceps determined by the Plasticity.</p>
+  </section>
+</section>
+<section class="detail" id="get_substrate_cpps/2">
+
+  <div class="detail-header">
+    <a href="#get_substrate_cpps/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_substrate_cpps(dimensions, plasticity)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/morphology.ex#L112" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_substrate_cpps(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: [Bardo.Models.sensor()]</pre>
+
+      </div>
+
+<p>The get_substrate_cpps starts the population off with the NN based
+agents using substrate_cpps determined by Dimensions and Plasticity.
+Substrate CPPs:
+x cartesian: The cartesian cpp simply forwards to the NN the appended
+  coordinates of the two connected neurodes. Because each neurode has
+  a coordinate specified by a list of length: Dimension, the vector
+  specifying the two appended coordinates will have
+  vl = Dimensions <em> 2. For example: [X1,Y1,Z1,X2,Y2,Z2] will have a
+  vector length of dimension: vl = 3</em>2 = 6.
+x centripetal_distances: This cpp uses the Cartesian coordinates of
+  the two neurodes to calculate the Cartesian distance of neurode_1
+  to the center of the substrate located at the origin, and the
+  Cartesian distance of neurode_2 to the center of the substrate.
+  It then fans out to the NN the vector of length 2, composed of the
+  two distances.
+x cartesian_distance: This cpp calculates the Cartesian distance
+  between the two neurodes, forwarding the resulting vector of
+  length 1 to the NN.
+x cartesian_CoordDiffs: This cpp calculates the difference between
+  each coordinate element of the two neurodes, and thus for this cpp,
+  the vl = Dimensions.
+x cartesian_GaussedCoordDiffs: Exactly the same as the above cpp, but
+  each of the values is first sent through the Gaussian function
+  before it is entered into the vector.
+x polar: This cpp converts the Cartesian coordinates to polar
+  coordinates. This can only be done if the substrate is 2d.
+x spherical: This cpp converts the Cartesian coordinates to the
+  spherical coordinates. This can only be done if the substrate is 3d.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

@@ -1,10 +1,14 @@
 defmodule Bardo.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/hibernatus-hacker/bardo"
+  @description "A powerful and approachable neuroevolution library for Elixir"
+
   def project do
     [
       app: :bardo,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -19,14 +23,22 @@ defmodule Bardo.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
-      ]
+      ],
+
+      # Hex.pm package configuration
+      package: package(),
+      description: @description,
+      docs: docs(),
+      name: "Bardo",
+      homepage_url: @source_url,
+      source_url: @source_url
     ]
   end
 
   # Run "mix help compile.app" to learn about applications
   def application do
     [
-      extra_applications: [:logger, :sasl],
+      extra_applications: [:logger],
       mod: {Bardo.Application, []}
     ]
   end
@@ -34,31 +46,21 @@ defmodule Bardo.MixProject do
   # Run "mix help deps" to learn about dependencies
   defp deps do
     [
-      # JSON parsing
+      # Runtime dependencies
       {:jason, "~> 1.4"},
-      # HTTP client for API requests
-      {:httpoison, "~> 2.0"},
-      # UUID generation
       {:uuid, "~> 1.1"},
-      # Ecto and PostgreSQL
-      {:ecto_sql, "~> 3.9"},
-      {:postgrex, "~> 0.16.0"},
-      # Similar to meck for mocking in tests
+
+      # Development/Build tools
+      {:observer_cli, "~> 1.7", only: [:dev], runtime: false},
+
+      # Documentation
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false},
+
+      # Testing and Quality Assurance
       {:mock, "~> 0.3.0", only: :test},
-      # CLI observer
-      {:observer_cli, "~> 1.7"},
-      # Diagnostic tools
-      {:recon, "~> 2.5"},
-      # Using built-in ETS instead of RocksDB for easier testing
-      # {:rocksdb, "~> 1.6"},
-      # {:shards, "~> 1.0"},
-      # Code coverage and testing
       {:excoveralls, "~> 0.15", only: :test},
-      # Property based testing
       {:stream_data, "~> 0.5", only: [:dev, :test]},
-      # Static code analysis
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      # Dialyzer for type checking
       {:dialyxir, "~> 1.2", only: [:dev, :test], runtime: false}
     ]
   end
@@ -66,9 +68,97 @@ defmodule Bardo.MixProject do
   defp aliases do
     [
       check: ["compile", "credo", "dialyzer", "test"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["test"]
+    ]
+  end
+
+  defp package do
+    [
+      name: "bardo",
+      files: ~w(lib mix.exs README.md LICENSE),
+      licenses: ["Apache-2.0"],
+      links: %{
+        "GitHub" => @source_url,
+        "Documentation" => "https://hexdocs.pm/bardo",
+        "Examples" => "#{@source_url}/tree/main/lib/bardo/examples/simple"
+      },
+      maintainers: ["hibernatus-hacker"]
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: [
+        "README.md",
+        "docs/advanced.md",
+        "docs/api_reference.md",
+        "docs/examples.md",
+        "docs/extending.md",
+        "docs/library_tutorial.md",
+        "docs/quickstart.md",
+        "docs/substrate_encoding.md",
+        "RELEASE.md"
+      ],
+      groups_for_extras: [
+        "Getting Started": [
+          "README.md",
+          "docs/quickstart.md",
+          "docs/library_tutorial.md"
+        ],
+        "Guides": [
+          "docs/api_reference.md",
+          "docs/examples.md",
+          "docs/extending.md"
+        ],
+        "Advanced Topics": [
+          "docs/advanced.md",
+          "docs/substrate_encoding.md"
+        ],
+        "Release Information": [
+          "RELEASE.md"
+        ]
+      ],
+      groups_for_modules: [
+        "Core": [
+          Bardo,
+          Bardo.AgentManager,
+          Bardo.Application,
+          Bardo.AppConfig,
+          Bardo.ExperimentManager,
+          Bardo.Models,
+          Bardo.PolisMgr,
+          Bardo.ScapeManager
+        ],
+        "Agent Components": [
+          Bardo.AgentManager.Actuator,
+          Bardo.AgentManager.Cortex,
+          Bardo.AgentManager.Neuron,
+          Bardo.AgentManager.Sensor,
+          Bardo.AgentManager.Substrate
+        ],
+        "Evolution": [
+          Bardo.PopulationManager,
+          Bardo.PopulationManager.GenomeMutator,
+          Bardo.PopulationManager.Genotype,
+          Bardo.PopulationManager.Morphology,
+          Bardo.PopulationManager.SelectionAlgorithm
+        ],
+        "Examples": [
+          Bardo.Examples.Simple.Xor,
+          Bardo.Examples.Benchmarks.Dpb
+        ],
+        "Database": [
+          Bardo.DB,
+          Bardo.DBEts,
+          Bardo.DBMock
+        ],
+        "Utilities": [
+          Bardo.Functions,
+          Bardo.Logger,
+          Bardo.Utils
+        ]
+      ]
     ]
   end
 
@@ -78,25 +168,23 @@ defmodule Bardo.MixProject do
       Bardo.Tar.Filename,
       Bardo.Tar.Tarball,
       Bardo.Tar.SafeErlTerm,
-      Bardo.Applications.Flatland.FlatlandActuator,
-      Bardo.Applications.Flatland.FlatlandSensor,
-      Bardo.Applications.Flatland.FlatlandUtils,
-      Bardo.Applications.Flatland.Flatland,
-      Bardo.Applications.Flatland.Predator,
-      Bardo.Applications.Flatland.Prey,
-      Bardo.Applications.Fx.FxActuator,
-      Bardo.Applications.Fx.FxMorphology,
-      Bardo.Applications.Fx.FxSensor,
-      Bardo.Applications.Fx.Fx,
-      Bardo.Benchmarks.Dpb.DpbActuator,
-      Bardo.Benchmarks.Dpb.DpbSensor,
-      Bardo.Benchmarks.Dpb.DpbWDamping,
-      Bardo.Benchmarks.Dpb.DpbWoDamping,
-      Bardo.Benchmarks.Dpb.Dpb,
-      Bardo.Benchmarks.Dtm.DtmActuator,
-      Bardo.Benchmarks.Dtm.DtmMorphology,
-      Bardo.Benchmarks.Dtm.DtmSensor,
-      Bardo.Benchmarks.Dtm.Dtm,
+      Bardo.Examples.Applications.Flatland.FlatlandActuator,
+      Bardo.Examples.Applications.Flatland.FlatlandSensor,
+      Bardo.Examples.Applications.Flatland.FlatlandUtils,
+      Bardo.Examples.Applications.Flatland.Flatland,
+      Bardo.Examples.Applications.Flatland.Predator,
+      Bardo.Examples.Applications.Flatland.Prey,
+      Bardo.Examples.Applications.Fx.FxActuator,
+      Bardo.Examples.Applications.Fx.FxMorphology,
+      Bardo.Examples.Applications.Fx.FxSensor,
+      Bardo.Examples.Applications.Fx.Fx,
+      # HTM modules were removed
+      # No HTM modules to exclude
+      Bardo.Examples.Benchmarks.Dpb.DpbActuator,
+      Bardo.Examples.Benchmarks.Dpb.DpbSensor,
+      Bardo.Examples.Benchmarks.Dpb.DpbWDamping,
+      Bardo.Examples.Benchmarks.Dpb.DpbWoDamping,
+      Bardo.Examples.Benchmarks.Dpb.Dpb,
       Bardo.Logger.Flatlog
     ]
   end

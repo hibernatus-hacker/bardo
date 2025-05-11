@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Extending Bardo — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Extending Bardo</h1>
+
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/docs/extending.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+<p>This guide shows how to extend Bardo with custom components for your specific needs.</p><h2 id="custom-sensors" class="section-heading"><a href="#custom-sensors" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Sensors</span></h2><p>Sensors are the interface between the environment and your neural network's inputs. They convert external data into neural signals.</p><h3 id="implementing-a-custom-sensor" class="section-heading"><a href="#implementing-a-custom-sensor" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementing a Custom Sensor</span></h3><p>To create a custom sensor, implement the <a href="Bardo.AgentManager.Sensor.html"><code class="inline">Bardo.AgentManager.Sensor</code></a> behaviour:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.CustomSensor</span><span class="w"> </span><span class="k" data-group-id="6028371117-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="6028371117-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="6028371117-2">)</span><span class="w"> </span><span class="k" data-group-id="6028371117-3">do</span><span class="w">
+    </span><span class="c1"># Initialize sensor state</span><span class="w">
+    </span><span class="p" data-group-id="6028371117-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6028371117-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">sensor_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:custom</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="n">fanout</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+      </span><span class="c1"># Any additional state you need</span><span class="w">
+      </span><span class="ss">custom_state</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6028371117-6">%{</span><span class="p" data-group-id="6028371117-6">}</span><span class="w">
+    </span><span class="p" data-group-id="6028371117-5">}</span><span class="p" data-group-id="6028371117-4">}</span><span class="w">
+  </span><span class="k" data-group-id="6028371117-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="6028371117-7">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6028371117-7">)</span><span class="w"> </span><span class="k" data-group-id="6028371117-8">do</span><span class="w">
+    </span><span class="c1"># Process incoming data into neural signals</span><span class="w">
+    </span><span class="n">signals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process_data</span><span class="p" data-group-id="6028371117-9">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="p" data-group-id="6028371117-9">)</span><span class="w">
+    
+    </span><span class="c1"># Return signals and updated state</span><span class="w">
+    </span><span class="p" data-group-id="6028371117-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="6028371117-10">}</span><span class="w">
+  </span><span class="k" data-group-id="6028371117-8">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">process_data</span><span class="p" data-group-id="6028371117-11">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="6028371117-11">)</span><span class="w"> </span><span class="k" data-group-id="6028371117-12">do</span><span class="w">
+    </span><span class="c1"># Custom data processing logic</span><span class="w">
+    </span><span class="c1"># Must return a list of values with length equal to fanout</span><span class="w">
+    </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="6028371117-13">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="6028371117-13">)</span><span class="w">
+  </span><span class="k" data-group-id="6028371117-12">end</span><span class="w">
+</span><span class="k" data-group-id="6028371117-1">end</span></code></pre><h3 id="common-sensor-types" class="section-heading"><a href="#common-sensor-types" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Common Sensor Types</span></h3><h4>Vector Sensor</h4><p>A simple sensor that passes numeric vectors directly to the neural network:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.VectorSensor</span><span class="w"> </span><span class="k" data-group-id="6978771938-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="6978771938-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="6978771938-2">)</span><span class="w"> </span><span class="k" data-group-id="6978771938-3">do</span><span class="w">
+    </span><span class="p" data-group-id="6978771938-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6978771938-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">sensor_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:vector</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="n">fanout</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="w">
+    </span><span class="p" data-group-id="6978771938-5">}</span><span class="p" data-group-id="6978771938-4">}</span><span class="w">
+  </span><span class="k" data-group-id="6978771938-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="6978771938-6">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6978771938-6">)</span><span class="w"> </span><span class="k" data-group-id="6978771938-7">do</span><span class="w">
+    </span><span class="c1"># Ensure data is a list with the right length</span><span class="w">
+    </span><span class="n">signals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">cond</span><span class="w"> </span><span class="k" data-group-id="6978771938-8">do</span><span class="w">
+      </span><span class="n">is_list</span><span class="p" data-group-id="6978771938-9">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-9">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="6978771938-10">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-10">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">data</span><span class="w">
+        
+      </span><span class="n">is_list</span><span class="p" data-group-id="6978771938-11">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-11">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="6978771938-12">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-12">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Pad with zeros if too short</span><span class="w">
+        </span><span class="n">data</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="6978771938-13">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="6978771938-14">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-14">)</span><span class="p" data-group-id="6978771938-13">)</span><span class="w">
+        
+      </span><span class="n">is_list</span><span class="p" data-group-id="6978771938-15">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-15">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="6978771938-16">(</span><span class="n">data</span><span class="p" data-group-id="6978771938-16">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Truncate if too long</span><span class="w">
+        </span><span class="nc">Enum</span><span class="o">.</span><span class="n">take</span><span class="p" data-group-id="6978771938-17">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="p" data-group-id="6978771938-17">)</span><span class="w">
+        
+      </span><span class="no">true</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Default if data is not a list</span><span class="w">
+        </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="6978771938-18">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="p" data-group-id="6978771938-18">)</span><span class="w">
+    </span><span class="k" data-group-id="6978771938-8">end</span><span class="w">
+    
+    </span><span class="p" data-group-id="6978771938-19">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="6978771938-19">}</span><span class="w">
+  </span><span class="k" data-group-id="6978771938-7">end</span><span class="w">
+</span><span class="k" data-group-id="6978771938-1">end</span></code></pre><h4>Image Sensor</h4><p>A sensor for processing image data:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ImageSensor</span><span class="w"> </span><span class="k" data-group-id="3546853878-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="3546853878-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="3546853878-2">)</span><span class="w"> </span><span class="k" data-group-id="3546853878-3">do</span><span class="w">
+    </span><span class="p" data-group-id="3546853878-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3546853878-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">sensor_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:image</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="n">fanout</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+      </span><span class="c1"># Configuration for image processing</span><span class="w">
+      </span><span class="ss">image_size</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3546853878-6">{</span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p" data-group-id="3546853878-6">}</span><span class="w">  </span><span class="c1"># Default to MNIST size</span><span class="w">
+    </span><span class="p" data-group-id="3546853878-5">}</span><span class="p" data-group-id="3546853878-4">}</span><span class="w">
+  </span><span class="k" data-group-id="3546853878-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="3546853878-7">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">image_data</span><span class="p" data-group-id="3546853878-7">)</span><span class="w"> </span><span class="k" data-group-id="3546853878-8">do</span><span class="w">
+    </span><span class="c1"># Process image data</span><span class="w">
+    </span><span class="n">signals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process_image</span><span class="p" data-group-id="3546853878-9">(</span><span class="n">image_data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="p" data-group-id="3546853878-9">)</span><span class="w">
+    
+    </span><span class="p" data-group-id="3546853878-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="3546853878-10">}</span><span class="w">
+  </span><span class="k" data-group-id="3546853878-8">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">process_image</span><span class="p" data-group-id="3546853878-11">(</span><span class="n">image_data</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3546853878-12">{</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p" data-group-id="3546853878-12">}</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="3546853878-11">)</span><span class="w"> </span><span class="k" data-group-id="3546853878-13">do</span><span class="w">
+    </span><span class="c1"># Resize and normalize image</span><span class="w">
+    </span><span class="n">resized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">resize_image</span><span class="p" data-group-id="3546853878-14">(</span><span class="n">image_data</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p" data-group-id="3546853878-14">)</span><span class="w">
+    
+    </span><span class="c1"># Convert to grayscale values between 0.0 and 1.0</span><span class="w">
+    </span><span class="n">pixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalize_pixels</span><span class="p" data-group-id="3546853878-15">(</span><span class="n">resized</span><span class="p" data-group-id="3546853878-15">)</span><span class="w">
+    
+    </span><span class="c1"># Ensure we have exactly fanout elements</span><span class="w">
+    </span><span class="k">cond</span><span class="w"> </span><span class="k" data-group-id="3546853878-16">do</span><span class="w">
+      </span><span class="n">length</span><span class="p" data-group-id="3546853878-17">(</span><span class="n">pixels</span><span class="p" data-group-id="3546853878-17">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">pixels</span><span class="w">
+      </span><span class="n">length</span><span class="p" data-group-id="3546853878-18">(</span><span class="n">pixels</span><span class="p" data-group-id="3546853878-18">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">pixels</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="3546853878-19">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="3546853878-20">(</span><span class="n">pixels</span><span class="p" data-group-id="3546853878-20">)</span><span class="p" data-group-id="3546853878-19">)</span><span class="w">
+      </span><span class="n">length</span><span class="p" data-group-id="3546853878-21">(</span><span class="n">pixels</span><span class="p" data-group-id="3546853878-21">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fanout</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">take</span><span class="p" data-group-id="3546853878-22">(</span><span class="n">pixels</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="3546853878-22">)</span><span class="w">
+    </span><span class="k" data-group-id="3546853878-16">end</span><span class="w">
+  </span><span class="k" data-group-id="3546853878-13">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">resize_image</span><span class="p" data-group-id="3546853878-23">(</span><span class="n">image_data</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p" data-group-id="3546853878-23">)</span><span class="w"> </span><span class="k" data-group-id="3546853878-24">do</span><span class="w">
+    </span><span class="c1"># Image resizing implementation</span><span class="w">
+    </span><span class="c1"># This would typically use a library like Image</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="c1"># Return resized image</span><span class="w">
+    </span><span class="n">resized_image</span><span class="w">
+  </span><span class="k" data-group-id="3546853878-24">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">normalize_pixels</span><span class="p" data-group-id="3546853878-25">(</span><span class="n">image</span><span class="p" data-group-id="3546853878-25">)</span><span class="w"> </span><span class="k" data-group-id="3546853878-26">do</span><span class="w">
+    </span><span class="c1"># Convert image pixels to values between 0.0 and 1.0</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="c1"># Return normalized pixels</span><span class="w">
+    </span><span class="n">normalized_pixels</span><span class="w">
+  </span><span class="k" data-group-id="3546853878-26">end</span><span class="w">
+</span><span class="k" data-group-id="3546853878-1">end</span></code></pre><h2 id="custom-actuators" class="section-heading"><a href="#custom-actuators" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Actuators</span></h2><p>Actuators convert the neural network's outputs into actions in the environment.</p><h3 id="implementing-a-custom-actuator" class="section-heading"><a href="#implementing-a-custom-actuator" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementing a Custom Actuator</span></h3><p>To create a custom actuator, implement the <a href="Bardo.AgentManager.Actuator.html"><code class="inline">Bardo.AgentManager.Actuator</code></a> behaviour:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.CustomActuator</span><span class="w"> </span><span class="k" data-group-id="5253535806-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Actuator</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="5253535806-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanin</span><span class="p" data-group-id="5253535806-2">)</span><span class="w"> </span><span class="k" data-group-id="5253535806-3">do</span><span class="w">
+    </span><span class="c1"># Initialize actuator state</span><span class="w">
+    </span><span class="p" data-group-id="5253535806-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5253535806-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">actuator_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:custom</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="n">fanin</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+      </span><span class="c1"># Any additional state you need</span><span class="w">
+      </span><span class="ss">custom_state</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5253535806-6">%{</span><span class="p" data-group-id="5253535806-6">}</span><span class="w">
+    </span><span class="p" data-group-id="5253535806-5">}</span><span class="p" data-group-id="5253535806-4">}</span><span class="w">
+  </span><span class="k" data-group-id="5253535806-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuate</span><span class="p" data-group-id="5253535806-7">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5253535806-8">{</span><span class="n">agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="c">_params</span><span class="p">,</span><span class="w"> </span><span class="c">_vl</span><span class="p">,</span><span class="w"> </span><span class="n">scape</span><span class="p">,</span><span class="w"> </span><span class="n">actuator_id</span><span class="p">,</span><span class="w"> </span><span class="c">_mod_state</span><span class="p" data-group-id="5253535806-8">}</span><span class="p" data-group-id="5253535806-7">)</span><span class="w"> </span><span class="k" data-group-id="5253535806-9">do</span><span class="w">
+    </span><span class="c1"># Process neural signals into actions</span><span class="w">
+    </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process_signals</span><span class="p" data-group-id="5253535806-10">(</span><span class="n">signals</span><span class="p" data-group-id="5253535806-10">)</span><span class="w">
+    
+    </span><span class="c1"># Return action and updated state</span><span class="w">
+    </span><span class="p" data-group-id="5253535806-11">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5253535806-11">}</span><span class="w">
+  </span><span class="k" data-group-id="5253535806-9">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">process_signals</span><span class="p" data-group-id="5253535806-12">(</span><span class="n">signals</span><span class="p" data-group-id="5253535806-12">)</span><span class="w"> </span><span class="k" data-group-id="5253535806-13">do</span><span class="w">
+    </span><span class="c1"># Custom signal processing logic</span><span class="w">
+    </span><span class="c1"># Convert neural outputs to meaningful actions</span><span class="w">
+    
+    </span><span class="c1"># Example: find the index of the highest value (winner-takes-all)</span><span class="w">
+    </span><span class="p" data-group-id="5253535806-14">{</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="c">_value</span><span class="p" data-group-id="5253535806-14">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">with_index</span><span class="p" data-group-id="5253535806-15">(</span><span class="n">signals</span><span class="p" data-group-id="5253535806-15">)</span><span class="w">
+                      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">max_by</span><span class="p" data-group-id="5253535806-16">(</span><span class="k" data-group-id="5253535806-17">fn</span><span class="w"> </span><span class="p" data-group-id="5253535806-18">{</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="c">_index</span><span class="p" data-group-id="5253535806-18">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k" data-group-id="5253535806-17">end</span><span class="p" data-group-id="5253535806-16">)</span><span class="w">
+    
+    </span><span class="c1"># Return action based on index</span><span class="w">
+    </span><span class="n">index</span><span class="w">
+  </span><span class="k" data-group-id="5253535806-13">end</span><span class="w">
+</span><span class="k" data-group-id="5253535806-1">end</span></code></pre><h3 id="common-actuator-types" class="section-heading"><a href="#common-actuator-types" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Common Actuator Types</span></h3><h4>Discrete Action Actuator</h4><p>An actuator that selects one discrete action from a set of possibilities:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.DiscreteActionActuator</span><span class="w"> </span><span class="k" data-group-id="9246006527-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Actuator</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="9246006527-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanin</span><span class="p" data-group-id="9246006527-2">)</span><span class="w"> </span><span class="k" data-group-id="9246006527-3">do</span><span class="w">
+    </span><span class="p" data-group-id="9246006527-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9246006527-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">actuator_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:discrete_action</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="n">fanin</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+      </span><span class="ss">actions</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9246006527-6">[</span><span class="ss">:action1</span><span class="p">,</span><span class="w"> </span><span class="ss">:action2</span><span class="p">,</span><span class="w"> </span><span class="ss">:action3</span><span class="p">,</span><span class="w"> </span><span class="ss">:action4</span><span class="p" data-group-id="9246006527-6">]</span><span class="w">  </span><span class="c1"># Default actions</span><span class="w">
+    </span><span class="p" data-group-id="9246006527-5">}</span><span class="p" data-group-id="9246006527-4">}</span><span class="w">
+  </span><span class="k" data-group-id="9246006527-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuate</span><span class="p" data-group-id="9246006527-7">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9246006527-8">{</span><span class="c">_agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="c">_params</span><span class="p">,</span><span class="w"> </span><span class="c">_vl</span><span class="p">,</span><span class="w"> </span><span class="c">_scape</span><span class="p">,</span><span class="w"> </span><span class="c">_actuator_id</span><span class="p">,</span><span class="w"> </span><span class="c">_mod_state</span><span class="p" data-group-id="9246006527-8">}</span><span class="p" data-group-id="9246006527-7">)</span><span class="w"> </span><span class="k" data-group-id="9246006527-9">do</span><span class="w">
+    </span><span class="c1"># Find the strongest output</span><span class="w">
+    </span><span class="p" data-group-id="9246006527-10">{</span><span class="n">max_index</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9246006527-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">with_index</span><span class="p" data-group-id="9246006527-11">(</span><span class="n">signals</span><span class="p" data-group-id="9246006527-11">)</span><span class="w">
+                    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">max_by</span><span class="p" data-group-id="9246006527-12">(</span><span class="k" data-group-id="9246006527-13">fn</span><span class="w"> </span><span class="p" data-group-id="9246006527-14">{</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="c">_index</span><span class="p" data-group-id="9246006527-14">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k" data-group-id="9246006527-13">end</span><span class="p" data-group-id="9246006527-12">)</span><span class="w">
+    
+    </span><span class="c1"># Convert to action</span><span class="w">
+    </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">at</span><span class="p" data-group-id="9246006527-15">(</span><span class="n">state</span><span class="o">.</span><span class="n">actions</span><span class="p">,</span><span class="w"> </span><span class="n">max_index</span><span class="p">,</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">last</span><span class="p" data-group-id="9246006527-16">(</span><span class="n">state</span><span class="o">.</span><span class="n">actions</span><span class="p" data-group-id="9246006527-16">)</span><span class="p" data-group-id="9246006527-15">)</span><span class="w">
+    
+    </span><span class="p" data-group-id="9246006527-17">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="9246006527-17">}</span><span class="w">
+  </span><span class="k" data-group-id="9246006527-9">end</span><span class="w">
+</span><span class="k" data-group-id="9246006527-1">end</span></code></pre><h4>Continuous Control Actuator</h4><p>An actuator for continuous control tasks:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ContinuousControlActuator</span><span class="w"> </span><span class="k" data-group-id="4973320196-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Actuator</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="4973320196-2">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanin</span><span class="p" data-group-id="4973320196-2">)</span><span class="w"> </span><span class="k" data-group-id="4973320196-3">do</span><span class="w">
+    </span><span class="p" data-group-id="4973320196-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4973320196-5">%{</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+      </span><span class="ss">actuator_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:continuous_control</span><span class="p">,</span><span class="w">
+      </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="n">fanin</span><span class="p">,</span><span class="w">
+      </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+      </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+      </span><span class="c1"># Output scaling</span><span class="w">
+      </span><span class="ss">min_values</span><span class="p">:</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="4973320196-6">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">fanin</span><span class="p" data-group-id="4973320196-6">)</span><span class="p">,</span><span class="w">
+      </span><span class="ss">max_values</span><span class="p">:</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">duplicate</span><span class="p" data-group-id="4973320196-7">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">fanin</span><span class="p" data-group-id="4973320196-7">)</span><span class="w">
+    </span><span class="p" data-group-id="4973320196-5">}</span><span class="p" data-group-id="4973320196-4">}</span><span class="w">
+  </span><span class="k" data-group-id="4973320196-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuate</span><span class="p" data-group-id="4973320196-8">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4973320196-9">{</span><span class="c">_agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="c">_params</span><span class="p">,</span><span class="w"> </span><span class="c">_vl</span><span class="p">,</span><span class="w"> </span><span class="c">_scape</span><span class="p">,</span><span class="w"> </span><span class="c">_actuator_id</span><span class="p">,</span><span class="w"> </span><span class="c">_mod_state</span><span class="p" data-group-id="4973320196-9">}</span><span class="p" data-group-id="4973320196-8">)</span><span class="w"> </span><span class="k" data-group-id="4973320196-10">do</span><span class="w">
+    </span><span class="c1"># Scale outputs to the desired ranges</span><span class="w">
+    </span><span class="n">scaled_outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">zip</span><span class="p" data-group-id="4973320196-11">(</span><span class="p" data-group-id="4973320196-12">[</span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">min_values</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">max_values</span><span class="p" data-group-id="4973320196-12">]</span><span class="p" data-group-id="4973320196-11">)</span><span class="w">
+                    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="4973320196-13">(</span><span class="k" data-group-id="4973320196-14">fn</span><span class="w"> </span><span class="p" data-group-id="4973320196-15">{</span><span class="n">signal</span><span class="p">,</span><span class="w"> </span><span class="n">min_val</span><span class="p">,</span><span class="w"> </span><span class="n">max_val</span><span class="p" data-group-id="4973320196-15">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+                      </span><span class="n">min_val</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p" data-group-id="4973320196-16">(</span><span class="n">signal</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p" data-group-id="4973320196-17">(</span><span class="n">max_val</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">min_val</span><span class="p" data-group-id="4973320196-17">)</span><span class="p" data-group-id="4973320196-16">)</span><span class="w">
+                    </span><span class="k" data-group-id="4973320196-14">end</span><span class="p" data-group-id="4973320196-13">)</span><span class="w">
+    
+    </span><span class="p" data-group-id="4973320196-18">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">scaled_outputs</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="4973320196-18">}</span><span class="w">
+  </span><span class="k" data-group-id="4973320196-10">end</span><span class="w">
+</span><span class="k" data-group-id="4973320196-1">end</span></code></pre><h2 id="custom-morphologies" class="section-heading"><a href="#custom-morphologies" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Morphologies</span></h2><p>Morphologies define the structure of your neural networks, including inputs, outputs, and hidden layers.</p><h3 id="implementing-a-custom-morphology" class="section-heading"><a href="#implementing-a-custom-morphology" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementing a Custom Morphology</span></h3><p>To create a custom morphology, implement the <a href="Bardo.Morphology.html"><code class="inline">Bardo.Morphology</code></a> behaviour:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.CustomMorphology</span><span class="w"> </span><span class="k" data-group-id="3013399065-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sensor_spec</span><span class="w"> </span><span class="k" data-group-id="3013399065-2">do</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-3">[</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-4">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:input_sensor</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1"># 4 inputs</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">  </span><span class="c1"># Will be filled in at runtime</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Input Sensor&quot;</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-4">}</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-3">]</span><span class="w">
+  </span><span class="k" data-group-id="3013399065-2">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuator_spec</span><span class="w"> </span><span class="k" data-group-id="3013399065-5">do</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-6">[</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-7">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:output_actuator</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1"># 2 outputs</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">  </span><span class="c1"># Will be filled in at runtime</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Output Actuator&quot;</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-7">}</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-6">]</span><span class="w">
+  </span><span class="k" data-group-id="3013399065-5">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">hidden_layer_spec</span><span class="w"> </span><span class="k" data-group-id="3013399065-8">do</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-9">[</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-10">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden1</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="c1"># 6 neurons in the first hidden layer</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:sigmoid</span><span class="p">,</span><span class="w">  </span><span class="c1"># Activation function</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3013399065-11">[</span><span class="ss">:input_sensor</span><span class="p" data-group-id="3013399065-11">]</span><span class="p">,</span><span class="w">  </span><span class="c1"># Connected to inputs</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3013399065-12">[</span><span class="ss">:hidden2</span><span class="p" data-group-id="3013399065-12">]</span><span class="w">  </span><span class="c1"># Connected to next hidden layer</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-10">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-13">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden2</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1"># 4 neurons in the second hidden layer</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:tanh</span><span class="p">,</span><span class="w">  </span><span class="c1"># Different activation function</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3013399065-14">[</span><span class="ss">:hidden1</span><span class="p" data-group-id="3013399065-14">]</span><span class="p">,</span><span class="w">  </span><span class="c1"># Connected to previous hidden layer</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3013399065-15">[</span><span class="ss">:output_actuator</span><span class="p" data-group-id="3013399065-15">]</span><span class="w">  </span><span class="c1"># Connected to outputs</span><span class="w">
+      </span><span class="p" data-group-id="3013399065-13">}</span><span class="w">
+    </span><span class="p" data-group-id="3013399065-9">]</span><span class="w">
+  </span><span class="k" data-group-id="3013399065-8">end</span><span class="w">
+</span><span class="k" data-group-id="3013399065-1">end</span></code></pre><h3 id="morphology-patterns" class="section-heading"><a href="#morphology-patterns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Morphology Patterns</span></h3><h4>Feed-Forward Network</h4><p>A basic feed-forward network:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.FeedForwardMorphology</span><span class="w"> </span><span class="k" data-group-id="1938343681-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sensor_spec</span><span class="w"> </span><span class="k" data-group-id="1938343681-2">do</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-3">[</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-4">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span><span class="c1"># 10 inputs</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Input Layer&quot;</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-4">}</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-3">]</span><span class="w">
+  </span><span class="k" data-group-id="1938343681-2">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuator_spec</span><span class="w"> </span><span class="k" data-group-id="1938343681-5">do</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-6">[</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-7">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:output</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="c1"># 3 outputs</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Output Layer&quot;</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-7">}</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-6">]</span><span class="w">
+  </span><span class="k" data-group-id="1938343681-5">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">hidden_layer_spec</span><span class="w"> </span><span class="k" data-group-id="1938343681-8">do</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-9">[</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-10">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="c1"># 8 neurons in hidden layer</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:sigmoid</span><span class="p">,</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1938343681-11">[</span><span class="ss">:input</span><span class="p" data-group-id="1938343681-11">]</span><span class="p">,</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1938343681-12">[</span><span class="ss">:output</span><span class="p" data-group-id="1938343681-12">]</span><span class="w">
+      </span><span class="p" data-group-id="1938343681-10">}</span><span class="w">
+    </span><span class="p" data-group-id="1938343681-9">]</span><span class="w">
+  </span><span class="k" data-group-id="1938343681-8">end</span><span class="w">
+</span><span class="k" data-group-id="1938343681-1">end</span></code></pre><h4>Deep Network</h4><p>A deeper network with multiple hidden layers:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.DeepNetworkMorphology</span><span class="w"> </span><span class="k" data-group-id="7054855893-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sensor_spec</span><span class="w"> </span><span class="k" data-group-id="7054855893-2">do</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-3">[</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-4">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">  </span><span class="c1"># For MNIST images</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Image Input&quot;</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-4">}</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-3">]</span><span class="w">
+  </span><span class="k" data-group-id="7054855893-2">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuator_spec</span><span class="w"> </span><span class="k" data-group-id="7054855893-5">do</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-6">[</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-7">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:output</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span><span class="c1"># 10 digits (0-9)</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Digit Output&quot;</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-7">}</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-6">]</span><span class="w">
+  </span><span class="k" data-group-id="7054855893-5">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">hidden_layer_spec</span><span class="w"> </span><span class="k" data-group-id="7054855893-8">do</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-9">[</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-10">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden1</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:relu</span><span class="p">,</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-11">[</span><span class="ss">:input</span><span class="p" data-group-id="7054855893-11">]</span><span class="p">,</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-12">[</span><span class="ss">:hidden2</span><span class="p" data-group-id="7054855893-12">]</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-10">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-13">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden2</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:relu</span><span class="p">,</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-14">[</span><span class="ss">:hidden1</span><span class="p" data-group-id="7054855893-14">]</span><span class="p">,</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-15">[</span><span class="ss">:hidden3</span><span class="p" data-group-id="7054855893-15">]</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-13">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-16">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:hidden3</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:relu</span><span class="p">,</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-17">[</span><span class="ss">:hidden2</span><span class="p" data-group-id="7054855893-17">]</span><span class="p">,</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7054855893-18">[</span><span class="ss">:output</span><span class="p" data-group-id="7054855893-18">]</span><span class="w">
+      </span><span class="p" data-group-id="7054855893-16">}</span><span class="w">
+    </span><span class="p" data-group-id="7054855893-9">]</span><span class="w">
+  </span><span class="k" data-group-id="7054855893-8">end</span><span class="w">
+</span><span class="k" data-group-id="7054855893-1">end</span></code></pre><h4>Recurrent Network</h4><p>A recurrent network with feedback connections:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.RecurrentNetworkMorphology</span><span class="w"> </span><span class="k" data-group-id="7464776042-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sensor_spec</span><span class="w"> </span><span class="k" data-group-id="7464776042-2">do</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-3">[</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-4">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sequence Input&quot;</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-4">}</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-3">]</span><span class="w">
+  </span><span class="k" data-group-id="7464776042-2">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuator_spec</span><span class="w"> </span><span class="k" data-group-id="7464776042-5">do</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-6">[</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-7">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:output</span><span class="p">,</span><span class="w">
+        </span><span class="ss">fanin</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+        </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="ss">:float</span><span class="p">,</span><span class="w">
+        </span><span class="ss">cortex_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+        </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sequence Output&quot;</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-7">}</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-6">]</span><span class="w">
+  </span><span class="k" data-group-id="7464776042-5">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">hidden_layer_spec</span><span class="w"> </span><span class="k" data-group-id="7464776042-8">do</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-9">[</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-10">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="ss">:recurrent</span><span class="p">,</span><span class="w">
+        </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="ss">af</span><span class="p">:</span><span class="w"> </span><span class="ss">:tanh</span><span class="p">,</span><span class="w">
+        </span><span class="ss">input_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7464776042-11">[</span><span class="ss">:input</span><span class="p">,</span><span class="w"> </span><span class="ss">:recurrent</span><span class="p" data-group-id="7464776042-11">]</span><span class="p">,</span><span class="w"> </span><span class="c1"># Self-connection</span><span class="w">
+        </span><span class="ss">output_layer_ids</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7464776042-12">[</span><span class="ss">:output</span><span class="p">,</span><span class="w"> </span><span class="ss">:recurrent</span><span class="p" data-group-id="7464776042-12">]</span><span class="w"> </span><span class="c1"># Self-connection</span><span class="w">
+      </span><span class="p" data-group-id="7464776042-10">}</span><span class="w">
+    </span><span class="p" data-group-id="7464776042-9">]</span><span class="w">
+  </span><span class="k" data-group-id="7464776042-8">end</span><span class="w">
+</span><span class="k" data-group-id="7464776042-1">end</span></code></pre><h2 id="custom-fitness-functions" class="section-heading"><a href="#custom-fitness-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Fitness Functions</span></h2><p>Fitness functions evaluate the performance of evolved neural networks.</p><h3 id="basic-fitness-function" class="section-heading"><a href="#basic-fitness-function" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Basic Fitness Function</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">my_fitness_function</span><span class="p" data-group-id="7221886432-1">(</span><span class="n">genotype</span><span class="p" data-group-id="7221886432-1">)</span><span class="w"> </span><span class="k" data-group-id="7221886432-2">do</span><span class="w">
+  </span><span class="c1"># Convert genotype to neural network</span><span class="w">
+  </span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">from_genotype</span><span class="p" data-group-id="7221886432-3">(</span><span class="n">genotype</span><span class="p" data-group-id="7221886432-3">)</span><span class="w">
+  
+  </span><span class="c1"># Test cases</span><span class="w">
+  </span><span class="n">test_cases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7221886432-4">[</span><span class="w">
+    </span><span class="p" data-group-id="7221886432-5">{</span><span class="n">inputs1</span><span class="p">,</span><span class="w"> </span><span class="n">expected1</span><span class="p" data-group-id="7221886432-5">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="7221886432-6">{</span><span class="n">inputs2</span><span class="p">,</span><span class="w"> </span><span class="n">expected2</span><span class="p" data-group-id="7221886432-6">}</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># More test cases...</span><span class="w">
+  </span><span class="p" data-group-id="7221886432-4">]</span><span class="w">
+  
+  </span><span class="c1"># Evaluate on all test cases</span><span class="w">
+  </span><span class="n">total_fitness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">reduce</span><span class="p" data-group-id="7221886432-7">(</span><span class="n">test_cases</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7221886432-8">fn</span><span class="w"> </span><span class="p" data-group-id="7221886432-9">{</span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p" data-group-id="7221886432-9">}</span><span class="p">,</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="c1"># Get actual output</span><span class="w">
+    </span><span class="n">actual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">activate</span><span class="p" data-group-id="7221886432-10">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p" data-group-id="7221886432-10">)</span><span class="w">
+    
+    </span><span class="c1"># Calculate error</span><span class="w">
+    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_error</span><span class="p" data-group-id="7221886432-11">(</span><span class="n">actual</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p" data-group-id="7221886432-11">)</span><span class="w">
+    
+    </span><span class="c1"># Convert error to fitness (higher is better)</span><span class="w">
+    </span><span class="n">fitness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="7221886432-12">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">error</span><span class="p" data-group-id="7221886432-12">)</span><span class="w">
+    
+    </span><span class="c1"># Add to total</span><span class="w">
+    </span><span class="n">acc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fitness</span><span class="w">
+  </span><span class="k" data-group-id="7221886432-8">end</span><span class="p" data-group-id="7221886432-7">)</span><span class="w">
+  
+  </span><span class="c1"># Return average fitness</span><span class="w">
+  </span><span class="n">total_fitness</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="7221886432-13">(</span><span class="n">test_cases</span><span class="p" data-group-id="7221886432-13">)</span><span class="w">
+</span><span class="k" data-group-id="7221886432-2">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">calculate_error</span><span class="p" data-group-id="7221886432-14">(</span><span class="n">actual</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p" data-group-id="7221886432-14">)</span><span class="w"> </span><span class="k" data-group-id="7221886432-15">do</span><span class="w">
+  </span><span class="c1"># Mean squared error</span><span class="w">
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">zip</span><span class="p" data-group-id="7221886432-16">(</span><span class="n">actual</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p" data-group-id="7221886432-16">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="7221886432-17">(</span><span class="k" data-group-id="7221886432-18">fn</span><span class="w"> </span><span class="p" data-group-id="7221886432-19">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p" data-group-id="7221886432-19">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">:math</span><span class="o">.</span><span class="n">pow</span><span class="p" data-group-id="7221886432-20">(</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7221886432-20">)</span><span class="w"> </span><span class="k" data-group-id="7221886432-18">end</span><span class="p" data-group-id="7221886432-17">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">sum</span><span class="p" data-group-id="7221886432-21">(</span><span class="p" data-group-id="7221886432-21">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Kernel</span><span class="o">.</span><span class="o">/</span><span class="p" data-group-id="7221886432-22">(</span><span class="n">length</span><span class="p" data-group-id="7221886432-23">(</span><span class="n">actual</span><span class="p" data-group-id="7221886432-23">)</span><span class="p" data-group-id="7221886432-22">)</span><span class="w">
+</span><span class="k" data-group-id="7221886432-15">end</span></code></pre><h3 id="simulation-based-fitness-function" class="section-heading"><a href="#simulation-based-fitness-function" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Simulation-Based Fitness Function</span></h3><p>For more complex tasks, evaluate agents in a simulated environment:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">simulation_fitness_function</span><span class="p" data-group-id="1488810993-1">(</span><span class="n">genotype</span><span class="p" data-group-id="1488810993-1">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-2">do</span><span class="w">
+  </span><span class="c1"># Convert genotype to neural network</span><span class="w">
+  </span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">from_genotype</span><span class="p" data-group-id="1488810993-3">(</span><span class="n">genotype</span><span class="p" data-group-id="1488810993-3">)</span><span class="w">
+  
+  </span><span class="c1"># Setup simulation environment</span><span class="w">
+  </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialize_environment</span><span class="p" data-group-id="1488810993-4">(</span><span class="p" data-group-id="1488810993-4">)</span><span class="w">
+  
+  </span><span class="c1"># Run simulation for fixed number of steps</span><span class="w">
+  </span><span class="p" data-group-id="1488810993-5">{</span><span class="n">final_env</span><span class="p">,</span><span class="w"> </span><span class="n">reward_history</span><span class="p" data-group-id="1488810993-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">run_simulation</span><span class="p" data-group-id="1488810993-6">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p" data-group-id="1488810993-6">)</span><span class="w">
+  
+  </span><span class="c1"># Calculate fitness from rewards</span><span class="w">
+  </span><span class="n">total_reward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">sum</span><span class="p" data-group-id="1488810993-7">(</span><span class="n">reward_history</span><span class="p" data-group-id="1488810993-7">)</span><span class="w">
+  
+  </span><span class="c1"># Return fitness</span><span class="w">
+  </span><span class="n">total_reward</span><span class="w">
+</span><span class="k" data-group-id="1488810993-2">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">initialize_environment</span><span class="w"> </span><span class="k" data-group-id="1488810993-8">do</span><span class="w">
+  </span><span class="c1"># Setup initial environment state</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  
+  </span><span class="n">env</span><span class="w">
+</span><span class="k" data-group-id="1488810993-8">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p" data-group-id="1488810993-9">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">steps</span><span class="p" data-group-id="1488810993-9">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-10">do</span><span class="w">
+  </span><span class="n">run_simulation_loop</span><span class="p" data-group-id="1488810993-11">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">steps</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1488810993-12">[</span><span class="p" data-group-id="1488810993-12">]</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="1488810993-11">)</span><span class="w">
+</span><span class="k" data-group-id="1488810993-10">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">run_simulation_loop</span><span class="p" data-group-id="1488810993-13">(</span><span class="c">_nn</span><span class="p">,</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rewards</span><span class="p">,</span><span class="w"> </span><span class="c">_step</span><span class="p" data-group-id="1488810993-13">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-14">do</span><span class="w">
+  </span><span class="c1"># Simulation complete</span><span class="w">
+  </span><span class="p" data-group-id="1488810993-15">{</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">rewards</span><span class="p" data-group-id="1488810993-15">}</span><span class="w">
+</span><span class="k" data-group-id="1488810993-14">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">run_simulation_loop</span><span class="p" data-group-id="1488810993-16">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">steps_left</span><span class="p">,</span><span class="w"> </span><span class="n">rewards</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="p" data-group-id="1488810993-16">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-17">do</span><span class="w">
+  </span><span class="c1"># Get observations from environment</span><span class="w">
+  </span><span class="n">observations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_observations</span><span class="p" data-group-id="1488810993-18">(</span><span class="n">env</span><span class="p" data-group-id="1488810993-18">)</span><span class="w">
+  
+  </span><span class="c1"># Get action from neural network</span><span class="w">
+  </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">activate</span><span class="p" data-group-id="1488810993-19">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">observations</span><span class="p" data-group-id="1488810993-19">)</span><span class="w">
+  
+  </span><span class="c1"># Apply action to environment</span><span class="w">
+  </span><span class="p" data-group-id="1488810993-20">{</span><span class="n">new_env</span><span class="p">,</span><span class="w"> </span><span class="n">reward</span><span class="p">,</span><span class="w"> </span><span class="n">done</span><span class="p" data-group-id="1488810993-20">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">apply_action</span><span class="p" data-group-id="1488810993-21">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="p" data-group-id="1488810993-21">)</span><span class="w">
+  
+  </span><span class="k">if</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="k" data-group-id="1488810993-22">do</span><span class="w">
+    </span><span class="c1"># Simulation ended early</span><span class="w">
+    </span><span class="p" data-group-id="1488810993-23">{</span><span class="n">new_env</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1488810993-24">[</span><span class="n">reward</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">rewards</span><span class="p" data-group-id="1488810993-24">]</span><span class="p" data-group-id="1488810993-23">}</span><span class="w">
+  </span><span class="k" data-group-id="1488810993-22">else</span><span class="w">
+    </span><span class="c1"># Continue simulation</span><span class="w">
+    </span><span class="n">run_simulation_loop</span><span class="p" data-group-id="1488810993-25">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">new_env</span><span class="p">,</span><span class="w"> </span><span class="n">steps_left</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1488810993-26">[</span><span class="n">reward</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">rewards</span><span class="p" data-group-id="1488810993-26">]</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1488810993-25">)</span><span class="w">
+  </span><span class="k" data-group-id="1488810993-22">end</span><span class="w">
+</span><span class="k" data-group-id="1488810993-17">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">get_observations</span><span class="p" data-group-id="1488810993-27">(</span><span class="n">env</span><span class="p" data-group-id="1488810993-27">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-28">do</span><span class="w">
+  </span><span class="c1"># Extract observations from environment</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  
+  </span><span class="n">observations</span><span class="w">
+</span><span class="k" data-group-id="1488810993-28">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">apply_action</span><span class="p" data-group-id="1488810993-29">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">action</span><span class="p" data-group-id="1488810993-29">)</span><span class="w"> </span><span class="k" data-group-id="1488810993-30">do</span><span class="w">
+  </span><span class="c1"># Apply action to environment and get reward</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  
+  </span><span class="p" data-group-id="1488810993-31">{</span><span class="n">updated_env</span><span class="p">,</span><span class="w"> </span><span class="n">reward</span><span class="p">,</span><span class="w"> </span><span class="n">done</span><span class="p" data-group-id="1488810993-31">}</span><span class="w">
+</span><span class="k" data-group-id="1488810993-30">end</span></code></pre><h2 id="custom-selection-algorithms" class="section-heading"><a href="#custom-selection-algorithms" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Selection Algorithms</span></h2><p>Selection algorithms determine which genotypes get to reproduce.</p><h3 id="implementing-a-custom-selection-algorithm" class="section-heading"><a href="#implementing-a-custom-selection-algorithm" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementing a Custom Selection Algorithm</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.CustomSelectionAlgorithm</span><span class="w"> </span><span class="k" data-group-id="8958991456-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.SelectionAlgorithm</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">select</span><span class="p" data-group-id="8958991456-2">(</span><span class="n">population</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p" data-group-id="8958991456-2">)</span><span class="w"> </span><span class="k" data-group-id="8958991456-3">do</span><span class="w">
+    </span><span class="c1"># Sort population by fitness (assuming higher is better)</span><span class="w">
+    </span><span class="n">sorted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">sort_by</span><span class="p" data-group-id="8958991456-4">(</span><span class="n">population</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="8958991456-5">fn</span><span class="w"> </span><span class="p" data-group-id="8958991456-6">{</span><span class="c">_genotype</span><span class="p">,</span><span class="w"> </span><span class="n">fitness</span><span class="p" data-group-id="8958991456-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fitness</span><span class="w"> </span><span class="k" data-group-id="8958991456-5">end</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="o">&gt;=</span><span class="o">/</span><span class="mi">2</span><span class="p" data-group-id="8958991456-4">)</span><span class="w">
+    
+    </span><span class="c1"># Get population size</span><span class="w">
+    </span><span class="n">pop_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="8958991456-7">(</span><span class="n">population</span><span class="p" data-group-id="8958991456-7">)</span><span class="w">
+    
+    </span><span class="c1"># Get selection parameters with defaults</span><span class="w">
+    </span><span class="n">elite_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8958991456-8">(</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="ss">:elite_count</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="8958991456-8">)</span><span class="w">
+    </span><span class="n">tournament_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8958991456-9">(</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="ss">:tournament_size</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="8958991456-9">)</span><span class="w">
+    </span><span class="n">tournament_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pop_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">elite_count</span><span class="w">
+    
+    </span><span class="c1"># Directly select elites</span><span class="w">
+    </span><span class="n">elites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">take</span><span class="p" data-group-id="8958991456-10">(</span><span class="n">sorted</span><span class="p">,</span><span class="w"> </span><span class="n">elite_count</span><span class="p" data-group-id="8958991456-10">)</span><span class="w">
+    
+    </span><span class="c1"># Select the rest through tournament selection</span><span class="w">
+    </span><span class="n">tournament_selected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="8958991456-11">(</span><span class="mi">1</span><span class="o">..</span><span class="n">tournament_count</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="8958991456-12">fn</span><span class="w"> </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="c1"># Randomly select candidates for tournament</span><span class="w">
+      </span><span class="n">candidates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">take_random</span><span class="p" data-group-id="8958991456-13">(</span><span class="n">population</span><span class="p">,</span><span class="w"> </span><span class="n">tournament_size</span><span class="p" data-group-id="8958991456-13">)</span><span class="w">
+      
+      </span><span class="c1"># Return the best candidate</span><span class="w">
+      </span><span class="nc">Enum</span><span class="o">.</span><span class="n">max_by</span><span class="p" data-group-id="8958991456-14">(</span><span class="n">candidates</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="8958991456-15">fn</span><span class="w"> </span><span class="p" data-group-id="8958991456-16">{</span><span class="c">_genotype</span><span class="p">,</span><span class="w"> </span><span class="n">fitness</span><span class="p" data-group-id="8958991456-16">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fitness</span><span class="w"> </span><span class="k" data-group-id="8958991456-15">end</span><span class="p" data-group-id="8958991456-14">)</span><span class="w">
+    </span><span class="k" data-group-id="8958991456-12">end</span><span class="p" data-group-id="8958991456-11">)</span><span class="w">
+    
+    </span><span class="c1"># Combine elites and tournament selections</span><span class="w">
+    </span><span class="n">elites</span><span class="w"> </span><span class="o">++</span><span class="w"> </span><span class="n">tournament_selected</span><span class="w">
+  </span><span class="k" data-group-id="8958991456-3">end</span><span class="w">
+</span><span class="k" data-group-id="8958991456-1">end</span></code></pre><h2 id="custom-plasticity-rules" class="section-heading"><a href="#custom-plasticity-rules" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Plasticity Rules</span></h2><p>Plasticity rules define how neural connections change during the lifetime of a network.</p><h3 id="implementing-a-custom-plasticity-rule" class="section-heading"><a href="#implementing-a-custom-plasticity-rule" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementing a Custom Plasticity Rule</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.CustomPlasticityRule</span><span class="w"> </span><span class="k" data-group-id="0797833993-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Plasticity</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">apply_rule</span><span class="p" data-group-id="0797833993-2">(</span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">pre_activation</span><span class="p">,</span><span class="w"> </span><span class="n">post_activation</span><span class="p">,</span><span class="w"> </span><span class="n">parameters</span><span class="p" data-group-id="0797833993-2">)</span><span class="w"> </span><span class="k" data-group-id="0797833993-3">do</span><span class="w">
+    </span><span class="c1"># Get learning rate</span><span class="w">
+    </span><span class="n">learning_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0797833993-4">(</span><span class="n">parameters</span><span class="p">,</span><span class="w"> </span><span class="ss">:learning_rate</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01</span><span class="p" data-group-id="0797833993-4">)</span><span class="w">
+    
+    </span><span class="c1"># Simple Hebbian learning rule: &quot;Neurons that fire together, wire together&quot;</span><span class="w">
+    </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">learning_rate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pre_activation</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">post_activation</span><span class="w">
+    
+    </span><span class="c1"># Update weight</span><span class="w">
+    </span><span class="n">new_weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">delta</span><span class="w">
+    
+    </span><span class="c1"># Clamp weight to valid range</span><span class="w">
+    </span><span class="n">clamped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p" data-group-id="0797833993-5">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="p" data-group-id="0797833993-6">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">new_weight</span><span class="p" data-group-id="0797833993-6">)</span><span class="p" data-group-id="0797833993-5">)</span><span class="w">
+    
+    </span><span class="n">clamped</span><span class="w">
+  </span><span class="k" data-group-id="0797833993-3">end</span><span class="w">
+</span><span class="k" data-group-id="0797833993-1">end</span></code></pre><h2 id="extending-the-ui-visualization" class="section-heading"><a href="#extending-the-ui-visualization" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Extending the UI/Visualization</span></h2><p>If you're building a visualization for your Bardo experiments, you can add custom components.</p><h3 id="network-visualization" class="section-heading"><a href="#network-visualization" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Network Visualization</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.NetworkVisualizer</span><span class="w"> </span><span class="k" data-group-id="2963782668-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Converts a neural network to a visualization format.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">visualize</span><span class="p" data-group-id="2963782668-2">(</span><span class="n">nn</span><span class="p" data-group-id="2963782668-2">)</span><span class="w"> </span><span class="k" data-group-id="2963782668-3">do</span><span class="w">
+    </span><span class="c1"># Extract neurons and connections</span><span class="w">
+    </span><span class="n">neurons</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_neurons</span><span class="p" data-group-id="2963782668-4">(</span><span class="n">nn</span><span class="p" data-group-id="2963782668-4">)</span><span class="w">
+    </span><span class="n">connections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_connections</span><span class="p" data-group-id="2963782668-5">(</span><span class="n">nn</span><span class="p" data-group-id="2963782668-5">)</span><span class="w">
+    
+    </span><span class="c1"># Format for visualization library</span><span class="w">
+    </span><span class="p" data-group-id="2963782668-6">%{</span><span class="w">
+      </span><span class="ss">nodes</span><span class="p">:</span><span class="w"> </span><span class="n">format_nodes</span><span class="p" data-group-id="2963782668-7">(</span><span class="n">neurons</span><span class="p" data-group-id="2963782668-7">)</span><span class="p">,</span><span class="w">
+      </span><span class="ss">edges</span><span class="p">:</span><span class="w"> </span><span class="n">format_edges</span><span class="p" data-group-id="2963782668-8">(</span><span class="n">connections</span><span class="p" data-group-id="2963782668-8">)</span><span class="w">
+    </span><span class="p" data-group-id="2963782668-6">}</span><span class="w">
+  </span><span class="k" data-group-id="2963782668-3">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">extract_neurons</span><span class="p" data-group-id="2963782668-9">(</span><span class="n">nn</span><span class="p" data-group-id="2963782668-9">)</span><span class="w"> </span><span class="k" data-group-id="2963782668-10">do</span><span class="w">
+    </span><span class="c1"># Extract neuron data from neural network</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="n">neurons</span><span class="w">
+  </span><span class="k" data-group-id="2963782668-10">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">extract_connections</span><span class="p" data-group-id="2963782668-11">(</span><span class="n">nn</span><span class="p" data-group-id="2963782668-11">)</span><span class="w"> </span><span class="k" data-group-id="2963782668-12">do</span><span class="w">
+    </span><span class="c1"># Extract connection data from neural network</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="n">connections</span><span class="w">
+  </span><span class="k" data-group-id="2963782668-12">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">format_nodes</span><span class="p" data-group-id="2963782668-13">(</span><span class="n">neurons</span><span class="p" data-group-id="2963782668-13">)</span><span class="w"> </span><span class="k" data-group-id="2963782668-14">do</span><span class="w">
+    </span><span class="c1"># Format neurons for visualization</span><span class="w">
+    </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="2963782668-15">(</span><span class="n">neurons</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2963782668-16">fn</span><span class="w"> </span><span class="n">neuron</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="p" data-group-id="2963782668-17">%{</span><span class="w">
+        </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">neuron</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
+        </span><span class="ss">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Neuron </span><span class="si" data-group-id="2963782668-18">#{</span><span class="n">neuron</span><span class="o">.</span><span class="n">id</span><span class="si" data-group-id="2963782668-18">}</span><span class="s">&quot;</span><span class="p">,</span><span class="w">
+        </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="n">neuron</span><span class="o">.</span><span class="n">type</span><span class="p">,</span><span class="w">
+        </span><span class="ss">activation</span><span class="p">:</span><span class="w"> </span><span class="n">neuron</span><span class="o">.</span><span class="n">activation_function</span><span class="w">
+      </span><span class="p" data-group-id="2963782668-17">}</span><span class="w">
+    </span><span class="k" data-group-id="2963782668-16">end</span><span class="p" data-group-id="2963782668-15">)</span><span class="w">
+  </span><span class="k" data-group-id="2963782668-14">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">format_edges</span><span class="p" data-group-id="2963782668-19">(</span><span class="n">connections</span><span class="p" data-group-id="2963782668-19">)</span><span class="w"> </span><span class="k" data-group-id="2963782668-20">do</span><span class="w">
+    </span><span class="c1"># Format connections for visualization</span><span class="w">
+    </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="2963782668-21">(</span><span class="n">connections</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2963782668-22">fn</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="p" data-group-id="2963782668-23">%{</span><span class="w">
+        </span><span class="ss">source</span><span class="p">:</span><span class="w"> </span><span class="n">connection</span><span class="o">.</span><span class="n">source_id</span><span class="p">,</span><span class="w">
+        </span><span class="ss">target</span><span class="p">:</span><span class="w"> </span><span class="n">connection</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span><span class="w">
+        </span><span class="ss">weight</span><span class="p">:</span><span class="w"> </span><span class="n">connection</span><span class="o">.</span><span class="n">weight</span><span class="w">
+      </span><span class="p" data-group-id="2963782668-23">}</span><span class="w">
+    </span><span class="k" data-group-id="2963782668-22">end</span><span class="p" data-group-id="2963782668-21">)</span><span class="w">
+  </span><span class="k" data-group-id="2963782668-20">end</span><span class="w">
+</span><span class="k" data-group-id="2963782668-1">end</span></code></pre><h3 id="fitness-chart" class="section-heading"><a href="#fitness-chart" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Fitness Chart</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.FitnessChart</span><span class="w"> </span><span class="k" data-group-id="1410028628-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Formats fitness history data for charting.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">format_fitness_history</span><span class="p" data-group-id="1410028628-2">(</span><span class="n">experiment_id</span><span class="p" data-group-id="1410028628-2">)</span><span class="w"> </span><span class="k" data-group-id="1410028628-3">do</span><span class="w">
+    </span><span class="c1"># Get experiment data</span><span class="w">
+    </span><span class="p" data-group-id="1410028628-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">experiment</span><span class="p" data-group-id="1410028628-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">get_experiment</span><span class="p" data-group-id="1410028628-5">(</span><span class="n">experiment_id</span><span class="p" data-group-id="1410028628-5">)</span><span class="w">
+    
+    </span><span class="c1"># Extract fitness history</span><span class="w">
+    </span><span class="n">fitness_history</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">experiment</span><span class="o">.</span><span class="n">fitness_history</span><span class="w">
+    
+    </span><span class="c1"># Format for charting</span><span class="w">
+    </span><span class="p" data-group-id="1410028628-6">%{</span><span class="w">
+      </span><span class="ss">labels</span><span class="p">:</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="1410028628-7">(</span><span class="mi">0</span><span class="o">..</span><span class="p" data-group-id="1410028628-8">(</span><span class="n">length</span><span class="p" data-group-id="1410028628-9">(</span><span class="n">fitness_history</span><span class="p" data-group-id="1410028628-9">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1410028628-8">)</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Integer</span><span class="o">.</span><span class="n">to_string</span><span class="o">/</span><span class="mi">1</span><span class="p" data-group-id="1410028628-7">)</span><span class="p">,</span><span class="w">
+      </span><span class="ss">datasets</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1410028628-10">[</span><span class="w">
+        </span><span class="p" data-group-id="1410028628-11">%{</span><span class="w">
+          </span><span class="ss">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Best Fitness&quot;</span><span class="p">,</span><span class="w">
+          </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="n">fitness_history</span><span class="p">,</span><span class="w">
+          </span><span class="ss">borderColor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rgba(75, 192, 192, 1)&quot;</span><span class="p">,</span><span class="w">
+          </span><span class="ss">backgroundColor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rgba(75, 192, 192, 0.2)&quot;</span><span class="w">
+        </span><span class="p" data-group-id="1410028628-11">}</span><span class="w">
+      </span><span class="p" data-group-id="1410028628-10">]</span><span class="w">
+    </span><span class="p" data-group-id="1410028628-6">}</span><span class="w">
+  </span><span class="k" data-group-id="1410028628-3">end</span><span class="w">
+</span><span class="k" data-group-id="1410028628-1">end</span></code></pre><h2 id="integrating-with-external-systems" class="section-heading"><a href="#integrating-with-external-systems" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Integrating with External Systems</span></h2><h3 id="custom-data-loaders" class="section-heading"><a href="#custom-data-loaders" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Data Loaders</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.DataLoader</span><span class="w"> </span><span class="k" data-group-id="4486134109-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Loads training data from external sources.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">load_training_data</span><span class="p" data-group-id="4486134109-2">(</span><span class="n">source</span><span class="p" data-group-id="4486134109-2">)</span><span class="w"> </span><span class="k" data-group-id="4486134109-3">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="k" data-group-id="4486134109-4">do</span><span class="w">
+      </span><span class="p" data-group-id="4486134109-5">{</span><span class="ss">:csv</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="4486134109-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">load_from_csv</span><span class="p" data-group-id="4486134109-6">(</span><span class="n">filename</span><span class="p" data-group-id="4486134109-6">)</span><span class="w">
+        
+      </span><span class="p" data-group-id="4486134109-7">{</span><span class="ss">:database</span><span class="p">,</span><span class="w"> </span><span class="n">query</span><span class="p" data-group-id="4486134109-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">load_from_database</span><span class="p" data-group-id="4486134109-8">(</span><span class="n">query</span><span class="p" data-group-id="4486134109-8">)</span><span class="w">
+        
+      </span><span class="p" data-group-id="4486134109-9">{</span><span class="ss">:api</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p" data-group-id="4486134109-9">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">load_from_api</span><span class="p" data-group-id="4486134109-10">(</span><span class="n">url</span><span class="p" data-group-id="4486134109-10">)</span><span class="w">
+        
+      </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="p" data-group-id="4486134109-11">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:unknown_source</span><span class="p" data-group-id="4486134109-11">}</span><span class="w">
+    </span><span class="k" data-group-id="4486134109-4">end</span><span class="w">
+  </span><span class="k" data-group-id="4486134109-3">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">load_from_csv</span><span class="p" data-group-id="4486134109-12">(</span><span class="n">filename</span><span class="p" data-group-id="4486134109-12">)</span><span class="w"> </span><span class="k" data-group-id="4486134109-13">do</span><span class="w">
+    </span><span class="c1"># Parse CSV file</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="4486134109-14">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4486134109-14">}</span><span class="w">
+  </span><span class="k" data-group-id="4486134109-13">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">load_from_database</span><span class="p" data-group-id="4486134109-15">(</span><span class="n">query</span><span class="p" data-group-id="4486134109-15">)</span><span class="w"> </span><span class="k" data-group-id="4486134109-16">do</span><span class="w">
+    </span><span class="c1"># Execute database query</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="4486134109-17">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4486134109-17">}</span><span class="w">
+  </span><span class="k" data-group-id="4486134109-16">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">load_from_api</span><span class="p" data-group-id="4486134109-18">(</span><span class="n">url</span><span class="p" data-group-id="4486134109-18">)</span><span class="w"> </span><span class="k" data-group-id="4486134109-19">do</span><span class="w">
+    </span><span class="c1"># Make API request</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="4486134109-20">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4486134109-20">}</span><span class="w">
+  </span><span class="k" data-group-id="4486134109-19">end</span><span class="w">
+</span><span class="k" data-group-id="4486134109-1">end</span></code></pre><h3 id="external-model-exporters" class="section-heading"><a href="#external-model-exporters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">External Model Exporters</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.ModelExporter</span><span class="w"> </span><span class="k" data-group-id="1874994945-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Exports Bardo models to different formats.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">export_model</span><span class="p" data-group-id="1874994945-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-2">)</span><span class="w"> </span><span class="k" data-group-id="1874994945-3">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="k" data-group-id="1874994945-4">do</span><span class="w">
+      </span><span class="ss">:onnx</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">export_to_onnx</span><span class="p" data-group-id="1874994945-5">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-5">)</span><span class="w">
+        
+      </span><span class="ss">:tensorflow</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">export_to_tensorflow</span><span class="p" data-group-id="1874994945-6">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-6">)</span><span class="w">
+        
+      </span><span class="ss">:json</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="n">export_to_json</span><span class="p" data-group-id="1874994945-7">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-7">)</span><span class="w">
+        
+      </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="p" data-group-id="1874994945-8">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:unknown_format</span><span class="p" data-group-id="1874994945-8">}</span><span class="w">
+    </span><span class="k" data-group-id="1874994945-4">end</span><span class="w">
+  </span><span class="k" data-group-id="1874994945-3">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">export_to_onnx</span><span class="p" data-group-id="1874994945-9">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-9">)</span><span class="w"> </span><span class="k" data-group-id="1874994945-10">do</span><span class="w">
+    </span><span class="c1"># Convert to ONNX format</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="1874994945-11">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-11">}</span><span class="w">
+  </span><span class="k" data-group-id="1874994945-10">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">export_to_tensorflow</span><span class="p" data-group-id="1874994945-12">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-12">)</span><span class="w"> </span><span class="k" data-group-id="1874994945-13">do</span><span class="w">
+    </span><span class="c1"># Convert to TensorFlow format</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="1874994945-14">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-14">}</span><span class="w">
+  </span><span class="k" data-group-id="1874994945-13">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">export_to_json</span><span class="p" data-group-id="1874994945-15">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p" data-group-id="1874994945-15">)</span><span class="w"> </span><span class="k" data-group-id="1874994945-16">do</span><span class="w">
+    </span><span class="c1"># Convert to JSON</span><span class="w">
+    </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Jason</span><span class="o">.</span><span class="n">encode!</span><span class="p" data-group-id="1874994945-17">(</span><span class="n">genotype</span><span class="p" data-group-id="1874994945-17">)</span><span class="w">
+    
+    </span><span class="c1"># Write to file</span><span class="w">
+    </span><span class="nc">File</span><span class="o">.</span><span class="n">write</span><span class="p" data-group-id="1874994945-18">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">json</span><span class="p" data-group-id="1874994945-18">)</span><span class="w">
+  </span><span class="k" data-group-id="1874994945-16">end</span><span class="w">
+</span><span class="k" data-group-id="1874994945-1">end</span></code></pre><h2 id="distributed-computing-extensions" class="section-heading"><a href="#distributed-computing-extensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Distributed Computing Extensions</span></h2><h3 id="custom-node-manager" class="section-heading"><a href="#custom-node-manager" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Node Manager</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.DistributedNodeManager</span><span class="w"> </span><span class="k" data-group-id="2251441457-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Manages a cluster of Bardo nodes.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_cluster</span><span class="p" data-group-id="2251441457-2">(</span><span class="n">node_count</span><span class="p" data-group-id="2251441457-2">)</span><span class="w"> </span><span class="k" data-group-id="2251441457-3">do</span><span class="w">
+    </span><span class="c1"># Start distributed nodes</span><span class="w">
+    </span><span class="n">nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_nodes</span><span class="p" data-group-id="2251441457-4">(</span><span class="n">node_count</span><span class="p" data-group-id="2251441457-4">)</span><span class="w">
+    
+    </span><span class="c1"># Connect nodes</span><span class="w">
+    </span><span class="n">connect_nodes</span><span class="p" data-group-id="2251441457-5">(</span><span class="n">nodes</span><span class="p" data-group-id="2251441457-5">)</span><span class="w">
+    
+    </span><span class="c1"># Return node list</span><span class="w">
+    </span><span class="p" data-group-id="2251441457-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p" data-group-id="2251441457-6">}</span><span class="w">
+  </span><span class="k" data-group-id="2251441457-3">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">start_nodes</span><span class="p" data-group-id="2251441457-7">(</span><span class="n">count</span><span class="p" data-group-id="2251441457-7">)</span><span class="w"> </span><span class="k" data-group-id="2251441457-8">do</span><span class="w">
+    </span><span class="c1"># Start Erlang nodes</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="n">nodes</span><span class="w">
+  </span><span class="k" data-group-id="2251441457-8">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">connect_nodes</span><span class="p" data-group-id="2251441457-9">(</span><span class="n">nodes</span><span class="p" data-group-id="2251441457-9">)</span><span class="w"> </span><span class="k" data-group-id="2251441457-10">do</span><span class="w">
+    </span><span class="c1"># Connect nodes to form a cluster</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="ss">:ok</span><span class="w">
+  </span><span class="k" data-group-id="2251441457-10">end</span><span class="w">
+  
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Distributes genotypes across nodes for parallel evaluation.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">distribute_evaluation</span><span class="p" data-group-id="2251441457-11">(</span><span class="n">genotypes</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_function</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p" data-group-id="2251441457-11">)</span><span class="w"> </span><span class="k" data-group-id="2251441457-12">do</span><span class="w">
+    </span><span class="c1"># Split genotypes among nodes</span><span class="w">
+    </span><span class="n">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">chunk_every</span><span class="p" data-group-id="2251441457-13">(</span><span class="n">genotypes</span><span class="p">,</span><span class="w"> </span><span class="n">div</span><span class="p" data-group-id="2251441457-14">(</span><span class="n">length</span><span class="p" data-group-id="2251441457-15">(</span><span class="n">genotypes</span><span class="p" data-group-id="2251441457-15">)</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p" data-group-id="2251441457-16">(</span><span class="n">nodes</span><span class="p" data-group-id="2251441457-16">)</span><span class="p" data-group-id="2251441457-14">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="2251441457-13">)</span><span class="w">
+    
+    </span><span class="c1"># Send chunks to nodes for evaluation</span><span class="w">
+    </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">zip</span><span class="p" data-group-id="2251441457-17">(</span><span class="n">chunks</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p" data-group-id="2251441457-17">)</span><span class="w">
+              </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="2251441457-18">(</span><span class="k" data-group-id="2251441457-19">fn</span><span class="w"> </span><span class="p" data-group-id="2251441457-20">{</span><span class="n">chunk</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p" data-group-id="2251441457-20">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+                </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="p" data-group-id="2251441457-21">(</span><span class="k" data-group-id="2251441457-22">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+                  </span><span class="nc">:rpc</span><span class="o">.</span><span class="n">call</span><span class="p" data-group-id="2251441457-23">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="nc">Bardo.PopulationManager</span><span class="p">,</span><span class="w"> </span><span class="ss">:evaluate_genotypes</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2251441457-24">[</span><span class="n">chunk</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_function</span><span class="p" data-group-id="2251441457-24">]</span><span class="p" data-group-id="2251441457-23">)</span><span class="w">
+                </span><span class="k" data-group-id="2251441457-22">end</span><span class="p" data-group-id="2251441457-21">)</span><span class="w">
+              </span><span class="k" data-group-id="2251441457-19">end</span><span class="p" data-group-id="2251441457-18">)</span><span class="w">
+              </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="2251441457-25">(</span><span class="o">&amp;</span><span class="nc">Task</span><span class="o">.</span><span class="n">await</span><span class="p" data-group-id="2251441457-26">(</span><span class="ni">&amp;1</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p" data-group-id="2251441457-26">)</span><span class="p" data-group-id="2251441457-25">)</span><span class="w">
+    
+    </span><span class="c1"># Combine results</span><span class="w">
+    </span><span class="nc">List</span><span class="o">.</span><span class="n">flatten</span><span class="p" data-group-id="2251441457-27">(</span><span class="n">results</span><span class="p" data-group-id="2251441457-27">)</span><span class="w">
+  </span><span class="k" data-group-id="2251441457-12">end</span><span class="w">
+</span><span class="k" data-group-id="2251441457-1">end</span></code></pre><h2 id="performance-optimizations" class="section-heading"><a href="#performance-optimizations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Performance Optimizations</span></h2><h3 id="custom-cache-strategy" class="section-heading"><a href="#custom-cache-strategy" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Cache Strategy</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.EvaluationCache</span><span class="w"> </span><span class="k" data-group-id="4629141452-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Initializes an evaluation cache.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="w"> </span><span class="k" data-group-id="4629141452-2">do</span><span class="w">
+    </span><span class="c1"># Create ETS table for caching</span><span class="w">
+    </span><span class="nc">:ets</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="4629141452-3">(</span><span class="ss">:evaluation_cache</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4629141452-4">[</span><span class="ss">:set</span><span class="p">,</span><span class="w"> </span><span class="ss">:public</span><span class="p">,</span><span class="w"> </span><span class="ss">:named_table</span><span class="p" data-group-id="4629141452-4">]</span><span class="p" data-group-id="4629141452-3">)</span><span class="w">
+    </span><span class="ss">:ok</span><span class="w">
+  </span><span class="k" data-group-id="4629141452-2">end</span><span class="w">
+  
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Gets or computes fitness for a genotype.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">get_or_compute</span><span class="p" data-group-id="4629141452-5">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_function</span><span class="p" data-group-id="4629141452-5">)</span><span class="w"> </span><span class="k" data-group-id="4629141452-6">do</span><span class="w">
+    </span><span class="c1"># Generate cache key</span><span class="w">
+    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">phash2</span><span class="p" data-group-id="4629141452-7">(</span><span class="n">genotype</span><span class="p" data-group-id="4629141452-7">)</span><span class="w">
+    
+    </span><span class="c1"># Try to get from cache</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="nc">:ets</span><span class="o">.</span><span class="n">lookup</span><span class="p" data-group-id="4629141452-8">(</span><span class="ss">:evaluation_cache</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="4629141452-8">)</span><span class="w"> </span><span class="k" data-group-id="4629141452-9">do</span><span class="w">
+      </span><span class="p" data-group-id="4629141452-10">[</span><span class="p" data-group-id="4629141452-11">{</span><span class="o">^</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">fitness</span><span class="p" data-group-id="4629141452-11">}</span><span class="p" data-group-id="4629141452-10">]</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Cache hit</span><span class="w">
+        </span><span class="n">fitness</span><span class="w">
+        
+      </span><span class="p" data-group-id="4629141452-12">[</span><span class="p" data-group-id="4629141452-12">]</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="c1"># Cache miss, compute fitness</span><span class="w">
+        </span><span class="n">fitness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fitness_function</span><span class="o">.</span><span class="p" data-group-id="4629141452-13">(</span><span class="n">genotype</span><span class="p" data-group-id="4629141452-13">)</span><span class="w">
+        
+        </span><span class="c1"># Store in cache</span><span class="w">
+        </span><span class="nc">:ets</span><span class="o">.</span><span class="n">insert</span><span class="p" data-group-id="4629141452-14">(</span><span class="ss">:evaluation_cache</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4629141452-15">{</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">fitness</span><span class="p" data-group-id="4629141452-15">}</span><span class="p" data-group-id="4629141452-14">)</span><span class="w">
+        
+        </span><span class="n">fitness</span><span class="w">
+    </span><span class="k" data-group-id="4629141452-9">end</span><span class="w">
+  </span><span class="k" data-group-id="4629141452-6">end</span><span class="w">
+  
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Clears the evaluation cache.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">clear</span><span class="w"> </span><span class="k" data-group-id="4629141452-16">do</span><span class="w">
+    </span><span class="nc">:ets</span><span class="o">.</span><span class="n">delete_all_objects</span><span class="p" data-group-id="4629141452-17">(</span><span class="ss">:evaluation_cache</span><span class="p" data-group-id="4629141452-17">)</span><span class="w">
+    </span><span class="ss">:ok</span><span class="w">
+  </span><span class="k" data-group-id="4629141452-16">end</span><span class="w">
+</span><span class="k" data-group-id="4629141452-1">end</span></code></pre><h2 id="real-world-extensions" class="section-heading"><a href="#real-world-extensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Real-world Extensions</span></h2><h3 id="financial-market-integration" class="section-heading"><a href="#financial-market-integration" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Financial Market Integration</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.MarketIntegration</span><span class="w"> </span><span class="k" data-group-id="5891837845-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Creates a Bardo sensor for financial market data.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">create_market_sensor</span><span class="p" data-group-id="5891837845-2">(</span><span class="n">market</span><span class="p">,</span><span class="w"> </span><span class="n">timeframe</span><span class="p" data-group-id="5891837845-2">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-3">do</span><span class="w">
+    </span><span class="c1"># Define sensor module</span><span class="w">
+    </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MarketSensor</span><span class="w"> </span><span class="k" data-group-id="5891837845-4">do</span><span class="w">
+      </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+      
+      </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+      </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="5891837845-5">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="5891837845-5">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-6">do</span><span class="w">
+        </span><span class="p" data-group-id="5891837845-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5891837845-8">%{</span><span class="w">
+          </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w">
+          </span><span class="ss">sensor_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:market</span><span class="p">,</span><span class="w">
+          </span><span class="ss">fanout</span><span class="p">:</span><span class="w"> </span><span class="n">fanout</span><span class="p">,</span><span class="w">
+          </span><span class="ss">cortex_pid</span><span class="p">:</span><span class="w"> </span><span class="n">cortex_pid</span><span class="p">,</span><span class="w">
+          </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="n">vl</span><span class="p">,</span><span class="w">
+          </span><span class="ss">market</span><span class="p">:</span><span class="w"> </span><span class="n">market</span><span class="p">,</span><span class="w">
+          </span><span class="ss">timeframe</span><span class="p">:</span><span class="w"> </span><span class="n">timeframe</span><span class="p">,</span><span class="w">
+          </span><span class="ss">indicators</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5891837845-9">[</span><span class="ss">:price</span><span class="p">,</span><span class="w"> </span><span class="ss">:volume</span><span class="p">,</span><span class="w"> </span><span class="ss">:rsi</span><span class="p">,</span><span class="w"> </span><span class="ss">:macd</span><span class="p" data-group-id="5891837845-9">]</span><span class="w">
+        </span><span class="p" data-group-id="5891837845-8">}</span><span class="p" data-group-id="5891837845-7">}</span><span class="w">
+      </span><span class="k" data-group-id="5891837845-6">end</span><span class="w">
+      
+      </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+      </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="5891837845-10">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5891837845-10">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-11">do</span><span class="w">
+        </span><span class="c1"># Get market data</span><span class="w">
+        </span><span class="n">market_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_market_data</span><span class="p" data-group-id="5891837845-12">(</span><span class="n">state</span><span class="o">.</span><span class="n">market</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">timeframe</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">.</span><span class="n">timestamp</span><span class="p" data-group-id="5891837845-12">)</span><span class="w">
+        
+        </span><span class="c1"># Calculate technical indicators</span><span class="w">
+        </span><span class="n">indicators</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_indicators</span><span class="p" data-group-id="5891837845-13">(</span><span class="n">market_data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">indicators</span><span class="p" data-group-id="5891837845-13">)</span><span class="w">
+        
+        </span><span class="c1"># Format as neural inputs</span><span class="w">
+        </span><span class="n">signals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">format_indicators</span><span class="p" data-group-id="5891837845-14">(</span><span class="n">indicators</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">fanout</span><span class="p" data-group-id="5891837845-14">)</span><span class="w">
+        
+        </span><span class="p" data-group-id="5891837845-15">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">signals</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5891837845-15">}</span><span class="w">
+      </span><span class="k" data-group-id="5891837845-11">end</span><span class="w">
+      
+      </span><span class="kd">defp</span><span class="w"> </span><span class="nf">get_market_data</span><span class="p" data-group-id="5891837845-16">(</span><span class="n">market</span><span class="p">,</span><span class="w"> </span><span class="n">timeframe</span><span class="p">,</span><span class="w"> </span><span class="n">timestamp</span><span class="p" data-group-id="5891837845-16">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-17">do</span><span class="w">
+        </span><span class="c1"># Fetch market data from API or database</span><span class="w">
+        </span><span class="c1"># ...</span><span class="w">
+        
+        </span><span class="n">market_data</span><span class="w">
+      </span><span class="k" data-group-id="5891837845-17">end</span><span class="w">
+      
+      </span><span class="kd">defp</span><span class="w"> </span><span class="nf">calculate_indicators</span><span class="p" data-group-id="5891837845-18">(</span><span class="n">market_data</span><span class="p">,</span><span class="w"> </span><span class="n">indicators</span><span class="p" data-group-id="5891837845-18">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-19">do</span><span class="w">
+        </span><span class="c1"># Calculate technical indicators</span><span class="w">
+        </span><span class="c1"># ...</span><span class="w">
+        
+        </span><span class="n">calculated_indicators</span><span class="w">
+      </span><span class="k" data-group-id="5891837845-19">end</span><span class="w">
+      
+      </span><span class="kd">defp</span><span class="w"> </span><span class="nf">format_indicators</span><span class="p" data-group-id="5891837845-20">(</span><span class="n">indicators</span><span class="p">,</span><span class="w"> </span><span class="n">fanout</span><span class="p" data-group-id="5891837845-20">)</span><span class="w"> </span><span class="k" data-group-id="5891837845-21">do</span><span class="w">
+        </span><span class="c1"># Format indicators as neural inputs</span><span class="w">
+        </span><span class="c1"># ...</span><span class="w">
+        
+        </span><span class="n">formatted_indicators</span><span class="w">
+      </span><span class="k" data-group-id="5891837845-21">end</span><span class="w">
+    </span><span class="k" data-group-id="5891837845-4">end</span><span class="w">
+    
+    </span><span class="c1"># Return sensor module</span><span class="w">
+    </span><span class="nc">MarketSensor</span><span class="w">
+  </span><span class="k" data-group-id="5891837845-3">end</span><span class="w">
+</span><span class="k" data-group-id="5891837845-1">end</span></code></pre><h2 id="integration-with-machine-learning-frameworks" class="section-heading"><a href="#integration-with-machine-learning-frameworks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Integration with Machine Learning Frameworks</span></h2><h3 id="tensorflow-integration" class="section-heading"><a href="#tensorflow-integration" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">TensorFlow Integration</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.TensorFlowIntegration</span><span class="w"> </span><span class="k" data-group-id="8430905356-1">do</span><span class="w">
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Converts a Bardo neural network to a TensorFlow model.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">convert_to_tensorflow</span><span class="p" data-group-id="8430905356-2">(</span><span class="n">nn</span><span class="p" data-group-id="8430905356-2">)</span><span class="w"> </span><span class="k" data-group-id="8430905356-3">do</span><span class="w">
+    </span><span class="c1"># Extract network structure</span><span class="w">
+    </span><span class="n">structure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_network_structure</span><span class="p" data-group-id="8430905356-4">(</span><span class="n">nn</span><span class="p" data-group-id="8430905356-4">)</span><span class="w">
+    
+    </span><span class="c1"># Convert to TensorFlow model</span><span class="w">
+    </span><span class="n">tf_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">build_tensorflow_model</span><span class="p" data-group-id="8430905356-5">(</span><span class="n">structure</span><span class="p" data-group-id="8430905356-5">)</span><span class="w">
+    
+    </span><span class="p" data-group-id="8430905356-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">tf_model</span><span class="p" data-group-id="8430905356-6">}</span><span class="w">
+  </span><span class="k" data-group-id="8430905356-3">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">extract_network_structure</span><span class="p" data-group-id="8430905356-7">(</span><span class="n">nn</span><span class="p" data-group-id="8430905356-7">)</span><span class="w"> </span><span class="k" data-group-id="8430905356-8">do</span><span class="w">
+    </span><span class="c1"># Extract layers, neurons, and connections</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="n">structure</span><span class="w">
+  </span><span class="k" data-group-id="8430905356-8">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">build_tensorflow_model</span><span class="p" data-group-id="8430905356-9">(</span><span class="n">structure</span><span class="p" data-group-id="8430905356-9">)</span><span class="w"> </span><span class="k" data-group-id="8430905356-10">do</span><span class="w">
+    </span><span class="c1"># Build TensorFlow model using Python interop</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="n">tf_model</span><span class="w">
+  </span><span class="k" data-group-id="8430905356-10">end</span><span class="w">
+  
+  </span><span class="na">@doc</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Runs inference using TensorFlow.
+  &quot;&quot;&quot;</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">run_inference</span><span class="p" data-group-id="8430905356-11">(</span><span class="n">tf_model</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p" data-group-id="8430905356-11">)</span><span class="w"> </span><span class="k" data-group-id="8430905356-12">do</span><span class="w">
+    </span><span class="c1"># Run inference in TensorFlow</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    
+    </span><span class="p" data-group-id="8430905356-13">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">outputs</span><span class="p" data-group-id="8430905356-13">}</span><span class="w">
+  </span><span class="k" data-group-id="8430905356-12">end</span><span class="w">
+</span><span class="k" data-group-id="8430905356-1">end</span></code></pre>
+
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="examples.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Bardo Examples
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="advanced.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Advanced Bardo Usage
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/bardo/0.1.0/show/docs/extending.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

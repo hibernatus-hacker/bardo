@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo Examples — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Bardo Examples</h1>
+
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/docs/examples.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+<p>This document provides detailed information on the example applications and benchmarks included with Bardo.</p><h2 id="benchmarks" class="section-heading"><a href="#benchmarks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Benchmarks</span></h2><h3 id="double-pole-balancing-dpb" class="section-heading"><a href="#double-pole-balancing-dpb" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Double Pole Balancing (DPB)</span></h3><p>A classic control problem where a neural network learns to balance two poles of different lengths on a cart.</p><h4>Overview</h4><p>In this problem, we try to balance two poles of different lengths simultaneously on a cart. The cart can move left and right along a track, and the neural network must apply the correct forces to keep both poles balanced.</p><ul><li>One pole is 0.1 meters long</li><li>The other pole is 1.0 meter long </li><li>The closer the lengths of the two poles are, the more difficult the problem becomes</li></ul><h4>Running the Example</h4><pre><code class="makeup elixir" translate="no"><span class="c1"># Run with default settings</span><span class="w">
+</span><span class="nc">Bardo.Examples.Benchmarks.Dpb</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="1924581985-1">(</span><span class="p" data-group-id="1924581985-1">)</span><span class="w">
+
+</span><span class="c1"># Run with custom settings</span><span class="w">
+</span><span class="nc">Bardo.Examples.Benchmarks.Dpb</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="1924581985-2">(</span><span class="p" data-group-id="1924581985-3">%{</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_generations</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="ss">use_damping</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">  </span><span class="c1"># Enables damping to discourage rapid cart movements</span><span class="w">
+</span><span class="p" data-group-id="1924581985-3">}</span><span class="p" data-group-id="1924581985-2">)</span></code></pre><h4>What to Expect</h4><ul><li>With standard settings, a solution typically emerges after ~2,300 evaluations</li><li>The neural network learns to make small, precise movements to balance both poles</li><li>You can observe the evolution progress through the console output or visualizations</li></ul><h4>Implementation Details</h4><p>The DPB example provides two variants:</p><ul><li>Without damping: Allows fast cart movements as long as poles stay balanced</li><li>With damping: Penalizes high velocity and rapid changes, encouraging smoother control</li></ul><p>The neural network receives these inputs:</p><ul><li>Cart position and velocity </li><li>First pole angle and angular velocity</li><li>Second pole angle and angular velocity</li></ul><p>It produces a single output:</p><ul><li>Force value (in Newtons) to apply to the cart, saturated at 10N magnitude</li></ul><h2 id="applications" class="section-heading"><a href="#applications" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Applications</span></h2><h3 id="flatland-predator-vs-prey-simulation" class="section-heading"><a href="#flatland-predator-vs-prey-simulation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Flatland (Predator vs Prey Simulation)</span></h3><p>A more complex simulation where predator and prey agents co-evolve in a 2D world.</p><h4>Overview</h4><p>Flatland creates a simulated 2D environment where:</p><ul><li>Predator agents (red) try to catch and consume prey agents (blue)</li><li>Prey agents try to survive by avoiding predators and consuming plants (green)</li><li>Both species evolve more sophisticated strategies over time</li></ul><p>This example demonstrates:</p><ul><li>Co-evolution of competing species</li><li>Complex emergent behaviors</li><li>Steady-state evolution (ongoing birth and death rather than distinct generations)</li></ul><h4>Running the Example</h4><pre><code class="makeup elixir" translate="no"><span class="c1"># Run with default settings</span><span class="w">
+</span><span class="nc">Bardo.Examples.Applications.Flatland</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="6395439053-1">(</span><span class="p" data-group-id="6395439053-1">)</span><span class="w">
+
+</span><span class="c1"># Run with custom settings</span><span class="w">
+</span><span class="nc">Bardo.Examples.Applications.Flatland</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="6395439053-2">(</span><span class="p" data-group-id="6395439053-3">%{</span><span class="w">
+  </span><span class="ss">predator_population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="ss">prey_population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="ss">plant_quantity</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_evaluations</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+</span><span class="p" data-group-id="6395439053-3">}</span><span class="p" data-group-id="6395439053-2">)</span></code></pre><h4>What to Expect</h4><p>You'll observe fascinating co-evolutionary dynamics:</p><ul><li>Initially random behavior becomes increasingly strategic</li><li>Predators may evolve trapping or ambush tactics</li><li>Prey develop evasion strategies and efficient foraging</li><li>The population dynamics reach different equilibria depending on which species evolves effective strategies first</li></ul><h4>Implementation Details</h4><p>Each agent has:</p><ul><li>Distance scanners (sensors that detect objects at different angles)</li><li>Color scanners (sensors that identify object types by color)</li><li>Two-wheel drive actuators (for movement control)</li></ul><p>The evolutionary progress can be tracked through:</p><ul><li>Average fitness over time</li><li>Neural network complexity</li><li>Population diversity</li><li>Population turnover (death rates)</li></ul><h2 id="custom-example-development" class="section-heading"><a href="#custom-example-development" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Example Development</span></h2><p>To create your own example using Bardo:</p><ol><li>Define your environment and interaction rules</li><li>Create custom sensors and actuators</li><li>Set up the evolution parameters</li><li>Configure fitness functions</li></ol><p>See the <a href="advanced.html">advanced guide</a> for detailed instructions on developing custom examples.</p>
+
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="api_reference.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Bardo API Reference
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="extending.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Extending Bardo
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/bardo/0.1.0/show/docs/examples.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

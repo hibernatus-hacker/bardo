@@ -138,22 +138,7 @@ Bardo.ExperimentManager.configure(experiment, %{
 })
 ```
 
-## Distributed Training
-
-Bardo can distribute evolutionary computations across multiple Erlang nodes:
-
-```elixir
-# Connect to other nodes
-Node.connect(:"node1@192.168.1.101")
-Node.connect(:"node2@192.168.1.102")
-
-# Configure experiment with distributed settings
-Bardo.ExperimentManager.configure(experiment, %{
-  distributed: true,
-  nodes: [node(), :"node1@192.168.1.101", :"node2@192.168.1.102"],
-  population_per_node: 20
-})
-```
+<!-- Distributed training will be supported in a future release -->
 
 ## Custom Neural Activation Functions
 

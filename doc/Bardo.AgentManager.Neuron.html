@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.AgentManager.Neuron — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.AgentManager.Neuron</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The neuron is a signal processing element.</p><p>It accepts signals, accumulates them into an ordered vector, then processes this input
+vector to produce an output, and finally passes the output to other elements it is 
+connected to. The neuron never interacts with the environment directly, and even when 
+it does receive signals and produces output signals, it does not know whether these 
+input signals are coming from sensors or neurons, or whether it is sending its output 
+signals to other neurons or actuators. </p><p>All the neuron does is have a list of input PIDs from which it expects to receive
+signals, a list of output PIDs to which the neuron sends its output, a weight list 
+correlated with the input PIDs, and an activation function it applies to the dot 
+product of the input vector and its weight vector. The neuron waits until it receives 
+all the input signals, and then passes the output onwards.</p><p>NOTE: The neuron is the basic processing element, the basic processing node in the 
+neural network system. The neurons in this system are more general than those used 
+by others. They can easily use various activation functions, and accept and output 
+vectors. Because we can use anything for the activation function, including logical 
+operators, the neurons are really just processing nodes. In some sense, this system 
+is not a Topology and Weight Evolving Artificial Neural Network, but a Topology and 
+Parameter Evolving Universal Learning Network (TPEULN). Nevertheless, we will continue
+referring to these processing elements as neurons.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(init_arg)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#forward/3" data-no-tooltip="" translate="no">forward(pid, i_pid, input)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The Neuron process waits for vector signals from all the processes
+that it's connected from, taking the dot product of the input and
+weight vectors, and then adding it to the accumulator. Once all the
+signals from InputPids are received, the accumulator contains the
+dot product to which the neuron then adds the bias and executes the
+activation function. After fanning out the output signal, the neuron
+again returns to waiting for incoming signals.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_backup/2" data-no-tooltip="" translate="no">get_backup(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get backup: neuron sends back to the exoself its last best synaptic
+weight combination, stored as the MInputPids list.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/1" data-no-tooltip="" translate="no">init(exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Initialize the neuron process.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init_phase2/12" data-no-tooltip="" translate="no">init_phase2(pid, exoself_pid, id, cx_pid, af, pf, aggr_f, heredity_type, si_pidps, mi_pidps, output_pids, ro_pids)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Initializes the neuron setting it to its initial state.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#loop/1" data-no-tooltip="" translate="no">loop(exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Main process loop during initialization.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#loop/6" data-no-tooltip="" translate="no">loop(state, exoself_pid, list1, list2, si_acc, mi_acc)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Main process loop after initialization.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#perturb_pf/2" data-no-tooltip="" translate="no">perturb_pf(spread, arg)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Perturb plasticity function: perturbs the plasticity function.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#perturb_weights_p/4" data-no-tooltip="" translate="no">perturb_weights_p(spread, mp, list, acc)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The perturb_weights_p function is the function that actually goes
+through each weight block, and perturbs each weight with a
+probability of MP. If the weight is chosen to be perturbed, the
+perturbation intensity is chosen uniformly between -Spread and
+Spread.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#reset_prep/2" data-no-tooltip="" translate="no">reset_prep(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Reset prep: This message is sent after a single evaluation is completed,
+and the exoself wishes to reset all the neurons to their original states,
+with empty inboxes. Once a neuron receives this message, it goes into a
+reset_prep state, flushes its buffer/inbox, and then awaits for the
+{ExoselfPid, reset} signal. When the neuron receives the {ExoselfPid, reset}
+message, it again sends out the default output message to all its recurrent
+connections (Ids stored in the ro_ids list), and then finally drops back
+into its main receive loop.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sat/3" data-no-tooltip="" translate="no">sat(val, min, max)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start/2" data-no-tooltip="" translate="no">start(node, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Spawns a Neuron process belonging to the Exoself process that spawned it
+and calls init to initialize.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop/2" data-no-tooltip="" translate="no">stop(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Terminates neuron.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#terminate/1" data-no-tooltip="" translate="no">terminate(reason)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Terminate the neuron process.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#weight_backup/2" data-no-tooltip="" translate="no">weight_backup(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Weight backup: The signal from the exoself, which tells the neuron
+that the NN system performs best when this particular neuron is using
+its current synaptic weight combination, and thus it should save this
+synaptic weight list as MInputPidPs, and that it is the best weight
+combination achieved thus far. The message is sent if after the weight
+perturbation, the NN's evaluation achieves a higher fitness than when
+the neurons of this NN used their previous synaptic weights.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#weight_perturb/3" data-no-tooltip="" translate="no">weight_perturb(pid, exoself_pid, spread)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Weight perturb: Uses the Spread value for the purpose of generating
+synaptic weight perturbations.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#weight_restore/2" data-no-tooltip="" translate="no">weight_restore(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Weight restore: This message is sent from the exoself, and it tells
+the neuron that it should restore its synaptic weight list to the one
+previously used, saved as MInputPidPs. This message is usually sent if
+after the weight perturbation, the NN based agent's evaluation performs
+worse than it did with its previous synaptic weight combinations.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="child_spec/1">
+
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L28" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="forward/3">
+
+  <div class="detail-header">
+    <a href="#forward/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">forward(pid, i_pid, input)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L112" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> forward(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: :ok</pre>
+
+      </div>
+
+<p>The Neuron process waits for vector signals from all the processes
+that it's connected from, taking the dot product of the input and
+weight vectors, and then adding it to the accumulator. Once all the
+signals from InputPids are received, the accumulator contains the
+dot product to which the neuron then adds the bias and executes the
+activation function. After fanning out the output signal, the neuron
+again returns to waiting for incoming signals.</p>
+  </section>
+</section>
+<section class="detail" id="get_backup/2">
+
+  <div class="detail-header">
+    <a href="#get_backup/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_backup(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L176" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_backup(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Get backup: neuron sends back to the exoself its last best synaptic
+weight combination, stored as the MInputPids list.</p>
+  </section>
+</section>
+<section class="detail" id="init/1">
+
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init(exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L207" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> init(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Initialize the neuron process.</p>
+  </section>
+</section>
+<section class="detail" id="init_phase2/12">
+
+  <div class="detail-header">
+    <a href="#init_phase2/12" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init_phase2(pid, exoself_pid, id, cx_pid, af, pf, aggr_f, heredity_type, si_pidps, mi_pidps, output_pids, ro_pids)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L95" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> init_phase2(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(),
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]},
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(),
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()]
+) :: :ok</pre>
+
+      </div>
+
+<p>Initializes the neuron setting it to its initial state.</p>
+  </section>
+</section>
+<section class="detail" id="loop/1">
+
+  <div class="detail-header">
+    <a href="#loop/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">loop(exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L217" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> loop(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Main process loop during initialization.</p>
+  </section>
+</section>
+<section class="detail" id="loop/6">
+
+  <div class="detail-header">
+    <a href="#loop/6" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">loop(state, exoself_pid, list1, list2, si_acc, mi_acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L234" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> loop(
+  Bardo.AgentManager.Neuron.State.t(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
+  [:ok] | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()],
+  [:ok] | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}] | [],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}] | []
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Main process loop after initialization.</p>
+  </section>
+</section>
+<section class="detail" id="perturb_pf/2">
+
+  <div class="detail-header">
+    <a href="#perturb_pf/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">perturb_pf(spread, arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L185" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> perturb_pf(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(),
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}
+) :: {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}</pre>
+
+      </div>
+
+<p>Perturb plasticity function: perturbs the plasticity function.</p>
+  </section>
+</section>
+<section class="detail" id="perturb_weights_p/4">
+
+  <div class="detail-header">
+    <a href="#perturb_weights_p/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">perturb_weights_p(spread, mp, list, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L197" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> perturb_weights_p(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()
+]</pre>
+
+      </div>
+
+<p>The perturb_weights_p function is the function that actually goes
+through each weight block, and perturbs each weight with a
+probability of MP. If the weight is chosen to be perturbed, the
+perturbation intensity is chosen uniformly between -Spread and
+Spread.</p>
+  </section>
+</section>
+<section class="detail" id="reset_prep/2">
+
+  <div class="detail-header">
+    <a href="#reset_prep/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">reset_prep(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L166" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> reset_prep(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Reset prep: This message is sent after a single evaluation is completed,
+and the exoself wishes to reset all the neurons to their original states,
+with empty inboxes. Once a neuron receives this message, it goes into a
+reset_prep state, flushes its buffer/inbox, and then awaits for the
+{ExoselfPid, reset} signal. When the neuron receives the {ExoselfPid, reset}
+message, it again sends out the default output message to all its recurrent
+connections (Ids stored in the ro_ids list), and then finally drops back
+into its main receive loop.</p>
+  </section>
+</section>
+<section class="detail" id="sat/3">
+
+  <div class="detail-header">
+    <a href="#sat/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sat(val, min, max)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L497" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="start/2">
+
+  <div class="detail-header">
+    <a href="#start/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start(node, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L73" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">node</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
+      </div>
+
+<p>Spawns a Neuron process belonging to the Exoself process that spawned it
+and calls init to initialize.</p>
+  </section>
+</section>
+<section class="detail" id="stop/2">
+
+  <div class="detail-header">
+    <a href="#stop/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stop(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L85" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stop(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Terminates neuron.</p>
+  </section>
+</section>
+<section class="detail" id="terminate/1">
+
+  <div class="detail-header">
+    <a href="#terminate/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">terminate(reason)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L300" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> terminate(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Terminate the neuron process.</p>
+  </section>
+</section>
+<section class="detail" id="weight_backup/2">
+
+  <div class="detail-header">
+    <a href="#weight_backup/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">weight_backup(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L127" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> weight_backup(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Weight backup: The signal from the exoself, which tells the neuron
+that the NN system performs best when this particular neuron is using
+its current synaptic weight combination, and thus it should save this
+synaptic weight list as MInputPidPs, and that it is the best weight
+combination achieved thus far. The message is sent if after the weight
+perturbation, the NN's evaluation achieves a higher fitness than when
+the neurons of this NN used their previous synaptic weights.</p>
+  </section>
+</section>
+<section class="detail" id="weight_perturb/3">
+
+  <div class="detail-header">
+    <a href="#weight_perturb/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">weight_perturb(pid, exoself_pid, spread)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L150" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> weight_perturb(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Weight perturb: Uses the Spread value for the purpose of generating
+synaptic weight perturbations.</p>
+  </section>
+</section>
+<section class="detail" id="weight_restore/2">
+
+  <div class="detail-header">
+    <a href="#weight_restore/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">weight_restore(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/neuron.ex#L140" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> weight_restore(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Weight restore: This message is sent from the exoself, and it tells
+the neuron that it should restore its synaptic weight list to the one
+previously used, saved as MInputPidPs. This message is usually sent if
+after the weight perturbation, the NN based agent's evaluation performs
+worse than it did with its previous synaptic weight combinations.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

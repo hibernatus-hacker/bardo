@@ -1,13 +1,35 @@
 # Bardo API Reference
 
-This document provides details on the main public interfaces of Bardo, a neuroevolution library for Elixir.
+This document provides comprehensive details on the main public interfaces of Bardo, a neuroevolution library for Elixir. Use this as your primary reference when integrating Bardo into your own applications.
+
+## Getting Started
+
+To use Bardo in your project, add it to your mix.exs dependencies:
+
+```elixir
+def deps do
+  [
+    {:bardo, "~> 0.1.0"}
+  ]
+end
+```
+
+Then run:
+
+```shell
+mix deps.get
+```
 
 ## Bardo
 
-The main module provides basic library information.
+The main module provides basic library information and startup functions.
 
 ```elixir
-Bardo.version()                 # Returns the current library version
+# Start all required Bardo processes
+Bardo.start()
+
+# Returns the current library version
+Bardo.version()
 ```
 
 ## ExperimentManager

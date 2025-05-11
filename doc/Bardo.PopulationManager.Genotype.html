@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.PopulationManager.Genotype — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.PopulationManager.Genotype</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The Genotype module encapsulates the genetic representation of neural networks.</p><h2 id="module-overview" class="section-heading"><a href="#module-overview" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Overview</span></h2><p>In neuroevolution, a genotype serves as the genetic blueprint from which a neural network
+(phenotype) is constructed. The Genotype module provides functions for creating, manipulating,
+and evolving these blueprints.</p><h2 id="module-key-concepts" class="section-heading"><a href="#module-key-concepts" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Key Concepts</span></h2><h3 id="module-topology-and-weight-evolving-artificial-neural-networks-tweanns" class="section-heading"><a href="#module-topology-and-weight-evolving-artificial-neural-networks-tweanns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Topology and Weight Evolving Artificial Neural Networks (TWEANNs)</span></h3><p>Unlike traditional neural networks with fixed architectures, TWEANNs can evolve their
+entire structure during the evolutionary process:</p><ul><li>New neurons can be added</li><li>New connections can be formed</li><li>Existing connections can be modified or removed</li><li>Neural parameters (weights, biases, activation functions) can change</li></ul><p>This allows the evolutionary process to discover optimal network structures
+without the need for manual architecture design or hyperparameter tuning.</p><h3 id="module-incremental-complexity" class="section-heading"><a href="#module-incremental-complexity" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Incremental Complexity</span></h3><p>The evolutionary process typically begins with minimal seed genotypes and gradually
+increases complexity as needed to solve the problem:</p><ol><li>Start with the simplest possible network (often just input-output connections)</li><li>Allow mutation operators to add complexity as evolution progresses</li><li>Let natural selection favor the most efficient solutions</li></ol><h3 id="module-activation-function-diversity" class="section-heading"><a href="#module-activation-function-diversity" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Activation Function Diversity</span></h3><p>Bardo supports a variety of activation functions beyond the standard sigmoid/tanh:</p><ul><li>Sine, absolute value, sign function</li><li>Gaussian, step functions</li><li>Linear and rectified linear</li><li>Custom user-defined functions</li></ul><p>Different activation functions can be used in different parts of the network or
+constrained to specific subpopulations to explore diverse solution spaces.</p><h2 id="module-constraints" class="section-heading"><a href="#module-constraints" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Constraints</span></h2><p>Evolutionary constraints can be applied to guide the evolutionary process:</p><ul><li>Morphology constraints: Define the available sensors and actuators</li><li>Activation function constraints: Limit which functions can be used</li><li>Topological constraints: Restrict certain kinds of connections</li></ul><h2 id="module-implementation" class="section-heading"><a href="#module-implementation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementation</span></h2><p>The genotype representation uses a structured encoding that tracks:</p><ul><li>Neuron properties (layer, type, activation function, etc.)</li><li>Connection topology (which neurons connect to which)</li><li>Connection weights and other parameters</li><li>Historical markers to aid in crossover operations</li></ul>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_connection/4" data-no-tooltip="" translate="no">add_connection(genotype, from_id, to_id, weight)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds a connection between two neurons.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_neuron/3" data-no-tooltip="" translate="no">add_neuron(genotype, layer, params \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds a neuron to the genotype.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#clone_agent/1" data-no-tooltip="" translate="no">clone_agent(agent_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The clone_agent accepts AgentId and generates a CloneAgentId. It then
+calls clone_agent which accepts AgentId, and CloneAgentId, and then
+clones the agent, giving the clone CloneAgentId. The function first
+creates an ETS table to which it writes the ids of all the elements
+of the genotype, and their corresponding clone ids. Once all ids and
+clone ids have been generated, the function then begins to clone the
+actual elements.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#construct_agent/3" data-no-tooltip="" translate="no">construct_agent(specie_id, agent_id, spec_c)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The population mgr should have all the information with regards
+to the morphologies and specie constraint under which the agent's
+genotype should be created. Thus construct_agent/3 is run with
+the SpecieId to which this NN based system will belong, the AgentId
+that this NN based intelligent agent will have, and the SpecCon
+(specie constraint) that will define the list of activation functions
+and other parameters from which the seed agent can choose its
+parameters. First the generation is set to 0, since the agent is just
+created, then the construct_cortex/3 is ran, which creates the NN and
+returns its CxId. Once the NN is created and the the cortex's id is
+returned, we can fill out the information needed by the agent record,
+and write it to the database.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#construct_neuron/6" data-no-tooltip="" translate="no">construct_neuron(cx_id, generation, spec_con, n_id, input_specs, output_ids)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Each neuron record is composed by the construct_neuron function. The
+construct_neuron creates the Input list from the tuples
+[{Id, Weights}...] using the vector lengths specified in the InputSpecs
+list. The create_input_idps function uses create_neural_weights_p to
+generate a tuple list with random weights in the range of -0.5 to 0.5,
+and plasticity parameters dependent on the PF function. The activation
+function that the neuron uses is chosen randomly from the neural_afs
+list within the constraint record passed to the construct_neuron
+function. construct_neuron uses calculate_roids to extract the list of
+recursive connection ids from the OutputIds passed to it. Once the
+neuron record is filled in, it is saved to the database.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_neural_weights_p/3" data-no-tooltip="" translate="no">create_neural_weights_p(pf_name, index, acc)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Each neuron record is composed by the construct_neuron function.
+The construct_neuron creates the Input list from the tuples
+[{Id, Weights}...] using the vector lengths specified in the
+InputSpecs list. The create_input_idps function uses
+create_neural_weights_p to generate a tuple list with random weights
+in the range of -0.5 to 0.5, and plasticity parameters dependent on
+the PF function. The activation function that the neuron uses is
+chosen randomly from the neural_afs list within the constraint record
+passed to the construct_neuron function. construct_neuron uses
+calculate_roids to extract the list of recursive connection ids
+from the OutputIds passed to it. Once the neuron record is filled
+in, it is saved to the database.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_agent/1" data-no-tooltip="" translate="no">delete_agent(agent_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The delete_agent accepts the id of an agent, and then deletes that
+agent's genotype. This function assumes that the id of the agent will
+be removed from the specie's agent_ids list, and any other clean up
+procedures, by the calling function.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_layer_neuron_ids/2" data-no-tooltip="" translate="no">get_layer_neuron_ids(genotype, layer)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the IDs of neurons in a specific layer.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#link_neuron/4" data-no-tooltip="" translate="no">link_neuron(generation, from_ids, n_id, to_ids)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The link_neuron function links the neuron to another element. For
+example, to another neuron.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#new/0" data-no-tooltip="" translate="no">new()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new empty genotype.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#print/1" data-no-tooltip="" translate="no">print(agent_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Prints out the complete genotype of an agent.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#unique_id/0" data-no-tooltip="" translate="no">unique_id()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The unique_id creates a unique Id, the
+Id is a floating point value. NOT cryptographically strong.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_fingerprint/1" data-no-tooltip="" translate="no">update_fingerprint(agent_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The update_fingerprint calculates the fingerprint of the agent,
+where the fingerprint is just a tuple of the various general
+features of the NN based system, a list of features that play some
+role in distinguishing its genotype's general properties from those
+of other NN systems. The fingerprint here is composed of the
+generalized pattern (pattern minus the unique ids), generalized
+evolutionary history (evolutionary history minus the unique ids of
+the elements), a generalized sensor set, and a generalized actuator
+set.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="add_connection/4">
+
+  <div class="detail-header">
+    <a href="#add_connection/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_connection(genotype, from_id, to_id, weight)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L136" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Adds a connection between two neurons.</p><h2 id="add_connection/4-parameters" class="section-heading"><a href="#add_connection/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">genotype</code> - The genotype to add the connection to</li><li><code class="inline">from_id</code> - The ID of the source neuron</li><li><code class="inline">to_id</code> - The ID of the target neuron</li><li><code class="inline">weight</code> - The weight of the connection</li></ul><h2 id="add_connection/4-examples" class="section-heading"><a href="#add_connection/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="0400548581-1">(</span><span class="p" data-group-id="0400548581-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="0400548581-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0400548581-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;input&quot;</span><span class="p" data-group-id="0400548581-3">}</span><span class="p" data-group-id="0400548581-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="0400548581-4">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:output</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0400548581-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p" data-group-id="0400548581-5">}</span><span class="p" data-group-id="0400548581-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_connection</span><span class="p" data-group-id="0400548581-6">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p" data-group-id="0400548581-6">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="add_neuron/3">
+
+    <span id="add_neuron/2"></span>
+
+  <div class="detail-header">
+    <a href="#add_neuron/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_neuron(genotype, layer, params \\ %{})</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L101" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Adds a neuron to the genotype.</p><h2 id="add_neuron/3-parameters" class="section-heading"><a href="#add_neuron/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">genotype</code> - The genotype to add the neuron to</li><li><code class="inline">layer</code> - The layer of the neuron (:input, :hidden, :output, or :bias)</li><li><code class="inline">params</code> - Optional parameters for the neuron</li></ul><h2 id="add_neuron/3-examples" class="section-heading"><a href="#add_neuron/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="6895060815-1">(</span><span class="p" data-group-id="6895060815-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="6895060815-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:input</span><span class="p" data-group-id="6895060815-2">)</span><span class="w">
+</span><span class="p" data-group-id="6895060815-3">%{</span><span class="ss">neurons</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6895060815-4">%{</span><span class="s">&quot;neuron_1&quot;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p" data-group-id="6895060815-5">%{</span><span class="ss">layer</span><span class="p">:</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w"> </span><span class="ss">activation_function</span><span class="p">:</span><span class="w"> </span><span class="ss">:sigmoid</span><span class="p" data-group-id="6895060815-5">}</span><span class="p" data-group-id="6895060815-4">}</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6895060815-3">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="clone_agent/1">
+
+  <div class="detail-header">
+    <a href="#clone_agent/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">clone_agent(agent_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L385" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> clone_agent(Bardo.Models.agent_id()) :: {:agent, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}</pre>
+
+      </div>
+
+<p>The clone_agent accepts AgentId and generates a CloneAgentId. It then
+calls clone_agent which accepts AgentId, and CloneAgentId, and then
+clones the agent, giving the clone CloneAgentId. The function first
+creates an ETS table to which it writes the ids of all the elements
+of the genotype, and their corresponding clone ids. Once all ids and
+clone ids have been generated, the function then begins to clone the
+actual elements.</p>
+  </section>
+</section>
+<section class="detail" id="construct_agent/3">
+
+  <div class="detail-header">
+    <a href="#construct_agent/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">construct_agent(specie_id, agent_id, spec_c)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L200" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> construct_agent(
+  {:specie, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()},
+  {:agent, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()},
+  Bardo.Models.constraint()
+) :: :ok</pre>
+
+      </div>
+
+<p>The population mgr should have all the information with regards
+to the morphologies and specie constraint under which the agent's
+genotype should be created. Thus construct_agent/3 is run with
+the SpecieId to which this NN based system will belong, the AgentId
+that this NN based intelligent agent will have, and the SpecCon
+(specie constraint) that will define the list of activation functions
+and other parameters from which the seed agent can choose its
+parameters. First the generation is set to 0, since the agent is just
+created, then the construct_cortex/3 is ran, which creates the NN and
+returns its CxId. Once the NN is created and the the cortex's id is
+returned, we can fill out the information needed by the agent record,
+and write it to the database.</p>
+  </section>
+</section>
+<section class="detail" id="construct_neuron/6">
+
+  <div class="detail-header">
+    <a href="#construct_neuron/6" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">construct_neuron(cx_id, generation, spec_con, n_id, input_specs, output_ids)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L450" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> construct_neuron(
+  {:cortex, {:origin, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}},
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(),
+  Bardo.Models.constraint(),
+  {:neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}},
+  [{Bardo.Models.neuron_ids(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}],
+  [{:actuator | :neuron, {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()}}]
+) :: :ok</pre>
+
+      </div>
+
+<p>Each neuron record is composed by the construct_neuron function. The
+construct_neuron creates the Input list from the tuples
+[{Id, Weights}...] using the vector lengths specified in the InputSpecs
+list. The create_input_idps function uses create_neural_weights_p to
+generate a tuple list with random weights in the range of -0.5 to 0.5,
+and plasticity parameters dependent on the PF function. The activation
+function that the neuron uses is chosen randomly from the neural_afs
+list within the constraint record passed to the construct_neuron
+function. construct_neuron uses calculate_roids to extract the list of
+recursive connection ids from the OutputIds passed to it. Once the
+neuron record is filled in, it is saved to the database.</p>
+  </section>
+</section>
+<section class="detail" id="create_neural_weights_p/3">
+
+  <div class="detail-header">
+    <a href="#create_neural_weights_p/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_neural_weights_p(pf_name, index, acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L501" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_neural_weights_p(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: [
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()] | []}
+]</pre>
+
+      </div>
+
+<p>Each neuron record is composed by the construct_neuron function.
+The construct_neuron creates the Input list from the tuples
+[{Id, Weights}...] using the vector lengths specified in the
+InputSpecs list. The create_input_idps function uses
+create_neural_weights_p to generate a tuple list with random weights
+in the range of -0.5 to 0.5, and plasticity parameters dependent on
+the PF function. The activation function that the neuron uses is
+chosen randomly from the neural_afs list within the constraint record
+passed to the construct_neuron function. construct_neuron uses
+calculate_roids to extract the list of recursive connection ids
+from the OutputIds passed to it. Once the neuron record is filled
+in, it is saved to the database.</p>
+  </section>
+</section>
+<section class="detail" id="delete_agent/1">
+
+  <div class="detail-header">
+    <a href="#delete_agent/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete_agent(agent_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L397" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_agent(Bardo.Models.agent_id()) :: :ok</pre>
+
+      </div>
+
+<p>The delete_agent accepts the id of an agent, and then deletes that
+agent's genotype. This function assumes that the id of the agent will
+be removed from the specie's agent_ids list, and any other clean up
+procedures, by the calling function.</p>
+  </section>
+</section>
+<section class="detail" id="get_layer_neuron_ids/2">
+
+  <div class="detail-header">
+    <a href="#get_layer_neuron_ids/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_layer_neuron_ids(genotype, layer)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L174" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Gets the IDs of neurons in a specific layer.</p><h2 id="get_layer_neuron_ids/2-parameters" class="section-heading"><a href="#get_layer_neuron_ids/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">genotype</code> - The genotype to get neurons from</li><li><code class="inline">layer</code> - The layer to get neurons from</li></ul><h2 id="get_layer_neuron_ids/2-examples" class="section-heading"><a href="#get_layer_neuron_ids/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="4698876996-1">(</span><span class="p" data-group-id="4698876996-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="4698876996-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4698876996-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;input1&quot;</span><span class="p" data-group-id="4698876996-3">}</span><span class="p" data-group-id="4698876996-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="4698876996-4">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:input</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4698876996-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;input2&quot;</span><span class="p" data-group-id="4698876996-5">}</span><span class="p" data-group-id="4698876996-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">get_layer_neuron_ids</span><span class="p" data-group-id="4698876996-6">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:input</span><span class="p" data-group-id="4698876996-6">)</span><span class="w">
+</span><span class="p" data-group-id="4698876996-7">[</span><span class="s">&quot;input1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;input2&quot;</span><span class="p" data-group-id="4698876996-7">]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="link_neuron/4">
+
+  <div class="detail-header">
+    <a href="#link_neuron/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">link_neuron(generation, from_ids, n_id, to_ids)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L477" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> link_neuron(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  [Bardo.Models.sensor_id() | Bardo.Models.neuron_id()],
+  Bardo.Models.neuron_id(),
+  [Bardo.Models.actuator_id() | Bardo.Models.neuron_id()]
+) :: [:ok]</pre>
+
+      </div>
+
+<p>The link_neuron function links the neuron to another element. For
+example, to another neuron.</p>
+  </section>
+</section>
+<section class="detail" id="new/0">
+
+  <div class="detail-header">
+    <a href="#new/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">new()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Creates a new empty genotype.</p><p>Returns a map with empty neurons and connections.</p><h2 id="new/0-examples" class="section-heading"><a href="#new/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="7313010238-1">(</span><span class="p" data-group-id="7313010238-1">)</span><span class="w">
+</span><span class="p" data-group-id="7313010238-2">%{</span><span class="ss">neurons</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7313010238-3">%{</span><span class="p" data-group-id="7313010238-3">}</span><span class="p">,</span><span class="w"> </span><span class="ss">connections</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7313010238-4">%{</span><span class="p" data-group-id="7313010238-4">}</span><span class="p" data-group-id="7313010238-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="print/1">
+
+  <div class="detail-header">
+    <a href="#print/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">print(agent_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L510" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Prints out the complete genotype of an agent.</p>
+  </section>
+</section>
+<section class="detail" id="unique_id/0">
+
+  <div class="detail-header">
+    <a href="#unique_id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">unique_id()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L430" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> unique_id() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>The unique_id creates a unique Id, the
+Id is a floating point value. NOT cryptographically strong.</p>
+  </section>
+</section>
+<section class="detail" id="update_fingerprint/1">
+
+  <div class="detail-header">
+    <a href="#update_fingerprint/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update_fingerprint(agent_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/genotype.ex#L256" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> update_fingerprint(Bardo.Models.agent_id()) :: :ok</pre>
+
+      </div>
+
+<p>The update_fingerprint calculates the fingerprint of the agent,
+where the fingerprint is just a tuple of the various general
+features of the NN based system, a list of features that play some
+role in distinguishing its genotype's general properties from those
+of other NN systems. The fingerprint here is composed of the
+generalized pattern (pattern minus the unique ids), generalized
+evolutionary history (evolutionary history minus the unique ids of
+the elements), a generalized sensor set, and a generalized actuator
+set.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

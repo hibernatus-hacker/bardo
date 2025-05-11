@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.PopulationManager.SelectionAlgorithm — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.PopulationManager.SelectionAlgorithm</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The SelectionAlgorithm module provides different strategies for selecting agents for reproduction.</p><h2 id="module-overview" class="section-heading"><a href="#module-overview" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Overview</span></h2><p>Selection algorithms determine which agents in a population survive and reproduce. 
+These algorithms form the backbone of the evolutionary process by implementing the 
+principle of &quot;survival of the fittest.&quot;</p><h2 id="module-selection-strategies" class="section-heading"><a href="#module-selection-strategies" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Selection Strategies</span></h2><p>Bardo implements several selection strategies, each with different characteristics:</p><h3 id="module-hall-of-fame-competition" class="section-heading"><a href="#module-hall-of-fame-competition" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Hall of Fame Competition</span></h3><ul><li>Maintains an elite subset of the best-performing agents across generations</li><li>New agents must compete against the hall of fame to be selected</li><li>Provides protection against evolutionary forgetting and cycling</li></ul><h3 id="module-tournament-selection" class="section-heading"><a href="#module-tournament-selection" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Tournament Selection</span></h3><ul><li>Randomly selects subgroups of agents and chooses the best from each group</li><li>Selection pressure can be tuned by adjusting tournament size</li><li>Balances exploration and exploitation effectively</li></ul><h3 id="module-truncation-selection" class="section-heading"><a href="#module-truncation-selection" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Truncation Selection</span></h3><ul><li>Simply selects the top N performers from the population</li><li>Provides high selection pressure for rapid convergence</li><li>May lead to premature convergence on suboptimal solutions</li></ul><h3 id="module-rank-based-selection" class="section-heading"><a href="#module-rank-based-selection" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Rank-Based Selection</span></h3><ul><li>Selection probability is based on rank rather than absolute fitness</li><li>Maintains selection pressure even when fitness differences are small</li><li>Helps prevent premature convergence in some scenarios</li></ul><h3 id="module-fitness-proportionate-selection" class="section-heading"><a href="#module-fitness-proportionate-selection" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Fitness Proportionate Selection</span></h3><ul><li>Also known as &quot;roulette wheel&quot; selection</li><li>Selection probability is directly proportional to fitness</li><li>Simple but can lead to early domination by slightly superior agents</li></ul><h2 id="module-implementation-notes" class="section-heading"><a href="#module-implementation-notes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Implementation Notes</span></h2><ul><li>Selection algorithms operate within species to preserve diversity</li><li>Parameters can adjust selection pressure to balance exploration vs. exploitation</li><li>Custom selection algorithms can be implemented by adding new functions to this module</li></ul>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#choose_winners/6" data-no-tooltip="" translate="no">choose_winners(specie_id, agents, total_fitness, offspring_acc, reentry_acc, agent_index)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Choose winners for the next generation based on fitness scores.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hof_competition/3" data-no-tooltip="" translate="no">hof_competition(specie_id, remaining_champion_designators, specie_size_limit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Implementation of the 'hof_competition' selection algorithm.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hof_efficiency/3" data-no-tooltip="" translate="no">hof_efficiency(specie_id, remaining_champion_designators, specie_size_limit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Implementation of the 'hof_efficiency' selection algorithm.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hof_random/3" data-no-tooltip="" translate="no">hof_random(specie_id, remaining_champion_designators, specie_size_limit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Implementation of the 'hof_random' selection algorithm.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hof_rank/3" data-no-tooltip="" translate="no">hof_rank(specie_id, remaining_champion_designators, specie_size_limit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Implementation of the 'hof_rank' selection algorithm.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hof_top3/3" data-no-tooltip="" translate="no">hof_top3(specie_id, remaining_champion_designators, specie_size_limit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Implementation of the 'hof_top3' selection algorithm.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="choose_winners/6">
+
+  <div class="detail-header">
+    <a href="#choose_winners/6" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">choose_winners(specie_id, agents, total_fitness, offspring_acc, reentry_acc, agent_index)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L230" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> choose_winners(
+  Bardo.Models.specie_id(),
+  [Bardo.Models.agent_id()],
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(),
+  [Bardo.Models.agent_id()],
+  [Bardo.Models.agent_id()],
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()
+) :: [Bardo.Models.agent_id()]</pre>
+
+      </div>
+
+<p>Choose winners for the next generation based on fitness scores.</p>
+  </section>
+</section>
+<section class="detail" id="hof_competition/3">
+
+  <div class="detail-header">
+    <a href="#hof_competition/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hof_competition(specie_id, remaining_champion_designators, specie_size_limit)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L61" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hof_competition(Bardo.Models.specie_id(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Implementation of the 'hof_competition' selection algorithm.</p>
+  </section>
+</section>
+<section class="detail" id="hof_efficiency/3">
+
+  <div class="detail-header">
+    <a href="#hof_efficiency/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hof_efficiency(specie_id, remaining_champion_designators, specie_size_limit)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L158" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hof_efficiency(
+  Bardo.Models.specie_id(),
+  [Bardo.Models.agent_id()],
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()
+) :: :ok</pre>
+
+      </div>
+
+<p>Implementation of the 'hof_efficiency' selection algorithm.</p>
+  </section>
+</section>
+<section class="detail" id="hof_random/3">
+
+  <div class="detail-header">
+    <a href="#hof_random/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hof_random(specie_id, remaining_champion_designators, specie_size_limit)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L193" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hof_random(
+  Bardo.Models.specie_id(),
+  [Bardo.Models.agent_id()],
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()
+) :: :ok</pre>
+
+      </div>
+
+<p>Implementation of the 'hof_random' selection algorithm.</p>
+  </section>
+</section>
+<section class="detail" id="hof_rank/3">
+
+  <div class="detail-header">
+    <a href="#hof_rank/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hof_rank(specie_id, remaining_champion_designators, specie_size_limit)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L95" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hof_rank(Bardo.Models.specie_id(), [Bardo.Models.agent_id()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()) ::
+  :ok</pre>
+
+      </div>
+
+<p>Implementation of the 'hof_rank' selection algorithm.</p>
+  </section>
+</section>
+<section class="detail" id="hof_top3/3">
+
+  <div class="detail-header">
+    <a href="#hof_top3/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hof_top3(specie_id, remaining_champion_designators, specie_size_limit)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/selection_algorithm.ex#L131" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hof_top3(Bardo.Models.specie_id(), [Bardo.Models.agent_id()], <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()) ::
+  :ok</pre>
+
+      </div>
+
+<p>Implementation of the 'hof_top3' selection algorithm.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

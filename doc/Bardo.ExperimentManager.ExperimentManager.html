@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.ExperimentManager.ExperimentManager — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.ExperimentManager.ExperimentManager</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The ExperimentManager is responsible for orchestrating neuroevolution experiments.</p><p>It handles the complete lifecycle of experiments:</p><ol><li>Creation and configuration of experiments with parameters</li><li>Starting and coordinating evolutionary runs across populations</li><li>Tracking experiment progress and collecting results</li><li>Providing status updates and access to results</li><li>Managing experiment persistence and reporting</li></ol><p>Specifically, it has three main functionalities:</p><ol><li>Run the population_manager N number of times, waiting for the
+population_manager's trace after every run.</li><li>Create the experiment entry in the database, and keep
+updating its trace_acc as it itself accumulates the traces from
+spawned population_managers. This enables persistence across restarts.</li><li>When the experiment_manager has finished performing N number of
+evolutionary runs, it calculates statistics and produces reports
+of the results for analysis.</li></ol>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(init_arg)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#configure/2" data-no-tooltip="" translate="no">configure(experiment_id, config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Configure an existing experiment with the given parameters.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#export_results/3" data-no-tooltip="" translate="no">export_results(experiment_id, file_path, format \\ :json)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Export experiment results to a file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_best_solution/1" data-no-tooltip="" translate="no">get_best_solution(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get the best solution from an experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list_active/0" data-no-tooltip="" translate="no">list_active()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get all active experiments.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list_all/0" data-no-tooltip="" translate="no">list_all()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get a list of all experiments.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#new_experiment/1" data-no-tooltip="" translate="no">new_experiment(name)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a new experiment with the given name.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#population_manager_module/0" data-no-tooltip="" translate="no">population_manager_module()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get the configured population manager module.
+This is used primarily for testing to allow mocks.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#run/0" data-no-tooltip="" translate="no">run()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start a new experiment run with default parameters.
+This creates a default experiment and starts it immediately.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_population_manager_module/1" data-no-tooltip="" translate="no">set_population_manager_module(module)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Set the population manager module.
+This is used primarily for testing to allow mocks.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start/1" data-no-tooltip="" translate="no">start(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start an experiment with the given ID.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_evaluation/2" data-no-tooltip="" translate="no">start_evaluation(experiment_id, fitness_function)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Set the fitness function for evaluating solutions in an experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(args \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start the ExperimentManager as a linked process.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#status/1" data-no-tooltip="" translate="no">status(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get the status of an experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop/1" data-no-tooltip="" translate="no">stop(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Stop an experiment.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="child_spec/1">
+
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L25" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="configure/2">
+
+  <div class="detail-header">
+    <a href="#configure/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">configure(experiment_id, config)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L132" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> configure(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Configure an existing experiment with the given parameters.</p><h2 id="configure/2-parameters" class="section-heading"><a href="#configure/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to configure</li><li><code class="inline">config</code> - Configuration parameters for the experiment</li></ul><h2 id="configure/2-returns" class="section-heading"><a href="#configure/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was configured successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error configuring the experiment</li></ul><h2 id="configure/2-examples" class="section-heading"><a href="#configure/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2776555976-1">%{</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">runs</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">morphology</span><span class="p">:</span><span class="w"> </span><span class="ss">:xor</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">selection_method</span><span class="p">:</span><span class="w"> </span><span class="ss">:tournament</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">backup_flag</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="2776555976-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">configure</span><span class="p" data-group-id="2776555976-2">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p" data-group-id="2776555976-2">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="export_results/3">
+
+    <span id="export_results/2"></span>
+
+  <div class="detail-header">
+    <a href="#export_results/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">export_results(experiment_id, file_path, format \\ :json)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L298" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> export_results(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Export experiment results to a file.</p><h2 id="export_results/3-parameters" class="section-heading"><a href="#export_results/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to export</li><li><code class="inline">file_path</code> - Path to save the results to</li><li><code class="inline">format</code> - Format to export in (:csv, :json, or :binary)</li></ul><h2 id="export_results/3-returns" class="section-heading"><a href="#export_results/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the results were exported successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error exporting the results</li></ul><h2 id="export_results/3-examples" class="section-heading"><a href="#export_results/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">export_results</span><span class="p" data-group-id="3606307387-1">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;results.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:json</span><span class="p" data-group-id="3606307387-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_best_solution/1">
+
+  <div class="detail-header">
+    <a href="#get_best_solution/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_best_solution(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L223" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_best_solution(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Get the best solution from an experiment.</p><h2 id="get_best_solution/1-parameters" class="section-heading"><a href="#get_best_solution/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to get the best solution from</li></ul><h2 id="get_best_solution/1-returns" class="section-heading"><a href="#get_best_solution/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, solution}</code> - Best solution found in the experiment</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the best solution</li></ul><h2 id="get_best_solution/1-examples" class="section-heading"><a href="#get_best_solution/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">get_best_solution</span><span class="p" data-group-id="3448449081-1">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p" data-group-id="3448449081-1">)</span><span class="w">
+</span><span class="p" data-group-id="3448449081-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3448449081-3">%{</span><span class="w">
+  </span><span class="ss">fitness</span><span class="p">:</span><span class="w"> </span><span class="mf">0.98</span><span class="p">,</span><span class="w">
+  </span><span class="ss">genotype</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3448449081-4">%{</span><span class="n">...</span><span class="p" data-group-id="3448449081-4">}</span><span class="p">,</span><span class="w">
+  </span><span class="ss">phenotype</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3448449081-5">%{</span><span class="n">...</span><span class="p" data-group-id="3448449081-5">}</span><span class="w">
+</span><span class="p" data-group-id="3448449081-3">}</span><span class="p" data-group-id="3448449081-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list_active/0">
+
+  <div class="detail-header">
+    <a href="#list_active/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list_active()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L258" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list_active() :: {:ok, [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()]} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Get all active experiments.</p><h2 id="list_active/0-returns" class="section-heading"><a href="#list_active/0-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, [experiment_id]}</code> - List of active experiment IDs</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the active experiments</li></ul><h2 id="list_active/0-examples" class="section-heading"><a href="#list_active/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">list_active</span><span class="p" data-group-id="4932939127-1">(</span><span class="p" data-group-id="4932939127-1">)</span><span class="w">
+</span><span class="p" data-group-id="4932939127-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4932939127-3">[</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;experiment_1621234567891&quot;</span><span class="p" data-group-id="4932939127-3">]</span><span class="p" data-group-id="4932939127-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list_all/0">
+
+  <div class="detail-header">
+    <a href="#list_all/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list_all()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L277" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list_all() :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Get a list of all experiments.</p><h2 id="list_all/0-returns" class="section-heading"><a href="#list_all/0-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, [experiment]}</code> - List of all experiments with their basic information</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the experiments</li></ul><h2 id="list_all/0-examples" class="section-heading"><a href="#list_all/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">list_all</span><span class="p" data-group-id="3000219891-1">(</span><span class="p" data-group-id="3000219891-1">)</span><span class="w">
+</span><span class="p" data-group-id="3000219891-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3000219891-3">[</span><span class="w">
+  </span><span class="p" data-group-id="3000219891-4">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;XOR Experiment&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">status</span><span class="p">:</span><span class="w"> </span><span class="ss">:completed</span><span class="p" data-group-id="3000219891-4">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="3000219891-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;experiment_1621234567891&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;FX Experiment&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">status</span><span class="p">:</span><span class="w"> </span><span class="ss">:in_progress</span><span class="p" data-group-id="3000219891-5">}</span><span class="w">
+</span><span class="p" data-group-id="3000219891-3">]</span><span class="p" data-group-id="3000219891-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="new_experiment/1">
+
+  <div class="detail-header">
+    <a href="#new_experiment/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">new_experiment(name)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L104" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> new_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Create a new experiment with the given name.</p><h2 id="new_experiment/1-parameters" class="section-heading"><a href="#new_experiment/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">name</code> - Name of the experiment</li></ul><h2 id="new_experiment/1-returns" class="section-heading"><a href="#new_experiment/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, experiment_id}</code> - Experiment ID of the created experiment</li><li><code class="inline">{:error, reason}</code> - If there was an error creating the experiment</li></ul><h2 id="new_experiment/1-examples" class="section-heading"><a href="#new_experiment/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">new_experiment</span><span class="p" data-group-id="3809632300-1">(</span><span class="s">&quot;XOR Experiment&quot;</span><span class="p" data-group-id="3809632300-1">)</span><span class="w">
+</span><span class="p" data-group-id="3809632300-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p" data-group-id="3809632300-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="population_manager_module/0">
+
+  <div class="detail-header">
+    <a href="#population_manager_module/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">population_manager_module()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L1003" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Get the configured population manager module.
+This is used primarily for testing to allow mocks.</p>
+  </section>
+</section>
+<section class="detail" id="run/0">
+
+  <div class="detail-header">
+    <a href="#run/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">run()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L69" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> run() :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Start a new experiment run with default parameters.
+This creates a default experiment and starts it immediately.</p><h2 id="run/0-returns" class="section-heading"><a href="#run/0-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the run was started successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error starting the run</li></ul>
+  </section>
+</section>
+<section class="detail" id="set_population_manager_module/1">
+
+  <div class="detail-header">
+    <a href="#set_population_manager_module/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_population_manager_module(module)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L1011" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Set the population manager module.
+This is used primarily for testing to allow mocks.</p>
+  </section>
+</section>
+<section class="detail" id="start/1">
+
+  <div class="detail-header">
+    <a href="#start/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L172" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Start an experiment with the given ID.</p><h2 id="start/1-parameters" class="section-heading"><a href="#start/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to start</li></ul><h2 id="start/1-returns" class="section-heading"><a href="#start/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was started successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error starting the experiment</li></ul><h2 id="start/1-examples" class="section-heading"><a href="#start/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="2540043931-1">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p" data-group-id="2540043931-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="start_evaluation/2">
+
+  <div class="detail-header">
+    <a href="#start_evaluation/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_evaluation(experiment_id, fitness_function)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L153" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start_evaluation(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">function</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Set the fitness function for evaluating solutions in an experiment.</p><h2 id="start_evaluation/2-parameters" class="section-heading"><a href="#start_evaluation/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment</li><li><code class="inline">fitness_function</code> - Function to evaluate fitness of solutions</li></ul><h2 id="start_evaluation/2-returns" class="section-heading"><a href="#start_evaluation/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the fitness function was set successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error setting the fitness function</li></ul><h2 id="start_evaluation/2-examples" class="section-heading"><a href="#start_evaluation/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">fitness_fn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k" data-group-id="8412589838-1">fn</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">solution</span><span class="o">.</span><span class="n">output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p" data-group-id="8412589838-2">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="8412589838-2">]</span><span class="w"> </span><span class="k" data-group-id="8412589838-1">end</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">start_evaluation</span><span class="p" data-group-id="8412589838-3">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_fn</span><span class="p" data-group-id="8412589838-3">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+
+    <span id="start_link/0"></span>
+
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link(args \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L56" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()) :: <a href="https://hexdocs.pm/elixir/GenServer.html#t:on_start/0">GenServer.on_start</a>()</pre>
+
+      </div>
+
+<p>Start the ExperimentManager as a linked process.</p>
+  </section>
+</section>
+<section class="detail" id="status/1">
+
+  <div class="detail-header">
+    <a href="#status/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">status(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L200" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> status(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) ::
+  {:not_started, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:in_progress, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:completed, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Get the status of an experiment.</p><h2 id="status/1-parameters" class="section-heading"><a href="#status/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to get status for</li></ul><h2 id="status/1-returns" class="section-heading"><a href="#status/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:in_progress, status}</code> - If the experiment is in progress, with status details</li><li><code class="inline">{:completed, results}</code> - If the experiment is completed, with results</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the status</li></ul><h2 id="status/1-examples" class="section-heading"><a href="#status/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">status</span><span class="p" data-group-id="7096698471-1">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p" data-group-id="7096698471-1">)</span><span class="w">
+</span><span class="p" data-group-id="7096698471-2">{</span><span class="ss">:in_progress</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7096698471-3">%{</span><span class="w">
+  </span><span class="ss">run</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">total_runs</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="ss">generation</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w">
+  </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+  </span><span class="ss">best_fitness</span><span class="p">:</span><span class="w"> </span><span class="mf">0.95</span><span class="p">,</span><span class="w">
+  </span><span class="ss">avg_fitness</span><span class="p">:</span><span class="w"> </span><span class="mf">0.72</span><span class="w">
+</span><span class="p" data-group-id="7096698471-3">}</span><span class="p" data-group-id="7096698471-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stop/1">
+
+  <div class="detail-header">
+    <a href="#stop/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stop(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/experiment_manager/experiment_manager.ex#L242" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stop(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Stop an experiment.</p><h2 id="stop/1-parameters" class="section-heading"><a href="#stop/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to stop</li></ul><h2 id="stop/1-returns" class="section-heading"><a href="#stop/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was stopped successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error stopping the experiment</li></ul><h2 id="stop/1-examples" class="section-heading"><a href="#stop/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">ExperimentManager</span><span class="o">.</span><span class="n">stop</span><span class="p" data-group-id="4528890938-1">(</span><span class="s">&quot;experiment_1621234567890&quot;</span><span class="p" data-group-id="4528890938-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

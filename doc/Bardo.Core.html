@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.Core — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.Core</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Core API for Bardo neuroevolution library.</p><p>This module serves as the main entry point for users who are importing Bardo
+as a dependency. It provides a clean, well-documented API that focuses on the
+essential neuroevolution functionality while hiding implementation details.</p><h2 id="module-key-features" class="section-heading"><a href="#module-key-features" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Key Features</span></h2><ul><li><strong>Neural Network Creation</strong> - Define neural network architectures with sensors and actuators</li><li><strong>Evolutionary Training</strong> - Train neural networks through evolutionary algorithms</li><li><strong>Agent Management</strong> - Create and manage neuroevolutionary agents</li><li><strong>Experiment Control</strong> - Run controlled experiments with multiple populations</li></ul><h2 id="module-usage-example" class="section-heading"><a href="#module-usage-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Usage Example</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Define a simple neural network morphology</span><span class="w">
+</span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_morphology</span><span class="p" data-group-id="6958971276-1">(</span><span class="p" data-group-id="6958971276-2">%{</span><span class="w">
+  </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;XOR Network&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">dimensions</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">inputs</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">outputs</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="ss">hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6958971276-3">[</span><span class="mi">3</span><span class="p" data-group-id="6958971276-3">]</span><span class="w">
+</span><span class="p" data-group-id="6958971276-2">}</span><span class="p" data-group-id="6958971276-1">)</span><span class="w">
+
+</span><span class="c1"># Create an experiment</span><span class="w">
+</span><span class="p" data-group-id="6958971276-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">experiment_id</span><span class="p" data-group-id="6958971276-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_experiment</span><span class="p" data-group-id="6958971276-5">(</span><span class="s">&quot;XOR Experiment&quot;</span><span class="p" data-group-id="6958971276-5">)</span><span class="w">
+
+</span><span class="c1"># Configure the experiment with our morphology</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">configure_experiment</span><span class="p" data-group-id="6958971276-6">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-7">%{</span><span class="w">
+  </span><span class="ss">morphology</span><span class="p">:</span><span class="w"> </span><span class="n">morphology</span><span class="p">,</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+  </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+</span><span class="p" data-group-id="6958971276-7">}</span><span class="p" data-group-id="6958971276-6">)</span><span class="w">
+
+</span><span class="c1"># Define a fitness function for XOR</span><span class="w">
+</span><span class="n">fitness_fn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k" data-group-id="6958971276-8">fn</span><span class="w"> </span><span class="n">agent</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">evaluate_agent</span><span class="p" data-group-id="6958971276-9">(</span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-10">[</span><span class="w">
+    </span><span class="p" data-group-id="6958971276-11">{</span><span class="p" data-group-id="6958971276-12">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6958971276-12">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-13">[</span><span class="mf">0.0</span><span class="p" data-group-id="6958971276-13">]</span><span class="p" data-group-id="6958971276-11">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="6958971276-14">{</span><span class="p" data-group-id="6958971276-15">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p" data-group-id="6958971276-15">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-16">[</span><span class="mf">1.0</span><span class="p" data-group-id="6958971276-16">]</span><span class="p" data-group-id="6958971276-14">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="6958971276-17">{</span><span class="p" data-group-id="6958971276-18">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6958971276-18">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-19">[</span><span class="mf">1.0</span><span class="p" data-group-id="6958971276-19">]</span><span class="p" data-group-id="6958971276-17">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="6958971276-20">{</span><span class="p" data-group-id="6958971276-21">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p" data-group-id="6958971276-21">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6958971276-22">[</span><span class="mf">0.0</span><span class="p" data-group-id="6958971276-22">]</span><span class="p" data-group-id="6958971276-20">}</span><span class="w">
+  </span><span class="p" data-group-id="6958971276-10">]</span><span class="p" data-group-id="6958971276-9">)</span><span class="w">
+  </span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">accuracy</span><span class="w">  </span><span class="c1"># Convert accuracy to error (lower is better)</span><span class="w">
+</span><span class="k" data-group-id="6958971276-8">end</span><span class="w">
+
+</span><span class="c1"># Set the fitness function and run the experiment</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">set_fitness_function</span><span class="p" data-group-id="6958971276-23">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_fn</span><span class="p" data-group-id="6958971276-23">)</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">run_experiment</span><span class="p" data-group-id="6958971276-24">(</span><span class="n">experiment_id</span><span class="p" data-group-id="6958971276-24">)</span><span class="w">
+
+</span><span class="c1"># Get the best solution when the experiment completes</span><span class="w">
+</span><span class="p" data-group-id="6958971276-25">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p" data-group-id="6958971276-25">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">get_best_solution</span><span class="p" data-group-id="6958971276-26">(</span><span class="n">experiment_id</span><span class="p" data-group-id="6958971276-26">)</span></code></pre>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#activate_agent/2" data-no-tooltip="" translate="no">activate_agent(agent, inputs)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Activates a neural network agent with the given inputs.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_actuator/2" data-no-tooltip="" translate="no">add_actuator(morphology, actuator_opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds an actuator to a morphology.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_agent_to_scape/4" data-no-tooltip="" translate="no">add_agent_to_scape(scape_id, agent_id, agent, position)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds an agent to a scape.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_sensor/2" data-no-tooltip="" translate="no">add_sensor(morphology, sensor_opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds a sensor to a morphology.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#configure_experiment/2" data-no-tooltip="" translate="no">configure_experiment(experiment_id, config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Configures an existing experiment with the given parameters.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_experiment/1" data-no-tooltip="" translate="no">create_experiment(name)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new experiment with the given name.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_morphology/1" data-no-tooltip="" translate="no">create_morphology(opts \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new neural network morphology with the given options.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_population/2" data-no-tooltip="" translate="no">create_population(population_id, config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new population of neural network agents.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_scape/2" data-no-tooltip="" translate="no">create_scape(scape_id, config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new scape (virtual environment) for agents to interact with.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#evaluate_agent/2" data-no-tooltip="" translate="no">evaluate_agent(agent, test_cases)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Evaluates an agent's performance on a set of test cases.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#evolve_population/2" data-no-tooltip="" translate="no">evolve_population(population_id, generations)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Evolves a population for the specified number of generations.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#experiment_status/1" data-no-tooltip="" translate="no">experiment_status(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the status of an experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#export_results/3" data-no-tooltip="" translate="no">export_results(experiment_id, file_path, format \\ :json)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Exports experiment results to a file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_best_agent/1" data-no-tooltip="" translate="no">get_best_agent(population_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the best agent from a population.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_best_solution/1" data-no-tooltip="" translate="no">get_best_solution(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the best solution from a completed experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list_experiments/0" data-no-tooltip="" translate="no">list_experiments()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Lists all experiments.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list_morphologies/0" data-no-tooltip="" translate="no">list_morphologies()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Lists all saved morphologies.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#load_agent/1" data-no-tooltip="" translate="no">load_agent(file_path)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Loads an agent from a file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#load_morphology/1" data-no-tooltip="" translate="no">load_morphology(id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Loads a morphology from persistent storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#quick_experiment/4" data-no-tooltip="" translate="no">quick_experiment(name, morphology, fitness_function, opts \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Runs a complete experiment with minimal setup.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#run_experiment/1" data-no-tooltip="" translate="no">run_experiment(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Starts an experiment with the given ID.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#save_agent/2" data-no-tooltip="" translate="no">save_agent(agent, file_path)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Saves an agent to a file for later use.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#save_morphology/1" data-no-tooltip="" translate="no">save_morphology(morphology)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Saves a morphology to persistent storage for later use.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_fitness_function/2" data-no-tooltip="" translate="no">set_fitness_function(experiment_id, fitness_function)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Sets the fitness function for evaluating solutions in an experiment.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#solve_xor/1" data-no-tooltip="" translate="no">solve_xor(opts \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Solves the XOR problem as a simple demonstration.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#step_scape/2" data-no-tooltip="" translate="no">step_scape(scape_id, steps \\ 1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Steps a scape forward in time, updating all agents.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop_experiment/1" data-no-tooltip="" translate="no">stop_experiment(experiment_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Stops an ongoing experiment.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="activate_agent/2">
+
+  <div class="detail-header">
+    <a href="#activate_agent/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">activate_agent(agent, inputs)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L497" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> activate_agent(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()</pre>
+
+      </div>
+
+<p>Activates a neural network agent with the given inputs.</p><p>This function passes input values through the neural network and returns
+the resulting output values.</p><h2 id="activate_agent/2-parameters" class="section-heading"><a href="#activate_agent/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">agent</code> - The agent (neural network) to activate</li><li><code class="inline">inputs</code> - List of input values for the network</li></ul><h2 id="activate_agent/2-returns" class="section-heading"><a href="#activate_agent/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>List of output values from the network</li></ul><h2 id="activate_agent/2-examples" class="section-heading"><a href="#activate_agent/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">activate_agent</span><span class="p" data-group-id="2063825696-1">(</span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2063825696-2">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p" data-group-id="2063825696-2">]</span><span class="p" data-group-id="2063825696-1">)</span><span class="w">
+</span><span class="c1"># For an XOR network with one output, this might return [1.0]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="add_actuator/2">
+
+  <div class="detail-header">
+    <a href="#add_actuator/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_actuator(morphology, actuator_opts)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L175" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_actuator(<a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()</pre>
+
+      </div>
+
+<p>Adds an actuator to a morphology.</p><h2 id="add_actuator/2-parameters" class="section-heading"><a href="#add_actuator/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">morphology</code> - The morphology to add the actuator to</li><li><code class="inline">actuator_opts</code> - Options for the actuator</li></ul><h2 id="add_actuator/2-actuator-options" class="section-heading"><a href="#add_actuator/2-actuator-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Actuator Options</span></h2><ul><li><code class="inline">:name</code> - The name of the actuator (required, as atom)</li><li><code class="inline">:type</code> - The type of actuator (default: :standard)</li><li><code class="inline">:vl</code> - Vector length, number of inputs to this actuator (required)</li><li><code class="inline">:parameters</code> - Additional parameters for the actuator</li></ul><h2 id="add_actuator/2-returns" class="section-heading"><a href="#add_actuator/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>An updated morphology with the new actuator</li></ul><h2 id="add_actuator/2-examples" class="section-heading"><a href="#add_actuator/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Add a motor actuator to a morphology</span><span class="w">
+</span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_morphology</span><span class="p" data-group-id="8720177477-1">(</span><span class="p" data-group-id="8720177477-1">)</span><span class="w">
+</span><span class="n">updated_morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">add_actuator</span><span class="p" data-group-id="8720177477-2">(</span><span class="n">morphology</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8720177477-3">%{</span><span class="w">
+  </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:motor</span><span class="p">,</span><span class="w">
+  </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">parameters</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8720177477-4">%{</span><span class="ss">max_speed</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p" data-group-id="8720177477-4">}</span><span class="w">
+</span><span class="p" data-group-id="8720177477-3">}</span><span class="p" data-group-id="8720177477-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="add_agent_to_scape/4">
+
+  <div class="detail-header">
+    <a href="#add_agent_to_scape/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_agent_to_scape(scape_id, agent_id, agent, position)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L697" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_agent_to_scape(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()) ::
+  :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Adds an agent to a scape.</p><h2 id="add_agent_to_scape/4-parameters" class="section-heading"><a href="#add_agent_to_scape/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">scape_id</code> - ID of the scape</li><li><code class="inline">agent_id</code> - ID of the agent to add</li><li><code class="inline">agent</code> - The agent to add</li><li><code class="inline">position</code> - Position to place the agent at</li></ul><h2 id="add_agent_to_scape/4-returns" class="section-heading"><a href="#add_agent_to_scape/4-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the agent was added successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error adding the agent</li></ul><h2 id="add_agent_to_scape/4-examples" class="section-heading"><a href="#add_agent_to_scape/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">add_agent_to_scape</span><span class="p" data-group-id="8504917625-1">(</span><span class="s">&quot;flatland&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;agent1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8504917625-2">[</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p" data-group-id="8504917625-2">]</span><span class="p" data-group-id="8504917625-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="add_sensor/2">
+
+  <div class="detail-header">
+    <a href="#add_sensor/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_sensor(morphology, sensor_opts)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L142" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_sensor(<a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()</pre>
+
+      </div>
+
+<p>Adds a sensor to a morphology.</p><h2 id="add_sensor/2-parameters" class="section-heading"><a href="#add_sensor/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">morphology</code> - The morphology to add the sensor to</li><li><code class="inline">sensor_opts</code> - Options for the sensor</li></ul><h2 id="add_sensor/2-sensor-options" class="section-heading"><a href="#add_sensor/2-sensor-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Sensor Options</span></h2><ul><li><code class="inline">:name</code> - The name of the sensor (required, as atom)</li><li><code class="inline">:type</code> - The type of sensor (default: :standard)</li><li><code class="inline">:vl</code> - Vector length, number of outputs from this sensor (required)</li><li><code class="inline">:parameters</code> - Additional parameters for the sensor</li></ul><h2 id="add_sensor/2-returns" class="section-heading"><a href="#add_sensor/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>An updated morphology with the new sensor</li></ul><h2 id="add_sensor/2-examples" class="section-heading"><a href="#add_sensor/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Add a vision sensor to a morphology</span><span class="w">
+</span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_morphology</span><span class="p" data-group-id="7563840045-1">(</span><span class="p" data-group-id="7563840045-1">)</span><span class="w">
+</span><span class="n">updated_morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">add_sensor</span><span class="p" data-group-id="7563840045-2">(</span><span class="n">morphology</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7563840045-3">%{</span><span class="w">
+  </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:vision</span><span class="p">,</span><span class="w">
+  </span><span class="ss">vl</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">parameters</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7563840045-4">%{</span><span class="ss">fov</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p" data-group-id="7563840045-4">}</span><span class="w">
+</span><span class="p" data-group-id="7563840045-3">}</span><span class="p" data-group-id="7563840045-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="configure_experiment/2">
+
+  <div class="detail-header">
+    <a href="#configure_experiment/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">configure_experiment(experiment_id, config)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L300" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> configure_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Configures an existing experiment with the given parameters.</p><h2 id="configure_experiment/2-parameters" class="section-heading"><a href="#configure_experiment/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to configure</li><li><code class="inline">config</code> - Configuration parameters for the experiment</li></ul><h2 id="configure_experiment/2-configuration-options" class="section-heading"><a href="#configure_experiment/2-configuration-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Configuration Options</span></h2><ul><li><code class="inline">:runs</code> - Number of separate evolutionary runs to perform (default: 1)</li><li><code class="inline">:generations</code> - Maximum number of generations per run (default: 100)</li><li><code class="inline">:population_size</code> - Number of individuals in the population (default: 50)</li><li><code class="inline">:morphology</code> - The morphology to use (either a morphology map or an ID)</li><li><code class="inline">:selection_method</code> - Method for selecting parents, one of: [:tournament, :roulette, :rank] (default: :tournament)</li><li><code class="inline">:crossover_rate</code> - Probability of crossover (default: 0.7)</li><li><code class="inline">:mutation_rate</code> - Probability of mutation (default: 0.3)</li><li><code class="inline">:elitism</code> - Fraction of top individuals to preserve unchanged (default: 0.1)</li><li><code class="inline">:backup_flag</code> - Whether to back up best solutions (default: true)</li><li><code class="inline">:visualize</code> - Whether to generate visualizations (default: false)</li><li><code class="inline">:distributed</code> - Whether to use distributed evolution (default: false)</li></ul><h2 id="configure_experiment/2-returns" class="section-heading"><a href="#configure_experiment/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was configured successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error configuring the experiment</li></ul><h2 id="configure_experiment/2-examples" class="section-heading"><a href="#configure_experiment/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">configure_experiment</span><span class="p" data-group-id="2031452522-1">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2031452522-2">%{</span><span class="w">
+  </span><span class="ss">runs</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">morphology</span><span class="p">:</span><span class="w"> </span><span class="n">morphology</span><span class="p">,</span><span class="w">
+  </span><span class="ss">selection_method</span><span class="p">:</span><span class="w"> </span><span class="ss">:tournament</span><span class="w">
+</span><span class="p" data-group-id="2031452522-2">}</span><span class="p" data-group-id="2031452522-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_experiment/1">
+
+  <div class="detail-header">
+    <a href="#create_experiment/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_experiment(name)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L261" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Creates a new experiment with the given name.</p><p>Experiments are the top-level container for evolutionary runs. They manage:</p><ul><li>Population configuration</li><li>Fitness evaluation</li><li>Running multiple evolutionary trials</li><li>Collecting and analyzing results</li></ul><h2 id="create_experiment/1-parameters" class="section-heading"><a href="#create_experiment/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">name</code> - Name of the experiment</li></ul><h2 id="create_experiment/1-returns" class="section-heading"><a href="#create_experiment/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, experiment_id}</code> - Experiment ID of the created experiment</li><li><code class="inline">{:error, reason}</code> - If there was an error creating the experiment</li></ul><h2 id="create_experiment/1-examples" class="section-heading"><a href="#create_experiment/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1144869390-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">experiment_id</span><span class="p" data-group-id="1144869390-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_experiment</span><span class="p" data-group-id="1144869390-2">(</span><span class="s">&quot;XOR Experiment&quot;</span><span class="p" data-group-id="1144869390-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_morphology/1">
+
+    <span id="create_morphology/0"></span>
+
+  <div class="detail-header">
+    <a href="#create_morphology/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_morphology(opts \\ %{})</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L111" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_morphology(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()</pre>
+
+      </div>
+
+<p>Creates a new neural network morphology with the given options.</p><p>This function defines the structure of the neural network, including:</p><ul><li>Number of inputs and outputs</li><li>Hidden layer configuration</li><li>Sensor and actuator specifications</li><li>Substrate and connection patterns</li></ul><h2 id="create_morphology/1-parameters" class="section-heading"><a href="#create_morphology/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">opts</code> - A map of options for the morphology (see options below)</li></ul><h2 id="create_morphology/1-options" class="section-heading"><a href="#create_morphology/1-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Options</span></h2><ul><li><code class="inline">:name</code> - The name of the morphology (default: &quot;Generic Morphology&quot;)</li><li><code class="inline">:description</code> - A description of the morphology</li><li><code class="inline">:dimensions</code> - Number of dimensions in the substrate (default: 2)</li><li><code class="inline">:inputs</code> - Number of input neurons (default: 1)</li><li><code class="inline">:outputs</code> - Number of output neurons (default: 1)</li><li><code class="inline">:hidden_layers</code> - List of hidden layer sizes (default: [3])</li><li><code class="inline">:activation_functions</code> - List of activation functions (default: [:sigmoid])</li><li><code class="inline">:substrate_type</code> - Type of substrate, one of: [:cartesian, :hypercube, :hypersphere, :custom] (default: :cartesian)</li><li><code class="inline">:connection_pattern</code> - Type of connection pattern, one of: [:feedforward, :recurrent, :dense, :custom] (default: :feedforward)</li><li><code class="inline">:plasticity</code> - Type of plasticity, one of: [:none, :hebbian, :stdp, :abcn, :iterative] (default: :none)</li><li><code class="inline">:sensors</code> - List of custom sensor specifications</li><li><code class="inline">:actuators</code> - List of custom actuator specifications</li><li><code class="inline">:parameters</code> - Additional parameters for the morphology</li></ul><h2 id="create_morphology/1-returns" class="section-heading"><a href="#create_morphology/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>A morphology map with the specified configuration</li></ul><h2 id="create_morphology/1-examples" class="section-heading"><a href="#create_morphology/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a simple XOR network morphology</span><span class="w">
+</span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_morphology</span><span class="p" data-group-id="3825829573-1">(</span><span class="p" data-group-id="3825829573-2">%{</span><span class="w">
+  </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;XOR Network&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">dimensions</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">inputs</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">outputs</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="ss">hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3825829573-3">[</span><span class="mi">3</span><span class="p" data-group-id="3825829573-3">]</span><span class="w">
+</span><span class="p" data-group-id="3825829573-2">}</span><span class="p" data-group-id="3825829573-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_population/2">
+
+  <div class="detail-header">
+    <a href="#create_population/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_population(population_id, config)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L608" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_population(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Creates a new population of neural network agents.</p><h2 id="create_population/2-parameters" class="section-heading"><a href="#create_population/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">population_id</code> - Unique identifier for the population</li><li><code class="inline">config</code> - Configuration for the population</li></ul><h2 id="create_population/2-returns" class="section-heading"><a href="#create_population/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, pid}</code> - If the population was created successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error creating the population</li></ul><h2 id="create_population/2-examples" class="section-heading"><a href="#create_population/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7165864404-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p" data-group-id="7165864404-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_population</span><span class="p" data-group-id="7165864404-2">(</span><span class="s">&quot;xor_population&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7165864404-3">%{</span><span class="w">
+  </span><span class="ss">morphology</span><span class="p">:</span><span class="w"> </span><span class="n">morphology</span><span class="p">,</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+  </span><span class="ss">fitness_function</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="7165864404-4">fn</span><span class="w"> </span><span class="n">agent</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">...</span><span class="w"> </span><span class="k" data-group-id="7165864404-4">end</span><span class="w">
+</span><span class="p" data-group-id="7165864404-3">}</span><span class="p" data-group-id="7165864404-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_scape/2">
+
+  <div class="detail-header">
+    <a href="#create_scape/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_scape(scape_id, config)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L675" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_scape(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Creates a new scape (virtual environment) for agents to interact with.</p><h2 id="create_scape/2-parameters" class="section-heading"><a href="#create_scape/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">scape_id</code> - Unique identifier for the scape</li><li><code class="inline">config</code> - Configuration for the scape</li></ul><h2 id="create_scape/2-returns" class="section-heading"><a href="#create_scape/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, pid}</code> - If the scape was created successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error creating the scape</li></ul><h2 id="create_scape/2-examples" class="section-heading"><a href="#create_scape/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9495241166-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p" data-group-id="9495241166-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_scape</span><span class="p" data-group-id="9495241166-2">(</span><span class="s">&quot;flatland&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9495241166-3">%{</span><span class="w">
+  </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">agents</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p" data-group-id="9495241166-3">}</span><span class="p" data-group-id="9495241166-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="evaluate_agent/2">
+
+  <div class="detail-header">
+    <a href="#evaluate_agent/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">evaluate_agent(agent, test_cases)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L528" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> evaluate_agent(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()</pre>
+
+      </div>
+
+<p>Evaluates an agent's performance on a set of test cases.</p><p>This function runs the agent on multiple input/output pairs and returns
+an accuracy score between 0.0 and 1.0.</p><h2 id="evaluate_agent/2-parameters" class="section-heading"><a href="#evaluate_agent/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">agent</code> - The agent (neural network) to evaluate</li><li><code class="inline">test_cases</code> - List of {input, expected_output} tuples</li></ul><h2 id="evaluate_agent/2-returns" class="section-heading"><a href="#evaluate_agent/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li>Accuracy score between 0.0 and 1.0</li></ul><h2 id="evaluate_agent/2-examples" class="section-heading"><a href="#evaluate_agent/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Evaluate XOR test cases</span><span class="w">
+</span><span class="n">test_cases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6424734192-1">[</span><span class="w">
+  </span><span class="p" data-group-id="6424734192-2">{</span><span class="p" data-group-id="6424734192-3">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6424734192-3">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6424734192-4">[</span><span class="mf">0.0</span><span class="p" data-group-id="6424734192-4">]</span><span class="p" data-group-id="6424734192-2">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="6424734192-5">{</span><span class="p" data-group-id="6424734192-6">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p" data-group-id="6424734192-6">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6424734192-7">[</span><span class="mf">1.0</span><span class="p" data-group-id="6424734192-7">]</span><span class="p" data-group-id="6424734192-5">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="6424734192-8">{</span><span class="p" data-group-id="6424734192-9">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6424734192-9">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6424734192-10">[</span><span class="mf">1.0</span><span class="p" data-group-id="6424734192-10">]</span><span class="p" data-group-id="6424734192-8">}</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="6424734192-11">{</span><span class="p" data-group-id="6424734192-12">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p" data-group-id="6424734192-12">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6424734192-13">[</span><span class="mf">0.0</span><span class="p" data-group-id="6424734192-13">]</span><span class="p" data-group-id="6424734192-11">}</span><span class="w">
+</span><span class="p" data-group-id="6424734192-1">]</span><span class="w">
+
+</span><span class="n">accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">evaluate_agent</span><span class="p" data-group-id="6424734192-14">(</span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="n">test_cases</span><span class="p" data-group-id="6424734192-14">)</span><span class="w">
+</span><span class="c1"># A perfect XOR network would return 1.0</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="evolve_population/2">
+
+  <div class="detail-header">
+    <a href="#evolve_population/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">evolve_population(population_id, generations)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L628" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> evolve_population(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Evolves a population for the specified number of generations.</p><h2 id="evolve_population/2-parameters" class="section-heading"><a href="#evolve_population/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">population_id</code> - ID of the population to evolve</li><li><code class="inline">generations</code> - Number of generations to evolve</li></ul><h2 id="evolve_population/2-returns" class="section-heading"><a href="#evolve_population/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the population was evolved successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error evolving the population</li></ul><h2 id="evolve_population/2-examples" class="section-heading"><a href="#evolve_population/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">evolve_population</span><span class="p" data-group-id="8794556470-1">(</span><span class="s">&quot;xor_population&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p" data-group-id="8794556470-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="experiment_status/1">
+
+  <div class="detail-header">
+    <a href="#experiment_status/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">experiment_status(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L392" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> experiment_status(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) ::
+  {:not_started, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:in_progress, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:completed, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:stopped, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}
+  | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Gets the status of an experiment.</p><h2 id="experiment_status/1-parameters" class="section-heading"><a href="#experiment_status/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to get status for</li></ul><h2 id="experiment_status/1-returns" class="section-heading"><a href="#experiment_status/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:not_started, info}</code> - If the experiment has not started yet</li><li><code class="inline">{:in_progress, info}</code> - If the experiment is in progress, with status details</li><li><code class="inline">{:completed, info}</code> - If the experiment is completed, with results</li><li><code class="inline">{:stopped, info}</code> - If the experiment was stopped before completion</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the status</li></ul><h2 id="experiment_status/1-examples" class="section-heading"><a href="#experiment_status/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Check experiment status</span><span class="w">
+</span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">experiment_status</span><span class="p" data-group-id="2537397572-1">(</span><span class="n">experiment_id</span><span class="p" data-group-id="2537397572-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="export_results/3">
+
+    <span id="export_results/2"></span>
+
+  <div class="detail-header">
+    <a href="#export_results/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">export_results(experiment_id, file_path, format \\ :json)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L470" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> export_results(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Exports experiment results to a file.</p><h2 id="export_results/3-parameters" class="section-heading"><a href="#export_results/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to export</li><li><code class="inline">file_path</code> - Path to save the results to</li><li><code class="inline">format</code> - Format to export in (:csv, :json, or :binary)</li></ul><h2 id="export_results/3-returns" class="section-heading"><a href="#export_results/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the results were exported successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error exporting the results</li></ul><h2 id="export_results/3-examples" class="section-heading"><a href="#export_results/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">export_results</span><span class="p" data-group-id="8936490084-1">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;results.json&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:json</span><span class="p" data-group-id="8936490084-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_best_agent/1">
+
+  <div class="detail-header">
+    <a href="#get_best_agent/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_best_agent(population_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L647" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_best_agent(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Gets the best agent from a population.</p><h2 id="get_best_agent/1-parameters" class="section-heading"><a href="#get_best_agent/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">population_id</code> - ID of the population</li></ul><h2 id="get_best_agent/1-returns" class="section-heading"><a href="#get_best_agent/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, agent}</code> - The best agent in the population</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the agent</li></ul><h2 id="get_best_agent/1-examples" class="section-heading"><a href="#get_best_agent/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5272595835-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">best_agent</span><span class="p" data-group-id="5272595835-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">get_best_agent</span><span class="p" data-group-id="5272595835-2">(</span><span class="s">&quot;xor_population&quot;</span><span class="p" data-group-id="5272595835-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_best_solution/1">
+
+  <div class="detail-header">
+    <a href="#get_best_solution/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_best_solution(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L413" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_best_solution(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Gets the best solution from a completed experiment.</p><h2 id="get_best_solution/1-parameters" class="section-heading"><a href="#get_best_solution/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to get the best solution from</li></ul><h2 id="get_best_solution/1-returns" class="section-heading"><a href="#get_best_solution/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, solution}</code> - Best solution found in the experiment</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the best solution</li></ul><h2 id="get_best_solution/1-examples" class="section-heading"><a href="#get_best_solution/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2732638892-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p" data-group-id="2732638892-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">get_best_solution</span><span class="p" data-group-id="2732638892-2">(</span><span class="n">experiment_id</span><span class="p" data-group-id="2732638892-2">)</span><span class="w">
+</span><span class="c1"># Use the solution for inference</span><span class="w">
+</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">activate_agent</span><span class="p" data-group-id="2732638892-3">(</span><span class="n">solution</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2732638892-4">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p" data-group-id="2732638892-4">]</span><span class="p" data-group-id="2732638892-3">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list_experiments/0">
+
+  <div class="detail-header">
+    <a href="#list_experiments/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list_experiments()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L449" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list_experiments() :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Lists all experiments.</p><h2 id="list_experiments/0-returns" class="section-heading"><a href="#list_experiments/0-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, [experiment]}</code> - List of all experiments with their basic information</li><li><code class="inline">{:error, reason}</code> - If there was an error getting the experiments</li></ul><h2 id="list_experiments/0-examples" class="section-heading"><a href="#list_experiments/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Get all experiments</span><span class="w">
+</span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">list_experiments</span><span class="p" data-group-id="7062416365-1">(</span><span class="p" data-group-id="7062416365-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list_morphologies/0">
+
+  <div class="detail-header">
+    <a href="#list_morphologies/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list_morphologies()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L232" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list_morphologies() :: {:ok, [<a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()]} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Lists all saved morphologies.</p><h2 id="list_morphologies/0-returns" class="section-heading"><a href="#list_morphologies/0-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, [morphology]}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="list_morphologies/0-examples" class="section-heading"><a href="#list_morphologies/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3869232706-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">morphologies</span><span class="p" data-group-id="3869232706-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">list_morphologies</span><span class="p" data-group-id="3869232706-2">(</span><span class="p" data-group-id="3869232706-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="load_agent/1">
+
+  <div class="detail-header">
+    <a href="#load_agent/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">load_agent(file_path)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L580" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> load_agent(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Loads an agent from a file.</p><h2 id="load_agent/1-parameters" class="section-heading"><a href="#load_agent/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">file_path</code> - Path to load the agent from</li></ul><h2 id="load_agent/1-returns" class="section-heading"><a href="#load_agent/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, agent}</code> - If the agent was loaded successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error loading the agent</li></ul><h2 id="load_agent/1-examples" class="section-heading"><a href="#load_agent/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5665880309-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="p" data-group-id="5665880309-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">load_agent</span><span class="p" data-group-id="5665880309-2">(</span><span class="s">&quot;xor_agent.bin&quot;</span><span class="p" data-group-id="5665880309-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="load_morphology/1">
+
+  <div class="detail-header">
+    <a href="#load_morphology/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">load_morphology(id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L216" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> load_morphology(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: {:ok, <a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Loads a morphology from persistent storage.</p><h2 id="load_morphology/1-parameters" class="section-heading"><a href="#load_morphology/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">id</code> - The ID of the morphology to load</li></ul><h2 id="load_morphology/1-returns" class="section-heading"><a href="#load_morphology/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, morphology}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="load_morphology/1-examples" class="section-heading"><a href="#load_morphology/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">load_morphology</span><span class="p" data-group-id="0703753408-1">(</span><span class="s">&quot;morph_123456789&quot;</span><span class="p" data-group-id="0703753408-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="quick_experiment/4">
+
+    <span id="quick_experiment/3"></span>
+
+  <div class="detail-header">
+    <a href="#quick_experiment/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">quick_experiment(name, morphology, fitness_function, opts \\ %{})</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L755" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> quick_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">function</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Runs a complete experiment with minimal setup.</p><p>This is a convenience function that creates an experiment, sets it up,
+and runs it with common default parameters.</p><h2 id="quick_experiment/4-parameters" class="section-heading"><a href="#quick_experiment/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">name</code> - Name of the experiment</li><li><code class="inline">morphology</code> - The morphology to use</li><li><code class="inline">fitness_function</code> - Function to evaluate fitness</li><li><code class="inline">opts</code> - Additional options to override defaults</li></ul><h2 id="quick_experiment/4-returns" class="section-heading"><a href="#quick_experiment/4-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, experiment_id}</code> - ID of the created experiment</li><li><code class="inline">{:error, reason}</code> - If there was an error</li></ul><h2 id="quick_experiment/4-examples" class="section-heading"><a href="#quick_experiment/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Create and run an XOR experiment</span><span class="w">
+</span><span class="p" data-group-id="5083504861-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">experiment_id</span><span class="p" data-group-id="5083504861-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">quick_experiment</span><span class="p" data-group-id="5083504861-2">(</span><span class="w">
+  </span><span class="s">&quot;XOR Experiment&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="n">morphology</span><span class="p">,</span><span class="w">
+  </span><span class="k" data-group-id="5083504861-3">fn</span><span class="w"> </span><span class="n">agent</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> 
+    </span><span class="c1"># Fitness function implementation</span><span class="w">
+  </span><span class="k" data-group-id="5083504861-3">end</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="5083504861-4">%{</span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="ss">generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p" data-group-id="5083504861-4">}</span><span class="w">
+</span><span class="p" data-group-id="5083504861-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="run_experiment/1">
+
+  <div class="detail-header">
+    <a href="#run_experiment/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">run_experiment(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L364" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> run_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Starts an experiment with the given ID.</p><p>This begins the evolutionary process according to the experiment configuration.
+The function returns immediately, but the experiment continues to run in the
+background until completion.</p><h2 id="run_experiment/1-parameters" class="section-heading"><a href="#run_experiment/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to start</li></ul><h2 id="run_experiment/1-returns" class="section-heading"><a href="#run_experiment/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was started successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error starting the experiment</li></ul><h2 id="run_experiment/1-examples" class="section-heading"><a href="#run_experiment/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">run_experiment</span><span class="p" data-group-id="6402029712-1">(</span><span class="n">experiment_id</span><span class="p" data-group-id="6402029712-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="save_agent/2">
+
+  <div class="detail-header">
+    <a href="#save_agent/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">save_agent(agent, file_path)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L561" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> save_agent(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Saves an agent to a file for later use.</p><h2 id="save_agent/2-parameters" class="section-heading"><a href="#save_agent/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">agent</code> - The agent (neural network) to save</li><li><code class="inline">file_path</code> - Path to save the agent to</li></ul><h2 id="save_agent/2-returns" class="section-heading"><a href="#save_agent/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the agent was saved successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error saving the agent</li></ul><h2 id="save_agent/2-examples" class="section-heading"><a href="#save_agent/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">save_agent</span><span class="p" data-group-id="7346880713-1">(</span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xor_agent.bin&quot;</span><span class="p" data-group-id="7346880713-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="save_morphology/1">
+
+  <div class="detail-header">
+    <a href="#save_morphology/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">save_morphology(morphology)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L197" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> save_morphology(<a href="Bardo.Morphology.html#t:t/0">Bardo.Morphology.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Saves a morphology to persistent storage for later use.</p><h2 id="save_morphology/1-parameters" class="section-heading"><a href="#save_morphology/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">morphology</code> - The morphology to save</li></ul><h2 id="save_morphology/1-returns" class="section-heading"><a href="#save_morphology/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="save_morphology/1-examples" class="section-heading"><a href="#save_morphology/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">create_morphology</span><span class="p" data-group-id="8633502856-1">(</span><span class="p" data-group-id="8633502856-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;XOR&quot;</span><span class="p" data-group-id="8633502856-2">}</span><span class="p" data-group-id="8633502856-1">)</span><span class="w">
+</span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">save_morphology</span><span class="p" data-group-id="8633502856-3">(</span><span class="n">morphology</span><span class="p" data-group-id="8633502856-3">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="set_fitness_function/2">
+
+  <div class="detail-header">
+    <a href="#set_fitness_function/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_fitness_function(experiment_id, fitness_function)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L341" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_fitness_function(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">function</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Sets the fitness function for evaluating solutions in an experiment.</p><p>The fitness function receives an agent (neural network) and must return a numerical
+fitness score. Higher values indicate better fitness.</p><h2 id="set_fitness_function/2-parameters" class="section-heading"><a href="#set_fitness_function/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment</li><li><code class="inline">fitness_function</code> - Function to evaluate fitness of solutions</li></ul><h2 id="set_fitness_function/2-returns" class="section-heading"><a href="#set_fitness_function/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the fitness function was set successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error setting the fitness function</li></ul><h2 id="set_fitness_function/2-examples" class="section-heading"><a href="#set_fitness_function/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Define a fitness function for XOR</span><span class="w">
+</span><span class="n">fitness_fn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k" data-group-id="1010806698-1">fn</span><span class="w"> </span><span class="n">agent</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1010806698-2">[</span><span class="p" data-group-id="1010806698-3">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p" data-group-id="1010806698-3">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-4">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p" data-group-id="1010806698-4">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-5">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p" data-group-id="1010806698-5">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-6">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p" data-group-id="1010806698-6">]</span><span class="p" data-group-id="1010806698-2">]</span><span class="w">
+  </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1010806698-7">[</span><span class="p" data-group-id="1010806698-8">[</span><span class="mi">0</span><span class="p" data-group-id="1010806698-8">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-9">[</span><span class="mi">1</span><span class="p" data-group-id="1010806698-9">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-10">[</span><span class="mi">1</span><span class="p" data-group-id="1010806698-10">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1010806698-11">[</span><span class="mi">0</span><span class="p" data-group-id="1010806698-11">]</span><span class="p" data-group-id="1010806698-7">]</span><span class="w">
+
+  </span><span class="c1"># Calculate error across all cases</span><span class="w">
+  </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">zip</span><span class="p" data-group-id="1010806698-12">(</span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">expected</span><span class="p" data-group-id="1010806698-12">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="1010806698-13">(</span><span class="k" data-group-id="1010806698-14">fn</span><span class="w"> </span><span class="p" data-group-id="1010806698-15">{</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="1010806698-15">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">actual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">activate_agent</span><span class="p" data-group-id="1010806698-16">(</span><span class="n">agent</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="1010806698-16">)</span><span class="w">
+    </span><span class="nc">Enum</span><span class="o">.</span><span class="n">zip</span><span class="p" data-group-id="1010806698-17">(</span><span class="n">actual</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="1010806698-17">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="1010806698-18">(</span><span class="k" data-group-id="1010806698-19">fn</span><span class="w"> </span><span class="p" data-group-id="1010806698-20">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p" data-group-id="1010806698-20">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">:math</span><span class="o">.</span><span class="n">pow</span><span class="p" data-group-id="1010806698-21">(</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="1010806698-21">)</span><span class="w"> </span><span class="k" data-group-id="1010806698-19">end</span><span class="p" data-group-id="1010806698-18">)</span><span class="w">
+    </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">sum</span><span class="p" data-group-id="1010806698-22">(</span><span class="p" data-group-id="1010806698-22">)</span><span class="w">
+  </span><span class="k" data-group-id="1010806698-14">end</span><span class="p" data-group-id="1010806698-13">)</span><span class="w">
+
+  </span><span class="c1"># Return fitness (1 / (1 + error)) so higher is better</span><span class="w">
+  </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="1010806698-23">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">sum</span><span class="p" data-group-id="1010806698-24">(</span><span class="n">errors</span><span class="p" data-group-id="1010806698-24">)</span><span class="p" data-group-id="1010806698-23">)</span><span class="w">
+</span><span class="k" data-group-id="1010806698-1">end</span><span class="w">
+
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">set_fitness_function</span><span class="p" data-group-id="1010806698-25">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="n">fitness_fn</span><span class="p" data-group-id="1010806698-25">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="solve_xor/1">
+
+    <span id="solve_xor/0"></span>
+
+  <div class="detail-header">
+    <a href="#solve_xor/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">solve_xor(opts \\ %{})</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L800" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> solve_xor(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Solves the XOR problem as a simple demonstration.</p><p>This is a convenience function that creates and runs an experiment
+to solve the XOR problem, a classic benchmark in neural networks.</p><h2 id="solve_xor/1-parameters" class="section-heading"><a href="#solve_xor/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">opts</code> - Options to override defaults</li></ul><h2 id="solve_xor/1-returns" class="section-heading"><a href="#solve_xor/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, agent}</code> - The best solution found</li><li><code class="inline">{:error, reason}</code> - If there was an error</li></ul><h2 id="solve_xor/1-examples" class="section-heading"><a href="#solve_xor/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6254178919-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">xor_agent</span><span class="p" data-group-id="6254178919-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">solve_xor</span><span class="p" data-group-id="6254178919-2">(</span><span class="p" data-group-id="6254178919-2">)</span><span class="w">
+</span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">activate_agent</span><span class="p" data-group-id="6254178919-3">(</span><span class="n">xor_agent</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6254178919-4">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6254178919-4">]</span><span class="p" data-group-id="6254178919-3">)</span><span class="w">
+</span><span class="c1"># Should return approximately [1.0]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="step_scape/2">
+
+    <span id="step_scape/1"></span>
+
+  <div class="detail-header">
+    <a href="#step_scape/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">step_scape(scape_id, steps \\ 1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L717" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> step_scape(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Steps a scape forward in time, updating all agents.</p><h2 id="step_scape/2-parameters" class="section-heading"><a href="#step_scape/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">scape_id</code> - ID of the scape</li><li><code class="inline">steps</code> - Number of time steps to advance</li></ul><h2 id="step_scape/2-returns" class="section-heading"><a href="#step_scape/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the scape was stepped successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error stepping the scape</li></ul><h2 id="step_scape/2-examples" class="section-heading"><a href="#step_scape/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">step_scape</span><span class="p" data-group-id="0887986190-1">(</span><span class="s">&quot;flatland&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="0887986190-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stop_experiment/1">
+
+  <div class="detail-header">
+    <a href="#stop_experiment/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stop_experiment(experiment_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/core.ex#L432" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stop_experiment(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Stops an ongoing experiment.</p><h2 id="stop_experiment/1-parameters" class="section-heading"><a href="#stop_experiment/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">experiment_id</code> - ID of the experiment to stop</li></ul><h2 id="stop_experiment/1-returns" class="section-heading"><a href="#stop_experiment/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> - If the experiment was stopped successfully</li><li><code class="inline">{:error, reason}</code> - If there was an error stopping the experiment</li></ul><h2 id="stop_experiment/1-examples" class="section-heading"><a href="#stop_experiment/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Core</span><span class="o">.</span><span class="n">stop_experiment</span><span class="p" data-group-id="3616953131-1">(</span><span class="n">experiment_id</span><span class="p" data-group-id="3616953131-1">)</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

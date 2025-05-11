@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.Persistence — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.Persistence</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Core persistence module for Bardo.</p><p>This module provides a high-level API for saving and loading models,
+supporting both the default ETS-based storage and PostgreSQL storage
+for distributed environments.</p><p>It handles serialization, compression, migrations, and provides a
+consistent interface regardless of the underlying storage technology.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#backup/1" data-no-tooltip="" translate="no">backup(path \\ &quot;backups&quot;)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a backup of the database.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" data-no-tooltip="" translate="no">delete(type, id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete a model from storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#exists?/2" data-no-tooltip="" translate="no">exists?(type, id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Check if a model exists in storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#export/3" data-no-tooltip="" translate="no">export(model, file_path, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Export a model to a file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#import/2" data-no-tooltip="" translate="no">import(file_path, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Import a model from a file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list/1" data-no-tooltip="" translate="no">list(type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>List all models of a given type.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#load/3" data-no-tooltip="" translate="no">load(type, id, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Load a model from storage.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#restore/1" data-no-tooltip="" translate="no">restore(backup_file)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Restore from a backup.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#save/4" data-no-tooltip="" translate="no">save(model, type, id \\ nil, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Save a model to storage.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="backup/1">
+
+    <span id="backup/0"></span>
+
+  <div class="detail-header">
+    <a href="#backup/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">backup(path \\ &quot;backups&quot;)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L197" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> backup(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Create a backup of the database.</p><h2 id="backup/1-parameters" class="section-heading"><a href="#backup/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">path</code> - Path to store the backup (default: &quot;backups&quot;)</li></ul><h2 id="backup/1-returns" class="section-heading"><a href="#backup/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, backup_file}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="backup/1-examples" class="section-heading"><a href="#backup/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">backup</span><span class="p" data-group-id="3178296537-1">(</span><span class="s">&quot;my_backups&quot;</span><span class="p" data-group-id="3178296537-1">)</span><span class="w">
+</span><span class="p" data-group-id="3178296537-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my_backups/bardo_backup_2025-05-07.db&quot;</span><span class="p" data-group-id="3178296537-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete(type, id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L136" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Delete a model from storage.</p><h2 id="delete/2-parameters" class="section-heading"><a href="#delete/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">type</code> - The type of model to delete (e.g., :experiment, :population, :genotype)</li><li><code class="inline">id</code> - The ID of the model to delete</li></ul><h2 id="delete/2-returns" class="section-heading"><a href="#delete/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="delete/2-examples" class="section-heading"><a href="#delete/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="6760992200-1">(</span><span class="ss">:morphology</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p" data-group-id="6760992200-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="exists?/2">
+
+  <div class="detail-header">
+    <a href="#exists?/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">exists?(type, id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L114" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> exists?(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Check if a model exists in storage.</p><h2 id="exists?/2-parameters" class="section-heading"><a href="#exists?/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">type</code> - The type of model to check (e.g., :experiment, :population, :genotype)</li><li><code class="inline">id</code> - The ID of the model to check</li></ul><h2 id="exists?/2-returns" class="section-heading"><a href="#exists?/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">true</code> if the model exists</li><li><code class="inline">false</code> if the model does not exist</li></ul><h2 id="exists?/2-examples" class="section-heading"><a href="#exists?/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">exists?</span><span class="p" data-group-id="6617092789-1">(</span><span class="ss">:morphology</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p" data-group-id="6617092789-1">)</span><span class="w">
+</span><span class="no">true</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">exists?</span><span class="p" data-group-id="6617092789-2">(</span><span class="ss">:experiment</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nonexistent&quot;</span><span class="p" data-group-id="6617092789-2">)</span><span class="w">
+</span><span class="no">false</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="export/3">
+
+    <span id="export/2"></span>
+
+  <div class="detail-header">
+    <a href="#export/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">export(model, file_path, opts \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L265" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> export(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Export a model to a file.</p><h2 id="export/3-parameters" class="section-heading"><a href="#export/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">model</code> - The model to export</li><li><code class="inline">file_path</code> - Path to save the file</li><li><code class="inline">opts</code> - Additional options:<ul><li><code class="inline">:format</code> - Format to export in (:erlang, :json, or :etf, default: :erlang)</li><li><code class="inline">:compress</code> - Whether to compress the file (default: false)</li></ul></li></ul><h2 id="export/3-returns" class="section-heading"><a href="#export/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="export/3-examples" class="section-heading"><a href="#export/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="5272371409-1">(</span><span class="p" data-group-id="5272371409-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="5272371409-2">}</span><span class="p" data-group-id="5272371409-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">export</span><span class="p" data-group-id="5272371409-3">(</span><span class="n">morphology</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test_morphology.etf&quot;</span><span class="p" data-group-id="5272371409-3">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="import/2">
+
+    <span id="import/1"></span>
+
+  <div class="detail-header">
+    <a href="#import/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">import(file_path, opts \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L311" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> import(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Import a model from a file.</p><h2 id="import/2-parameters" class="section-heading"><a href="#import/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">file_path</code> - Path to the file to import</li><li><code class="inline">opts</code> - Additional options:<ul><li><code class="inline">:format</code> - Format of the file (:erlang, :json, or :etf, default: auto-detect)</li><li><code class="inline">:decompress</code> - Whether to decompress the file (default: auto-detect)</li></ul></li></ul><h2 id="import/2-returns" class="section-heading"><a href="#import/2-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, model}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="import/2-examples" class="section-heading"><a href="#import/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="kn">import</span><span class="p" data-group-id="1365308920-1">(</span><span class="s">&quot;test_morphology.etf&quot;</span><span class="p" data-group-id="1365308920-1">)</span><span class="w">
+</span><span class="p" data-group-id="1365308920-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1365308920-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1365308920-3">}</span><span class="p" data-group-id="1365308920-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list/1">
+
+  <div class="detail-header">
+    <a href="#list/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">list(type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L162" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>List all models of a given type.</p><h2 id="list/1-parameters" class="section-heading"><a href="#list/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">type</code> - The type of models to list (e.g., :experiment, :population, :genotype)</li></ul><h2 id="list/1-returns" class="section-heading"><a href="#list/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, [model]}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="list/1-examples" class="section-heading"><a href="#list/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">list</span><span class="p" data-group-id="3185420177-1">(</span><span class="ss">:morphology</span><span class="p" data-group-id="3185420177-1">)</span><span class="w">
+</span><span class="p" data-group-id="3185420177-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3185420177-3">[</span><span class="p" data-group-id="3185420177-4">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="3185420177-4">}</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="3185420177-3">]</span><span class="p" data-group-id="3185420177-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="load/3">
+
+    <span id="load/2"></span>
+
+  <div class="detail-header">
+    <a href="#load/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">load(type, id, opts \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L80" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> load(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Load a model from storage.</p><h2 id="load/3-parameters" class="section-heading"><a href="#load/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">type</code> - The type of model to load (e.g., :experiment, :population, :genotype)</li><li><code class="inline">id</code> - The ID of the model to load</li><li><code class="inline">opts</code> - Additional options:<ul><li><code class="inline">:decompress</code> - Whether to decompress the model (default: auto-detect)</li><li><code class="inline">:format</code> - Expected format (:erlang or :json, default: auto-detect)</li></ul></li></ul><h2 id="load/3-returns" class="section-heading"><a href="#load/3-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">{:ok, model}</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="load/3-examples" class="section-heading"><a href="#load/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">load</span><span class="p" data-group-id="4654092155-1">(</span><span class="ss">:morphology</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p" data-group-id="4654092155-1">)</span><span class="w">
+</span><span class="p" data-group-id="4654092155-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4654092155-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;morph_123&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="4654092155-3">}</span><span class="p" data-group-id="4654092155-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">load</span><span class="p" data-group-id="4654092155-4">(</span><span class="ss">:experiment</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;exp_123&quot;</span><span class="p" data-group-id="4654092155-4">)</span><span class="w">
+</span><span class="p" data-group-id="4654092155-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4654092155-6">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;exp_123&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4654092155-7">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test Experiment&quot;</span><span class="p" data-group-id="4654092155-7">}</span><span class="p" data-group-id="4654092155-6">}</span><span class="p" data-group-id="4654092155-5">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="restore/1">
+
+  <div class="detail-header">
+    <a href="#restore/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">restore(backup_file)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L234" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> restore(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Restore from a backup.</p><h2 id="restore/1-parameters" class="section-heading"><a href="#restore/1-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">backup_file</code> - Path to the backup file</li></ul><h2 id="restore/1-returns" class="section-heading"><a href="#restore/1-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="restore/1-examples" class="section-heading"><a href="#restore/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">restore</span><span class="p" data-group-id="5251874888-1">(</span><span class="s">&quot;backups/bardo_backup_2025-05-07.db&quot;</span><span class="p" data-group-id="5251874888-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="save/4">
+
+    <span id="save/2"></span>
+
+    <span id="save/3"></span>
+
+  <div class="detail-header">
+    <a href="#save/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">save(model, type, id \\ nil, opts \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/persistence.ex#L42" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> save(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | nil, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Save a model to storage.</p><h2 id="save/4-parameters" class="section-heading"><a href="#save/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Parameters</span></h2><ul><li><code class="inline">model</code> - The model to save</li><li><code class="inline">type</code> - The type of model (e.g., :experiment, :population, :genotype)</li><li><code class="inline">id</code> - Optional ID for the model (if not provided, extracted from the model)</li><li><code class="inline">opts</code> - Additional options:<ul><li><code class="inline">:compress</code> - Whether to compress the model (default: false)</li><li><code class="inline">:format</code> - Format to save in (:erlang or :json, default: :erlang)</li><li><code class="inline">:version</code> - Schema version for future migrations</li></ul></li></ul><h2 id="save/4-returns" class="section-heading"><a href="#save/4-returns" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Returns</span></h2><ul><li><code class="inline">:ok</code> on success</li><li><code class="inline">{:error, reason}</code> on failure</li></ul><h2 id="save/4-examples" class="section-heading"><a href="#save/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">morphology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="2114819161-1">(</span><span class="p" data-group-id="2114819161-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="2114819161-2">}</span><span class="p" data-group-id="2114819161-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">save</span><span class="p" data-group-id="2114819161-3">(</span><span class="n">morphology</span><span class="p">,</span><span class="w"> </span><span class="ss">:morphology</span><span class="p" data-group-id="2114819161-3">)</span><span class="w">
+</span><span class="ss">:ok</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">experiment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2114819161-4">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;exp_123&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2114819161-5">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test Experiment&quot;</span><span class="p" data-group-id="2114819161-5">}</span><span class="p" data-group-id="2114819161-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Persistence</span><span class="o">.</span><span class="n">save</span><span class="p" data-group-id="2114819161-6">(</span><span class="n">experiment</span><span class="p">,</span><span class="w"> </span><span class="ss">:experiment</span><span class="p" data-group-id="2114819161-6">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

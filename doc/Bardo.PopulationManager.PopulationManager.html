@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.PopulationManager.PopulationManager — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.PopulationManager.PopulationManager</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The population_manager is a process that spawns a population of neural network
+systems, monitors their performance, applies a selection algorithm to
+the NNs in the population, and generates the mutant offspring from
+the fit NNs, while removing the unfit. The population_manager module
+is the one responsible for mapping the genotypes to their phenotypes.</p><p>A population is a group of agents, in a neuroevolutionary system
+those agents are NN based systems. The genotypes of our NN's
+are represented as lists of structs. In our system, each
+NN genome is composed of a single cortex, one or more sensors, one or
+more actuators, and one or more neurons. Each element of the NN system
+knows what other elements it is connected to through element ids.</p><p>During one of our simulations we might want to start the experiment
+with many different species. Since the NN's depend on their
+morphologies, we can create a population with two different species,
+each with it own morphology. Then, when the NN's are created in those
+species, they would naturally start off with different sets available
+to them and belonging to the particular species they were seeded in.</p><p>The offspring are created through cloning and mutation. Not all fit
+agents are equal, some are more equal than others, some have a higher
+fitness level. Though all the fit agents will survive to the next
+generation, the number of offspring each agent creates will depend on
+that agent's fitness. The population_manager will decide how many offspring
+to allocate to each agent. The offspring will be created by first
+cloning the fit agent, and then by mutating the clone to produce a
+variation, a mutant, of it. The clone, with its own unique id, is
+assigned to the same specie that its parent belongs to. Once all the
+offspring are created, where &quot;all&quot; means the same number as was deleted
+during the selection process, the new generation of agents is then
+released back into the scape, or applied again to the problem. Then,
+the evolutionary cycle repeats.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#agent_terminated/1" data-no-tooltip="" translate="no">agent_terminated(agent_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The agent_terminated accepts the requests sent by the agents
+which terminate after finishing with their evaluations. The function
+specializes in the &quot;competition&quot; selection algorithm, which is a
+generational selection algorithm. As a generation selection
+algorithm, it waits until the entire population has finished being
+evaluated, and only then selects the fit from the unfit, and creates
+the updated population of the next generation. The OpTag can be set
+from the outside to shutdown the population_manager by setting it to
+done. Once an ending condition is reached, either through a
+generation limit, an evaluations limit, or fitness goal, the
+population_manager exits normally. If the ending condition is not
+reached, the population_manager spawns the new generation of agents
+and awaits again for all the agents in the population to complete
+their evaluations. If the OpTag is set to pause, it does not
+generate a new population, and instead goes into a waiting mode, and
+awaits to be restarted or terminated.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#calculate_specie_avg_nodes/1" data-no-tooltip="" translate="no">calculate_specie_avg_nodes(specie_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Calculate the average number of neurons per agent in a specie.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#calculate_specie_diversity/1" data-no-tooltip="" translate="no">calculate_specie_diversity(specie_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Calculate the diversity of agents in a specie based on their fingerprints.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#calculate_specie_fitness/1" data-no-tooltip="" translate="no">calculate_specie_fitness(specie_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Calculate the fitness statistics for a specie.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(args)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#gather_stats/3" data-no-tooltip="" translate="no">gather_stats(population_id, evaluations_acc, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gather statistics for all species in a population.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_evaluations/4" data-no-tooltip="" translate="no">set_evaluations(specie_id, aea, agent_cycle_acc, agent_time_acc)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The set_evaluations function is called after the agent has completed
+its evaluation run. It calculates the total number of evaluations,
+gathers stats, etc.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_goal_reached/0" data-no-tooltip="" translate="no">set_goal_reached()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The set_goal_reached function sets the goal_reached flag of the
+population_manager to true.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_op_tag/1" data-no-tooltip="" translate="no">set_op_tag(op_tag)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The population_manager process accepts a pause command, which
+if it receives, it then goes into pause mode after all the agents
+have completed with their evaluations. The process can only go into
+pause mode if it is currently in the continue mode (its op_tag is
+set to continue). The population_manager process can accept a
+continue command if its current op_tag is set to pause. When it
+receives a continue command, it summons all the agents in the
+population, and continues with its neuroevolution synchronization
+duties.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start/1" data-no-tooltip="" translate="no">start(node)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Spawns a PopulationManager process and calls init to initialize.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(args \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Starts a linked GenServer process for the PopulationManager.
+This function is used by supervision trees.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#validation_complete/2" data-no-tooltip="" translate="no">validation_complete(agent_id, fitness)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The validation_complete function is called after the validation test
+run has completed. It returns the fitness score of the validation test
+agent.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="agent_terminated/1">
+
+  <div class="detail-header">
+    <a href="#agent_terminated/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">agent_terminated(agent_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L132" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> agent_terminated(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | Bardo.Models.agent_id()) :: :ok</pre>
+
+      </div>
+
+<p>The agent_terminated accepts the requests sent by the agents
+which terminate after finishing with their evaluations. The function
+specializes in the &quot;competition&quot; selection algorithm, which is a
+generational selection algorithm. As a generation selection
+algorithm, it waits until the entire population has finished being
+evaluated, and only then selects the fit from the unfit, and creates
+the updated population of the next generation. The OpTag can be set
+from the outside to shutdown the population_manager by setting it to
+done. Once an ending condition is reached, either through a
+generation limit, an evaluations limit, or fitness goal, the
+population_manager exits normally. If the ending condition is not
+reached, the population_manager spawns the new generation of agents
+and awaits again for all the agents in the population to complete
+their evaluations. If the OpTag is set to pause, it does not
+generate a new population, and instead goes into a waiting mode, and
+awaits to be restarted or terminated.</p>
+  </section>
+</section>
+<section class="detail" id="calculate_specie_avg_nodes/1">
+
+  <div class="detail-header">
+    <a href="#calculate_specie_avg_nodes/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">calculate_specie_avg_nodes(specie_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L961" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Calculate the average number of neurons per agent in a specie.</p>
+  </section>
+</section>
+<section class="detail" id="calculate_specie_diversity/1">
+
+  <div class="detail-header">
+    <a href="#calculate_specie_diversity/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">calculate_specie_diversity(specie_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L974" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Calculate the diversity of agents in a specie based on their fingerprints.</p>
+  </section>
+</section>
+<section class="detail" id="calculate_specie_fitness/1">
+
+  <div class="detail-header">
+    <a href="#calculate_specie_fitness/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">calculate_specie_fitness(specie_id)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L834" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Calculate the fitness statistics for a specie.</p>
+  </section>
+</section>
+<section class="detail" id="child_spec/1">
+
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(args)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L103" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="gather_stats/3">
+
+  <div class="detail-header">
+    <a href="#gather_stats/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">gather_stats(population_id, evaluations_acc, state)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L856" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Gather statistics for all species in a population.</p>
+  </section>
+</section>
+<section class="detail" id="set_evaluations/4">
+
+  <div class="detail-header">
+    <a href="#set_evaluations/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_evaluations(specie_id, aea, agent_cycle_acc, agent_time_acc)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L153" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_evaluations(Bardo.Models.specie_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) ::
+  :ok</pre>
+
+      </div>
+
+<p>The set_evaluations function is called after the agent has completed
+its evaluation run. It calculates the total number of evaluations,
+gathers stats, etc.</p>
+  </section>
+</section>
+<section class="detail" id="set_goal_reached/0">
+
+  <div class="detail-header">
+    <a href="#set_goal_reached/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_goal_reached()</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L142" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_goal_reached() :: :ok</pre>
+
+      </div>
+
+<p>The set_goal_reached function sets the goal_reached flag of the
+population_manager to true.</p>
+  </section>
+</section>
+<section class="detail" id="set_op_tag/1">
+
+  <div class="detail-header">
+    <a href="#set_op_tag/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_op_tag(op_tag)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L181" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_op_tag(:pause | :continue) :: :ok</pre>
+
+      </div>
+
+<p>The population_manager process accepts a pause command, which
+if it receives, it then goes into pause mode after all the agents
+have completed with their evaluations. The process can only go into
+pause mode if it is currently in the continue mode (its op_tag is
+set to continue). The population_manager process can accept a
+continue command if its current op_tag is set to pause. When it
+receives a continue command, it summons all the agents in the
+population, and continues with its neuroevolution synchronization
+duties.</p>
+  </section>
+</section>
+<section class="detail" id="start/1">
+
+  <div class="detail-header">
+    <a href="#start/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start(node)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L79" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">node</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
+      </div>
+
+<p>Spawns a PopulationManager process and calls init to initialize.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+
+    <span id="start_link/0"></span>
+
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link(args \\ [])</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L93" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Starts a linked GenServer process for the PopulationManager.
+This function is used by supervision trees.</p>
+  </section>
+</section>
+<section class="detail" id="validation_complete/2">
+
+  <div class="detail-header">
+    <a href="#validation_complete/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">validation_complete(agent_id, fitness)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/population_manager/population_manager.ex#L164" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> validation_complete(Bardo.Models.agent_id(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()) :: :ok</pre>
+
+      </div>
+
+<p>The validation_complete function is called after the validation test
+run has completed. It returns the fitness score of the validation test
+agent.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

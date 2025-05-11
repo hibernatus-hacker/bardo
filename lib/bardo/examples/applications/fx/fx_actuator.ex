@@ -52,16 +52,22 @@ defmodule Bardo.Examples.Applications.Fx.FxActuator do
   - agent_id: ID of the agent
   """
   @impl Actuator
-  def init(_params) do
+  def init(params) do
+    # Get fanin value
+    fanin = case params do
+      %{fanin: fanin} -> fanin
+      _ -> 1
+    end
+
     state = %{
       id: nil,
       actuator_type: :trade,
-      fanin: 1,
+      fanin: fanin,
       cortex_pid: nil,
       scape_pid: nil,
       agent_id: nil
     }
-    
+
     {:ok, state}
   end
   
@@ -88,24 +94,23 @@ defmodule Bardo.Examples.Applications.Fx.FxActuator do
   3. Processes responses (fitness, account updates)
   """
   @impl Actuator
-  def actuate(_actuator_type, {agent_id, signals, _params, _vl, scape, actuator_id, mod_state}) do
-    # Get the neural network output
+  def actuate(_actuator_type, {agent_id, signals, params, _vl, scape, actuator_id, mod_state}) do
+    # Standard mode - single output for trade direction
     [value | _] = signals
-    
+
     # Convert the output to a trade decision
     # -1 = short, 0 = no position, 1 = long
     trade_decision = convert_to_trade_decision(value)
-    
-    # Prepare parameters for the scape
+
     trade_params = %{
       value: trade_decision
     }
-    
+
     # Send the decision to the scape
     if is_pid(scape) do
       Bardo.AgentManager.PrivateScape.actuate(scape, agent_id, actuator_id, :trade, trade_params)
     end
-    
+
     # Return updated state
     mod_state
   end
@@ -161,6 +166,7 @@ defmodule Bardo.Examples.Applications.Fx.FxActuator do
       true          -> 0     # No position
     end
   end
+
   
   # Check if the agent should terminate based on the scape response
   defp check_termination(response, state) do

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Bardo</h1>
+
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/README.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+<p>Bardo is a focused neuroevolution library for Elixir that evolves neural networks through evolutionary algorithms. Built on the Erlang VM, it leverages concurrent processes for efficient neural network simulation and evolution.</p><h2 id="features" class="section-heading"><a href="#features" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Features</span></h2><ul><li><strong>Topology and Parameter Evolving Neural Networks (TWEANN)</strong>: Neural networks evolve their structure and weights over time</li><li><strong>Efficient ETS-based Storage</strong>: Simple and fast in-memory storage with periodic backups</li><li><strong>Modular Sensor/Actuator Framework</strong>: Easily connect networks to different environments</li><li><strong>Built-in Evolutionary Algorithms</strong>: Includes selection algorithms and mutation operators</li><li><strong>Substrate Encoding</strong>: Hypercube-based encoding for efficient pattern recognition</li><li><strong>Example Environments</strong>: XOR, Double Pole Balancing, Flatland, and Simple FX simulations</li></ul><h2 id="installation" class="section-heading"><a href="#installation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Installation</span></h2><p>Add <code class="inline">bardo</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="9865184776-1">do</span><span class="w">
+  </span><span class="p" data-group-id="9865184776-2">[</span><span class="w">
+    </span><span class="p" data-group-id="9865184776-3">{</span><span class="ss">:bardo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.1.0&quot;</span><span class="p" data-group-id="9865184776-3">}</span><span class="w">
+  </span><span class="p" data-group-id="9865184776-2">]</span><span class="w">
+</span><span class="k" data-group-id="9865184776-1">end</span></code></pre><p>Then run:</p><pre><code class="makeup shell" translate="no"><span class="">mix deps.get
+</span></code></pre><p>Start the Bardo processes in your application's supervision tree or startup code:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># In your application.ex</span><span class="w">
+</span><span class="kd">def</span><span class="w"> </span><span class="nf">start</span><span class="p" data-group-id="0171369787-1">(</span><span class="c">_type</span><span class="p">,</span><span class="w"> </span><span class="c">_args</span><span class="p" data-group-id="0171369787-1">)</span><span class="w"> </span><span class="k" data-group-id="0171369787-2">do</span><span class="w">
+  </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0171369787-3">[</span><span class="w">
+    </span><span class="c1"># ...your other children</span><span class="w">
+    </span><span class="p" data-group-id="0171369787-4">{</span><span class="nc">Bardo</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0171369787-5">[</span><span class="p" data-group-id="0171369787-5">]</span><span class="p" data-group-id="0171369787-4">}</span><span class="w">
+  </span><span class="p" data-group-id="0171369787-3">]</span><span class="w">
+
+  </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="0171369787-6">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="0171369787-6">)</span><span class="w">
+</span><span class="k" data-group-id="0171369787-2">end</span></code></pre><p>Or start it manually in your code:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Bardo</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="2675013593-1">(</span><span class="p" data-group-id="2675013593-1">)</span></code></pre><h2 id="documentation" class="section-heading"><a href="#documentation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Documentation</span></h2><p>Comprehensive documentation is available:</p><ul><li><a href="quickstart.html">Quick Start Guide</a> - Get up and running quickly</li><li><a href="library_tutorial.html">Library Tutorial</a> - Using Bardo in your own applications</li><li><a href="api_reference.html">API Reference</a> - Detailed API documentation</li><li><a href="examples.html">Examples</a> - Example usages</li><li><a href="extending.html">Extending Bardo</a> - Creating custom components</li><li><a href="advanced.html">Advanced Topics</a> - Advanced features and techniques</li></ul><h2 id="quick-start" class="section-heading"><a href="#quick-start" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Quick Start</span></h2><h3 id="xor-example" class="section-heading"><a href="#xor-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">XOR Example</span></h3><p>The simplest way to get started is to run the XOR example:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Start IEx with Bardo</span><span class="w">
+</span><span class="n">iex</span><span class="w"> </span><span class="o">-</span><span class="nc">S</span><span class="w"> </span><span class="n">mix</span><span class="w">
+
+</span><span class="c1"># Run the XOR example</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Examples.Simple.Xor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="9748116908-1">(</span><span class="p" data-group-id="9748116908-1">)</span></code></pre><h3 id="creating-your-own-experiment" class="section-heading"><a href="#creating-your-own-experiment" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Creating Your Own Experiment</span></h3><p>To set up your own neuroevolution experiment:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a new experiment</span><span class="w">
+</span><span class="n">experiment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">new_experiment</span><span class="p" data-group-id="1549194015-1">(</span><span class="s">&quot;my_experiment&quot;</span><span class="p" data-group-id="1549194015-1">)</span><span class="w">
+
+</span><span class="c1"># Configure it</span><span class="w">
+</span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">configure</span><span class="p" data-group-id="1549194015-2">(</span><span class="n">experiment</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1549194015-3">%{</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_generations</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="ss">mutation_rate</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3</span><span class="w">
+</span><span class="p" data-group-id="1549194015-3">}</span><span class="p" data-group-id="1549194015-2">)</span><span class="w">
+
+</span><span class="c1"># Define a fitness function</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyFitness</span><span class="w"> </span><span class="k" data-group-id="1549194015-4">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p" data-group-id="1549194015-5">(</span><span class="n">agent</span><span class="p" data-group-id="1549194015-5">)</span><span class="w"> </span><span class="k" data-group-id="1549194015-6">do</span><span class="w">
+    </span><span class="c1"># Your fitness calculation here</span><span class="w">
+    </span><span class="c1"># Returns a numeric score</span><span class="w">
+  </span><span class="k" data-group-id="1549194015-6">end</span><span class="w">
+</span><span class="k" data-group-id="1549194015-4">end</span><span class="w">
+
+</span><span class="c1"># Start the experiment with your fitness function</span><span class="w">
+</span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="1549194015-7">(</span><span class="n">experiment</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">MyFitness</span><span class="o">.</span><span class="n">evaluate</span><span class="o">/</span><span class="mi">1</span><span class="p" data-group-id="1549194015-7">)</span><span class="w">
+
+</span><span class="c1"># Check progress</span><span class="w">
+</span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">status</span><span class="p" data-group-id="1549194015-8">(</span><span class="n">experiment</span><span class="p" data-group-id="1549194015-8">)</span><span class="w">
+
+</span><span class="c1"># Get the best solution</span><span class="w">
+</span><span class="n">best_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">get_best_solution</span><span class="p" data-group-id="1549194015-9">(</span><span class="n">experiment</span><span class="p" data-group-id="1549194015-9">)</span></code></pre><h2 id="core-examples" class="section-heading"><a href="#core-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Core Examples</span></h2><p>Bardo includes several examples to demonstrate different aspects of neuroevolution:</p><h3 id="1-xor" class="section-heading"><a href="#1-xor" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">1. XOR</span></h3><p>A simple example that evolves a neural network to solve the XOR problem.</p><pre><code class="makeup elixir" translate="no"><span class="nc">Bardo.Examples.Simple.Xor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="6216308263-1">(</span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="ss">max_generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p" data-group-id="6216308263-1">)</span></code></pre><h3 id="2-double-pole-balancing" class="section-heading"><a href="#2-double-pole-balancing" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">2. Double Pole Balancing</span></h3><p>A classic control problem where a neural network learns to balance two poles on a cart.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Examples.Benchmarks.Dpb</span><span class="o">.</span><span class="n">run_with_damping</span><span class="p" data-group-id="8296087819-1">(</span><span class="ss">:dpb_example</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p" data-group-id="8296087819-1">)</span></code></pre><h3 id="3-flatland" class="section-heading"><a href="#3-flatland" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">3. Flatland</span></h3><p>A predator-prey simulation in a 2D world where agents co-evolve.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Examples.Applications.Flatland</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="8640885347-1">(</span><span class="ss">:flatland_example</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="8640885347-1">)</span></code></pre><h3 id="4-simple-fx" class="section-heading"><a href="#4-simple-fx" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">4. Simple FX</span></h3><p>A basic forex trading simulation to demonstrate time series prediction.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Standard FX example</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Bardo.Examples.Applications.Fx</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="4523980076-1">(</span><span class="ss">:fx_example</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="4523980076-1">)</span></code></pre><h2 id="core-concepts" class="section-heading"><a href="#core-concepts" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Core Concepts</span></h2><h3 id="genotypes" class="section-heading"><a href="#genotypes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Genotypes</span></h3><p>Genetic representations of neural networks:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a new genotype</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="2763508800-1">(</span><span class="p" data-group-id="2763508800-1">)</span><span class="w">
+
+</span><span class="c1"># Add neurons</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="2763508800-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:hidden</span><span class="p" data-group-id="2763508800-2">)</span><span class="w">
+
+</span><span class="c1"># Add connections between neurons</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_connection</span><span class="p" data-group-id="2763508800-3">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="n">input_id</span><span class="p">,</span><span class="w"> </span><span class="n">output_id</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="p" data-group-id="2763508800-3">)</span><span class="w">
+
+</span><span class="c1"># Mutate the genotype</span><span class="w">
+</span><span class="n">mutated_genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.GenomeMutator</span><span class="o">.</span><span class="n">mutate</span><span class="p" data-group-id="2763508800-4">(</span><span class="n">genotype</span><span class="p" data-group-id="2763508800-4">)</span></code></pre><h3 id="neural-networks" class="section-heading"><a href="#neural-networks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Neural Networks</span></h3><p>Working with the neural networks created from genotypes:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Convert genotype to neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">from_genotype</span><span class="p" data-group-id="6754243358-1">(</span><span class="n">genotype</span><span class="p" data-group-id="6754243358-1">)</span><span class="w">
+
+</span><span class="c1"># Activate the network with inputs</span><span class="w">
+</span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">activate</span><span class="p" data-group-id="6754243358-2">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6754243358-3">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p" data-group-id="6754243358-3">]</span><span class="p" data-group-id="6754243358-2">)</span></code></pre><h3 id="sensors-and-actuators" class="section-heading"><a href="#sensors-and-actuators" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Sensors and Actuators</span></h3><p>Interface between neural networks and their environment:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Add a sensor to a neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">add_sensor</span><span class="p" data-group-id="9710624352-1">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.Sensors.Vision</span><span class="p" data-group-id="9710624352-1">)</span><span class="w">
+
+</span><span class="c1"># Add an actuator to a neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">add_actuator</span><span class="p" data-group-id="9710624352-2">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="nc">MyApp.Actuators.Motor</span><span class="p" data-group-id="9710624352-2">)</span></code></pre><h2 id="architecture" class="section-heading"><a href="#architecture" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Architecture</span></h2><p>Bardo is organized into several key modules:</p><ul><li><strong>ExperimentManager</strong>: Controls the overall experiment process</li><li><strong>PopulationManager</strong>: Handles populations of evolving agents</li><li><strong>AgentManager</strong>: Manages the neural networks and their interactions</li><li><strong>ScapeManager</strong>: Provides environments for agents to operate in</li></ul><h2 id="custom-environments" class="section-heading"><a href="#custom-environments" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Environments</span></h2><p>To create your own environment, you'll need to define custom sensors and actuators:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyEnvironment.Sensor</span><span class="w"> </span><span class="k" data-group-id="1665206987-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+  
+  </span><span class="c1"># Implementation of the Sensor behaviour</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="1665206987-2">(</span><span class="n">state</span><span class="p" data-group-id="1665206987-2">)</span><span class="w"> </span><span class="k" data-group-id="1665206987-3">do</span><span class="w">
+    </span><span class="c1"># Convert environment state to neural network inputs</span><span class="w">
+  </span><span class="k" data-group-id="1665206987-3">end</span><span class="w">
+</span><span class="k" data-group-id="1665206987-1">end</span><span class="w">
+
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyEnvironment.Actuator</span><span class="w"> </span><span class="k" data-group-id="1665206987-4">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Actuator</span><span class="w">
+  
+  </span><span class="c1"># Implementation of the Actuator behaviour</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">act</span><span class="p" data-group-id="1665206987-5">(</span><span class="n">outputs</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="1665206987-5">)</span><span class="w"> </span><span class="k" data-group-id="1665206987-6">do</span><span class="w">
+    </span><span class="c1"># Convert neural network outputs to actions</span><span class="w">
+    </span><span class="c1"># Return updated state</span><span class="w">
+  </span><span class="k" data-group-id="1665206987-6">end</span><span class="w">
+</span><span class="k" data-group-id="1665206987-4">end</span></code></pre><p>Then create a morphology that defines the neural network structure:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyEnvironment.Morphology</span><span class="w"> </span><span class="k" data-group-id="1821934986-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.Morphology</span><span class="w">
+  
+  </span><span class="c1"># Implementation of the Morphology behaviour</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sensor_spec</span><span class="w"> </span><span class="k" data-group-id="1821934986-2">do</span><span class="w">
+    </span><span class="c1"># Define sensor inputs</span><span class="w">
+  </span><span class="k" data-group-id="1821934986-2">end</span><span class="w">
+  
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuator_spec</span><span class="w"> </span><span class="k" data-group-id="1821934986-3">do</span><span class="w">
+    </span><span class="c1"># Define actuator outputs</span><span class="w">
+  </span><span class="k" data-group-id="1821934986-3">end</span><span class="w">
+</span><span class="k" data-group-id="1821934986-1">end</span></code></pre><h2 id="testing" class="section-heading"><a href="#testing" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Testing</span></h2><p>To run the tests:</p><pre><code class="makeup bash" translate="no"><span class="">mix test
+</span></code></pre><h2 id="license" class="section-heading"><a href="#license" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">License</span></h2><p>Distributed under the Apache License 2.0. See <code class="inline">LICENSE</code> for more information.</p><h2 id="acknowledgements" class="section-heading"><a href="#acknowledgements" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Acknowledgements</span></h2><p>Based on concepts from the <a href="http://www.amazon.com/Handbook-Neuroevolution-Through-Erlang-Gene/dp/1461444624">Handbook of Neuroevolution Through Erlang</a> by Gene Sher.</p>
+
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="library_tutorial.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Using Bardo as a Library
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/bardo/0.1.0/show/README.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

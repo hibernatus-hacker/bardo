@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo API Reference — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-extra" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Bardo API Reference</h1>
+
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/docs/api_reference.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+<p>This document provides comprehensive details on the main public interfaces of Bardo, a neuroevolution library for Elixir. Use this as your primary reference when integrating Bardo into your own applications.</p><h2 id="getting-started" class="section-heading"><a href="#getting-started" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Getting Started</span></h2><p>To use Bardo in your project, add it to your mix.exs dependencies:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="2093131589-1">do</span><span class="w">
+  </span><span class="p" data-group-id="2093131589-2">[</span><span class="w">
+    </span><span class="p" data-group-id="2093131589-3">{</span><span class="ss">:bardo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.1.0&quot;</span><span class="p" data-group-id="2093131589-3">}</span><span class="w">
+  </span><span class="p" data-group-id="2093131589-2">]</span><span class="w">
+</span><span class="k" data-group-id="2093131589-1">end</span></code></pre><p>Then run:</p><pre><code class="makeup shell" translate="no"><span class="">mix deps.get
+</span></code></pre><h2 id="bardo" class="section-heading"><a href="#bardo" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Bardo</span></h2><p>The main module provides basic library information and startup functions.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Start all required Bardo processes</span><span class="w">
+</span><span class="nc">Bardo</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="1912785520-1">(</span><span class="p" data-group-id="1912785520-1">)</span><span class="w">
+
+</span><span class="c1"># Returns the current library version</span><span class="w">
+</span><span class="nc">Bardo</span><span class="o">.</span><span class="n">version</span><span class="p" data-group-id="1912785520-2">(</span><span class="p" data-group-id="1912785520-2">)</span></code></pre><h2 id="experimentmanager" class="section-heading"><a href="#experimentmanager" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">ExperimentManager</span></h2><p>The <a href="Bardo.ExperimentManager.html"><code class="inline">Bardo.ExperimentManager</code></a> module handles the creation and management of evolutionary experiments.</p><h3 id="creating-and-configuring-experiments" class="section-heading"><a href="#creating-and-configuring-experiments" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Creating and Configuring Experiments</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a new experiment</span><span class="w">
+</span><span class="p" data-group-id="5927508649-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5927508649-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">new_experiment</span><span class="p" data-group-id="5927508649-2">(</span><span class="n">experiment_id</span><span class="p" data-group-id="5927508649-2">)</span><span class="w">
+
+</span><span class="c1"># Configure an experiment with specific parameters</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">configure</span><span class="p" data-group-id="5927508649-3">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5927508649-4">%{</span><span class="w">
+  </span><span class="ss">population_size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="ss">max_generations</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+  </span><span class="ss">mutation_rate</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3</span><span class="w">
+</span><span class="p" data-group-id="5927508649-4">}</span><span class="p" data-group-id="5927508649-3">)</span><span class="w">
+
+</span><span class="c1"># Start evaluation using a fitness function</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">start_evaluation</span><span class="p" data-group-id="5927508649-5">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_fitness_function</span><span class="o">/</span><span class="mi">1</span><span class="p" data-group-id="5927508649-5">)</span><span class="w">
+
+</span><span class="c1"># Get the current status of an experiment</span><span class="w">
+</span><span class="p" data-group-id="5927508649-6">{</span><span class="ss">:in_progress</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p" data-group-id="5927508649-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">status</span><span class="p" data-group-id="5927508649-7">(</span><span class="n">experiment_id</span><span class="p" data-group-id="5927508649-7">)</span><span class="w">
+
+</span><span class="c1"># Get the best solution from an experiment</span><span class="w">
+</span><span class="p" data-group-id="5927508649-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">best_genotype</span><span class="p" data-group-id="5927508649-8">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">get_best_solution</span><span class="p" data-group-id="5927508649-9">(</span><span class="n">experiment_id</span><span class="p" data-group-id="5927508649-9">)</span><span class="w">
+
+</span><span class="c1"># Stop an experiment</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">stop</span><span class="p" data-group-id="5927508649-10">(</span><span class="n">experiment_id</span><span class="p" data-group-id="5927508649-10">)</span></code></pre><h3 id="common-configuration-parameters" class="section-heading"><a href="#common-configuration-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Common Configuration Parameters</span></h3><table><thead><tr><th style="text-align: left;">Parameter</th><th style="text-align: left;">Type</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">population_size</code></td><td style="text-align: left;">integer</td><td style="text-align: left;">Number of agents in the population</td><td style="text-align: left;">50</td></tr><tr><td style="text-align: left;"><code class="inline">max_generations</code></td><td style="text-align: left;">integer</td><td style="text-align: left;">Maximum number of generations</td><td style="text-align: left;">100</td></tr><tr><td style="text-align: left;"><code class="inline">mutation_rate</code></td><td style="text-align: left;">float</td><td style="text-align: left;">Probability of mutation for each gene</td><td style="text-align: left;">0.3</td></tr><tr><td style="text-align: left;"><code class="inline">add_neuron_probability</code></td><td style="text-align: left;">float</td><td style="text-align: left;">Probability of adding a neuron</td><td style="text-align: left;">0.1</td></tr><tr><td style="text-align: left;"><code class="inline">add_link_probability</code></td><td style="text-align: left;">float</td><td style="text-align: left;">Probability of adding a link</td><td style="text-align: left;">0.2</td></tr><tr><td style="text-align: left;"><code class="inline">weight_range</code></td><td style="text-align: left;">{float, float}</td><td style="text-align: left;">Min/max values for weight initialization</td><td style="text-align: left;">{-1.0, 1.0}</td></tr><tr><td style="text-align: left;"><code class="inline">fitness_goal</code></td><td style="text-align: left;">float</td><td style="text-align: left;">Target fitness to end evolution</td><td style="text-align: left;">nil (run to max_generations)</td></tr><tr><td style="text-align: left;"><code class="inline">species_distance_threshold</code></td><td style="text-align: left;">float</td><td style="text-align: left;">Threshold for speciation</td><td style="text-align: left;">0.5</td></tr><tr><td style="text-align: left;"><code class="inline">activation_function</code></td><td style="text-align: left;">atom</td><td style="text-align: left;">Default activation function</td><td style="text-align: left;">:sigmoid</td></tr><tr><td style="text-align: left;"><code class="inline">evaluation_method</code></td><td style="text-align: left;">atom</td><td style="text-align: left;">:generational or :steady_state</td><td style="text-align: left;">:generational</td></tr></tbody></table><h2 id="agentmanager" class="section-heading"><a href="#agentmanager" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">AgentManager</span></h2><p>The <a href="Bardo.AgentManager.html"><code class="inline">Bardo.AgentManager</code></a> module manages neural network agents.</p><h3 id="creating-and-working-with-neural-networks" class="section-heading"><a href="#creating-and-working-with-neural-networks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Creating and Working with Neural Networks</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a neural network from a genotype</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">from_genotype</span><span class="p" data-group-id="6915758251-1">(</span><span class="n">genotype</span><span class="p" data-group-id="6915758251-1">)</span><span class="w">
+
+</span><span class="c1"># Activate a neural network with inputs</span><span class="w">
+</span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">activate</span><span class="p" data-group-id="6915758251-2">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p" data-group-id="6915758251-2">)</span><span class="w">
+
+</span><span class="c1"># Add a sensor to a neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">add_sensor</span><span class="p" data-group-id="6915758251-3">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">sensor_module</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="6915758251-3">)</span><span class="w">
+
+</span><span class="c1"># Add an actuator to a neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">add_actuator</span><span class="p" data-group-id="6915758251-4">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">actuator_module</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="6915758251-4">)</span></code></pre><h3 id="neuron-management" class="section-heading"><a href="#neuron-management" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Neuron Management</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Add a neuron to a neural network</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="9926069821-1">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="ss">:hidden</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9926069821-2">%{</span><span class="w">
+  </span><span class="ss">activation_function</span><span class="p">:</span><span class="w"> </span><span class="ss">:sigmoid</span><span class="p">,</span><span class="w">
+  </span><span class="ss">bias</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w">
+</span><span class="p" data-group-id="9926069821-2">}</span><span class="p" data-group-id="9926069821-1">)</span><span class="w">
+
+</span><span class="c1"># Connect neurons</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">connect_neurons</span><span class="p" data-group-id="9926069821-3">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">source_id</span><span class="p">,</span><span class="w"> </span><span class="n">target_id</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="p" data-group-id="9926069821-3">)</span><span class="w">
+
+</span><span class="c1"># Set neuron parameters</span><span class="w">
+</span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">set_neuron_params</span><span class="p" data-group-id="9926069821-4">(</span><span class="n">nn</span><span class="p">,</span><span class="w"> </span><span class="n">neuron_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9926069821-5">%{</span><span class="w">
+  </span><span class="ss">bias</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+  </span><span class="ss">activation_function</span><span class="p">:</span><span class="w"> </span><span class="ss">:tanh</span><span class="w">
+</span><span class="p" data-group-id="9926069821-5">}</span><span class="p" data-group-id="9926069821-4">)</span></code></pre><h2 id="populationmanager" class="section-heading"><a href="#populationmanager" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">PopulationManager</span></h2><p>The <code class="inline">Bardo.PopulationManager</code> module manages populations of evolving agents.</p><h3 id="genotype-management" class="section-heading"><a href="#genotype-management" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Genotype Management</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a new genotype</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="1588120515-1">(</span><span class="p" data-group-id="1588120515-1">)</span><span class="w">
+
+</span><span class="c1"># Add a neuron to a genotype</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="1588120515-2">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="ss">:hidden</span><span class="p" data-group-id="1588120515-2">)</span><span class="w">
+
+</span><span class="c1"># Add a connection to a genotype</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.Genotype</span><span class="o">.</span><span class="n">add_connection</span><span class="p" data-group-id="1588120515-3">(</span><span class="w">
+  </span><span class="n">genotype</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">source_id</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">target_id</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">weight</span><span class="w">
+</span><span class="p" data-group-id="1588120515-3">)</span></code></pre><h3 id="mutation-operations" class="section-heading"><a href="#mutation-operations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Mutation Operations</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Mutate a genotype</span><span class="w">
+</span><span class="n">mutated_genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.GenomeMutator</span><span class="o">.</span><span class="n">mutate</span><span class="p" data-group-id="1390457234-1">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1390457234-2">%{</span><span class="w">
+  </span><span class="ss">add_neuron_probability</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w">
+  </span><span class="ss">add_link_probability</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w">
+  </span><span class="ss">mutate_weights_probability</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span><span class="w">
+</span><span class="p" data-group-id="1390457234-2">}</span><span class="p" data-group-id="1390457234-1">)</span><span class="w">
+
+</span><span class="c1"># Apply specific mutation</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.GenomeMutator</span><span class="o">.</span><span class="n">mutate_weights</span><span class="p" data-group-id="1390457234-3">(</span><span class="n">genotype</span><span class="p" data-group-id="1390457234-3">)</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.GenomeMutator</span><span class="o">.</span><span class="n">add_neuron</span><span class="p" data-group-id="1390457234-4">(</span><span class="n">genotype</span><span class="p" data-group-id="1390457234-4">)</span><span class="w">
+</span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.GenomeMutator</span><span class="o">.</span><span class="n">add_link</span><span class="p" data-group-id="1390457234-5">(</span><span class="n">genotype</span><span class="p" data-group-id="1390457234-5">)</span></code></pre><h3 id="selection-algorithms" class="section-heading"><a href="#selection-algorithms" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Selection Algorithms</span></h3><pre><code class="makeup elixir" translate="no"><span class="c1"># Select agents for reproduction</span><span class="w">
+</span><span class="n">selected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.SelectionAlgorithm</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="7626634052-1">(</span><span class="w">
+  </span><span class="n">population</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">selection_method</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">selection_params</span><span class="w">
+</span><span class="p" data-group-id="7626634052-1">)</span></code></pre><h2 id="scapemanager" class="section-heading"><a href="#scapemanager" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">ScapeManager</span></h2><p>The <code class="inline">Bardo.ScapeManager</code> module manages environments that agents interact with.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Create a new scape</span><span class="w">
+</span><span class="p" data-group-id="5196900804-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">scape_id</span><span class="p" data-group-id="5196900804-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ScapeManager</span><span class="o">.</span><span class="n">new_scape</span><span class="p" data-group-id="5196900804-2">(</span><span class="n">scape_type</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="5196900804-2">)</span><span class="w">
+
+</span><span class="c1"># Enter an agent into a scape</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ScapeManager</span><span class="o">.</span><span class="n">enter</span><span class="p" data-group-id="5196900804-3">(</span><span class="n">scape_id</span><span class="p">,</span><span class="w"> </span><span class="n">agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="5196900804-3">)</span><span class="w">
+
+</span><span class="c1"># Sense from the environment</span><span class="w">
+</span><span class="p" data-group-id="5196900804-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">sensory_data</span><span class="p" data-group-id="5196900804-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ScapeManager</span><span class="o">.</span><span class="n">sense</span><span class="p" data-group-id="5196900804-5">(</span><span class="n">scape_id</span><span class="p">,</span><span class="w"> </span><span class="n">agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">sensor_params</span><span class="p" data-group-id="5196900804-5">)</span><span class="w">
+
+</span><span class="c1"># Act on the environment</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ScapeManager</span><span class="o">.</span><span class="n">actuate</span><span class="p" data-group-id="5196900804-6">(</span><span class="n">scape_id</span><span class="p">,</span><span class="w"> </span><span class="n">agent_id</span><span class="p">,</span><span class="w"> </span><span class="n">actuator_params</span><span class="p" data-group-id="5196900804-6">)</span><span class="w">
+
+</span><span class="c1"># Leave a scape</span><span class="w">
+</span><span class="ss">:ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.ScapeManager</span><span class="o">.</span><span class="n">leave</span><span class="p" data-group-id="5196900804-7">(</span><span class="n">scape_id</span><span class="p">,</span><span class="w"> </span><span class="n">agent_id</span><span class="p" data-group-id="5196900804-7">)</span></code></pre><h2 id="creating-custom-components" class="section-heading"><a href="#creating-custom-components" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Creating Custom Components</span></h2><h3 id="custom-sensor" class="section-heading"><a href="#custom-sensor" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Sensor</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MySensor</span><span class="w"> </span><span class="k" data-group-id="6344136767-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Sensor</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="6344136767-2">(</span><span class="n">params</span><span class="p" data-group-id="6344136767-2">)</span><span class="w"> </span><span class="k" data-group-id="6344136767-3">do</span><span class="w">
+    </span><span class="c1"># Initialize sensor state</span><span class="w">
+    </span><span class="p" data-group-id="6344136767-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="6344136767-4">}</span><span class="w">
+  </span><span class="k" data-group-id="6344136767-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sense</span><span class="p" data-group-id="6344136767-5">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">environment</span><span class="p" data-group-id="6344136767-5">)</span><span class="w"> </span><span class="k" data-group-id="6344136767-6">do</span><span class="w">
+    </span><span class="c1"># Process environment to produce sensory signals</span><span class="w">
+    </span><span class="n">sensory_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process_environment</span><span class="p" data-group-id="6344136767-7">(</span><span class="n">environment</span><span class="p" data-group-id="6344136767-7">)</span><span class="w">
+    
+    </span><span class="c1"># Return sensory data and updated state</span><span class="w">
+    </span><span class="p" data-group-id="6344136767-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">sensory_data</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="6344136767-8">}</span><span class="w">
+  </span><span class="k" data-group-id="6344136767-6">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">process_environment</span><span class="p" data-group-id="6344136767-9">(</span><span class="n">environment</span><span class="p" data-group-id="6344136767-9">)</span><span class="w"> </span><span class="k" data-group-id="6344136767-10">do</span><span class="w">
+    </span><span class="c1"># Custom logic to extract sensory information</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    </span><span class="p" data-group-id="6344136767-11">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p" data-group-id="6344136767-11">]</span><span class="w">  </span><span class="c1"># Example return value</span><span class="w">
+  </span><span class="k" data-group-id="6344136767-10">end</span><span class="w">
+</span><span class="k" data-group-id="6344136767-1">end</span></code></pre><h3 id="custom-actuator" class="section-heading"><a href="#custom-actuator" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Actuator</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyActuator</span><span class="w"> </span><span class="k" data-group-id="8522711831-1">do</span><span class="w">
+  </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Actuator</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="8522711831-2">(</span><span class="n">params</span><span class="p" data-group-id="8522711831-2">)</span><span class="w"> </span><span class="k" data-group-id="8522711831-3">do</span><span class="w">
+    </span><span class="c1"># Initialize actuator state</span><span class="w">
+    </span><span class="p" data-group-id="8522711831-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p" data-group-id="8522711831-4">}</span><span class="w">
+  </span><span class="k" data-group-id="8522711831-3">end</span><span class="w">
+  
+  </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">actuate</span><span class="p" data-group-id="8522711831-5">(</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">environment</span><span class="p">,</span><span class="w"> </span><span class="n">output_vector</span><span class="p" data-group-id="8522711831-5">)</span><span class="w"> </span><span class="k" data-group-id="8522711831-6">do</span><span class="w">
+    </span><span class="c1"># Process neural network output to affect environment</span><span class="w">
+    </span><span class="n">new_environment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">apply_outputs</span><span class="p" data-group-id="8522711831-7">(</span><span class="n">environment</span><span class="p">,</span><span class="w"> </span><span class="n">output_vector</span><span class="p" data-group-id="8522711831-7">)</span><span class="w">
+    
+    </span><span class="c1"># Return updated environment and state</span><span class="w">
+    </span><span class="p" data-group-id="8522711831-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">new_environment</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="8522711831-8">}</span><span class="w">
+  </span><span class="k" data-group-id="8522711831-6">end</span><span class="w">
+  
+  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">apply_outputs</span><span class="p" data-group-id="8522711831-9">(</span><span class="n">environment</span><span class="p">,</span><span class="w"> </span><span class="n">output_vector</span><span class="p" data-group-id="8522711831-9">)</span><span class="w"> </span><span class="k" data-group-id="8522711831-10">do</span><span class="w">
+    </span><span class="c1"># Custom logic to apply neural outputs to environment</span><span class="w">
+    </span><span class="c1"># ...</span><span class="w">
+    </span><span class="n">updated_environment</span><span class="w">
+  </span><span class="k" data-group-id="8522711831-10">end</span><span class="w">
+</span><span class="k" data-group-id="8522711831-1">end</span></code></pre><h3 id="custom-fitness-function" class="section-heading"><a href="#custom-fitness-function" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Custom Fitness Function</span></h3><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">my_fitness_function</span><span class="p" data-group-id="3637797886-1">(</span><span class="n">genotype</span><span class="p" data-group-id="3637797886-1">)</span><span class="w"> </span><span class="k" data-group-id="3637797886-2">do</span><span class="w">
+  </span><span class="c1"># Convert genotype to neural network</span><span class="w">
+  </span><span class="n">nn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.AgentManager.Cortex</span><span class="o">.</span><span class="n">from_genotype</span><span class="p" data-group-id="3637797886-3">(</span><span class="n">genotype</span><span class="p" data-group-id="3637797886-3">)</span><span class="w">
+  
+  </span><span class="c1"># Evaluate performance on some task</span><span class="w">
+  </span><span class="n">performance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">evaluate_performance</span><span class="p" data-group-id="3637797886-4">(</span><span class="n">nn</span><span class="p" data-group-id="3637797886-4">)</span><span class="w">
+  
+  </span><span class="c1"># Return fitness score (higher is better)</span><span class="w">
+  </span><span class="n">performance</span><span class="w">
+</span><span class="k" data-group-id="3637797886-2">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">evaluate_performance</span><span class="p" data-group-id="3637797886-5">(</span><span class="n">nn</span><span class="p" data-group-id="3637797886-5">)</span><span class="w"> </span><span class="k" data-group-id="3637797886-6">do</span><span class="w">
+  </span><span class="c1"># Custom evaluation logic</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  </span><span class="n">fitness_score</span><span class="w">
+</span><span class="k" data-group-id="3637797886-6">end</span></code></pre><h2 id="substrate-encoding" class="section-heading"><a href="#substrate-encoding" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Substrate Encoding</span></h2><p>Bardo supports several types of substrate encoding for neural networks:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Configure hypercube substrate encoding</span><span class="w">
+</span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">configure</span><span class="p" data-group-id="8005529401-1">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8005529401-2">%{</span><span class="w">
+  </span><span class="ss">substrate</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8005529401-3">%{</span><span class="w">
+    </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:hypercube</span><span class="p">,</span><span class="w">
+    </span><span class="ss">dimensions</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="ss">resolution</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+  </span><span class="p" data-group-id="8005529401-3">}</span><span class="w">
+</span><span class="p" data-group-id="8005529401-2">}</span><span class="p" data-group-id="8005529401-1">)</span><span class="w">
+
+</span><span class="c1"># Configure hyperplane substrate encoding</span><span class="w">
+</span><span class="nc">Bardo.ExperimentManager</span><span class="o">.</span><span class="n">configure</span><span class="p" data-group-id="8005529401-4">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8005529401-5">%{</span><span class="w">
+  </span><span class="ss">substrate</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8005529401-6">%{</span><span class="w">
+    </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:hyperplane</span><span class="p">,</span><span class="w">
+    </span><span class="ss">input_dimensions</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="ss">output_dimensions</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="ss">hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="p" data-group-id="8005529401-6">}</span><span class="w">
+</span><span class="p" data-group-id="8005529401-5">}</span><span class="p" data-group-id="8005529401-4">)</span></code></pre><h2 id="utility-functions" class="section-heading"><a href="#utility-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Utility Functions</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Save a genotype to file</span><span class="w">
+</span><span class="nc">Bardo.Utils</span><span class="o">.</span><span class="n">save_genotype</span><span class="p" data-group-id="5958612512-1">(</span><span class="n">genotype</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;models/best_genotype.gen&quot;</span><span class="p" data-group-id="5958612512-1">)</span><span class="w">
+
+</span><span class="c1"># Load a genotype from file</span><span class="w">
+</span><span class="n">loaded_genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Utils</span><span class="o">.</span><span class="n">load_genotype</span><span class="p" data-group-id="5958612512-2">(</span><span class="s">&quot;models/best_genotype.gen&quot;</span><span class="p" data-group-id="5958612512-2">)</span><span class="w">
+
+</span><span class="c1"># Analyze neural network complexity</span><span class="w">
+</span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Utils</span><span class="o">.</span><span class="n">analyze_network</span><span class="p" data-group-id="5958612512-3">(</span><span class="n">nn</span><span class="p" data-group-id="5958612512-3">)</span><span class="w">
+
+</span><span class="c1"># Calculate compatibility distance between genotypes</span><span class="w">
+</span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.PopulationManager.SpecieIdentifier</span><span class="o">.</span><span class="n">compatibility_distance</span><span class="p" data-group-id="5958612512-4">(</span><span class="w">
+  </span><span class="n">genotype1</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">genotype2</span><span class="w">
+</span><span class="p" data-group-id="5958612512-4">)</span></code></pre><h2 id="event-handling" class="section-heading"><a href="#event-handling" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Event Handling</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Subscribe to experiment events</span><span class="w">
+</span><span class="nc">Bardo.EventManager</span><span class="o">.</span><span class="n">subscribe</span><span class="p" data-group-id="0699542279-1">(</span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:generation_complete</span><span class="p" data-group-id="0699542279-1">)</span><span class="w">
+
+</span><span class="c1"># Handle events</span><span class="w">
+</span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="0699542279-2">(</span><span class="p" data-group-id="0699542279-3">{</span><span class="ss">:generation_complete</span><span class="p">,</span><span class="w"> </span><span class="n">experiment_id</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p" data-group-id="0699542279-3">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="0699542279-2">)</span><span class="w"> </span><span class="k" data-group-id="0699542279-4">do</span><span class="w">
+  </span><span class="c1"># Process generation statistics</span><span class="w">
+  </span><span class="c1"># ...</span><span class="w">
+  </span><span class="p" data-group-id="0699542279-5">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="0699542279-5">}</span><span class="w">
+</span><span class="k" data-group-id="0699542279-4">end</span></code></pre><h2 id="visualization" class="section-heading"><a href="#visualization" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Visualization</span></h2><pre><code class="makeup elixir" translate="no"><span class="c1"># Generate visualization data</span><span class="w">
+</span><span class="n">viz_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Bardo.Visualization</span><span class="o">.</span><span class="n">generate_network_visualization</span><span class="p" data-group-id="7960769540-1">(</span><span class="n">nn</span><span class="p" data-group-id="7960769540-1">)</span><span class="w">
+
+</span><span class="c1"># Plot fitness over generations</span><span class="w">
+</span><span class="nc">Bardo.Visualization</span><span class="o">.</span><span class="n">plot_fitness</span><span class="p" data-group-id="7960769540-2">(</span><span class="n">experiment_id</span><span class="p" data-group-id="7960769540-2">)</span><span class="w">
+
+</span><span class="c1"># Plot species over generations</span><span class="w">
+</span><span class="nc">Bardo.Visualization</span><span class="o">.</span><span class="n">plot_species</span><span class="p" data-group-id="7960769540-3">(</span><span class="n">experiment_id</span><span class="p" data-group-id="7960769540-3">)</span><span class="w">
+
+</span><span class="c1"># Plot complexity over generations</span><span class="w">
+</span><span class="nc">Bardo.Visualization</span><span class="o">.</span><span class="n">plot_complexity</span><span class="p" data-group-id="7960769540-4">(</span><span class="n">experiment_id</span><span class="p" data-group-id="7960769540-4">)</span></code></pre>
+
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="quickstart.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Bardo Quickstart Guide
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="examples.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Bardo Examples
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/bardo/0.1.0/show/docs/api_reference.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

@@ -85,9 +85,9 @@ defmodule Bardo.PersistenceTest do
       assert loaded_model.name == model.name
     end
     
-    test "returns error for non-existent model" do
+    test "returns :not_found for non-existent model" do
       result = Persistence.load(:test, "nonexistent_id")
-      assert match?({:error, _}, result)
+      assert match?({:ok, :not_found}, result)
     end
   end
   

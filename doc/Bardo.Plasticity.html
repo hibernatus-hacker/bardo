@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.Plasticity — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.Plasticity</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Contains plasticity functions for neural network learning.</p><p>True learning is not achieved when a static NN is trained on some data set through 
+destruction and recreation by the exoself based on its performance, but instead is 
+the self organization of the NN, the self adaptation and changing of the NN based 
+on the information it is processing.</p><p>The learning rule, the way in which the neurons adapt independently, the way in which 
+their synaptic weights change based on the neuron's experience, that is true learning, 
+and that is neuroplasticity.</p><p>There are numerous plasticity rules, some more faithful to their biological counterparts 
+than others, and some more efficient than their biological counterparts.</p><p>Note: The self_modulation_v1, self_modulation_v2, and self_modulation_v3 are all very 
+similar, mainly differing in the parameter lists returned by the 
+PlasticityFunctionName(neural_parameters) function. All three of these plasticity 
+functions use the neuromodulation/5 function which accepts the H, A, B, C, and D 
+learning parameters, and updates the synaptic weights of the neuron using the general 
+Hebbian rule: Updated_Wi = Wi + H<em>(A</em>Ii<em>Output + B</em>Ii + C*Output + D).</p><p>The self_modulation_v4 – v5 differ only in that the weight_parameters is a list of length 2, 
+and the A parameter is no longer specified in the neural_parameters list, and is instead 
+calculated by the second dedicated modulatory neuron.</p><p>The self_modulation_v6 function specifies the neural_parameters as an empty list, and the
+weight_parameters list is of length 5, a single weight for every embedded modulatory neuron.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#apply/2" data-no-tooltip="" translate="no">apply(plasticity_name, param_type)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Apply a plasticity function by name to get parameters.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hebbian/1" data-no-tooltip="" translate="no">hebbian(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the hebbian learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hebbian/4" data-no-tooltip="" translate="no">hebbian(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Hebbian plasticity function with a global learning rate.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hebbian_w/1" data-no-tooltip="" translate="no">hebbian_w(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the hebbian_w learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#hebbian_w/4" data-no-tooltip="" translate="no">hebbian_w(neural_parameters, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Hebbian plasticity function with weight-specific learning rates.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neuromodulation/1" data-no-tooltip="" translate="no">neuromodulation(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the neuromodulation learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neuromodulation/4" data-no-tooltip="" translate="no">neuromodulation(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Neuromodulation plasticity function.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#none/1" data-no-tooltip="" translate="no">none(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a set of learning parameters needed by the none/4 plasticity function.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#none/4" data-no-tooltip="" translate="no">none(neural_parameters, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>None plasticity function - no learning happens.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ojas/1" data-no-tooltip="" translate="no">ojas(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the ojas learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ojas/4" data-no-tooltip="" translate="no">ojas(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Oja's plasticity function with a global learning rate.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ojas_w/1" data-no-tooltip="" translate="no">ojas_w(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the ojas_w learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ojas_w/4" data-no-tooltip="" translate="no">ojas_w(neural_parameters, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Oja's plasticity function with weight-specific learning rates.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v1/1" data-no-tooltip="" translate="no">self_modulation_v1(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v1 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v1/4" data-no-tooltip="" translate="no">self_modulation_v1(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 1).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v2/1" data-no-tooltip="" translate="no">self_modulation_v2(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v2 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v2/4" data-no-tooltip="" translate="no">self_modulation_v2(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 2).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v3/1" data-no-tooltip="" translate="no">self_modulation_v3(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v3 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v3/4" data-no-tooltip="" translate="no">self_modulation_v3(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 3).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v4/1" data-no-tooltip="" translate="no">self_modulation_v4(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v4 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v4/4" data-no-tooltip="" translate="no">self_modulation_v4(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 4).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v5/1" data-no-tooltip="" translate="no">self_modulation_v5(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v5 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v5/4" data-no-tooltip="" translate="no">self_modulation_v5(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 5).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v6/1" data-no-tooltip="" translate="no">self_modulation_v6(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns parameters for the self_modulation_v6 learning rule.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#self_modulation_v6/4" data-no-tooltip="" translate="no">self_modulation_v6(list, i_acc, input_pidps, output)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Self modulation plasticity function (version 6).</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="apply/2">
+
+  <div class="detail-header">
+    <a href="#apply/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">apply(plasticity_name, param_type)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L39" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> apply(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()</pre>
+
+      </div>
+
+<p>Apply a plasticity function by name to get parameters.</p><p>This is a convenience function that routes to the appropriate plasticity function
+based on the provided name.</p>
+  </section>
+</section>
+<section class="detail" id="hebbian/1">
+
+  <div class="detail-header">
+    <a href="#hebbian/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hebbian(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L138" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hebbian(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the hebbian learning rule.</p><p>The parameter list for the standard hebbian learning rule is a parameter list 
+composed of a single parameter H: [H], used by the neuron for all its synaptic weights.</p>
+  </section>
+</section>
+<section class="detail" id="hebbian/4">
+
+  <div class="detail-header">
+    <a href="#hebbian/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hebbian(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L165" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hebbian([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}], [
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()
+]) :: [
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}
+]</pre>
+
+      </div>
+
+<p>Hebbian plasticity function with a global learning rate.</p><p>The function applies the hebbian learning rule to all weights using a single,
+neuron-wide learning rate.</p>
+  </section>
+</section>
+<section class="detail" id="hebbian_w/1">
+
+  <div class="detail-header">
+    <a href="#hebbian_w/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hebbian_w(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L103" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hebbian_w(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the hebbian_w learning rule.</p><p>The parameter list for the simple hebbian_w learning rule is a parameter list 
+composed of a single parameter H: [H], for every synaptic weight of the neuron.</p>
+  </section>
+</section>
+<section class="detail" id="hebbian_w/4">
+
+  <div class="detail-header">
+    <a href="#hebbian_w/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hebbian_w(neural_parameters, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L127" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> hebbian_w(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}], [
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()
+]) :: [
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}
+]</pre>
+
+      </div>
+
+<p>Hebbian plasticity function with weight-specific learning rates.</p><p>The function operates on each InputPidP, applying the hebbian learning rule to each
+weight using its own specific learning rate.</p>
+  </section>
+</section>
+<section class="detail" id="neuromodulation/1">
+
+  <div class="detail-header">
+    <a href="#neuromodulation/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">neuromodulation(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L505" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neuromodulation(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the neuromodulation learning rule.</p><p>Neuromodulation is a form of heterosynaptic plasticity where the synaptic weights 
+are changed due to the synaptic activity of other neurons.</p>
+  </section>
+</section>
+<section class="detail" id="neuromodulation/4">
+
+  <div class="detail-header">
+    <a href="#neuromodulation/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">neuromodulation(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L536" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neuromodulation(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Neuromodulation plasticity function.</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="none/1">
+
+  <div class="detail-header">
+    <a href="#none/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">none(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L74" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> none(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Returns a set of learning parameters needed by the none/4 plasticity function.</p><p>Since this function specifies that the neuron has no plasticity, the parameter lists are empty.
+When executed with the {neuron_id, :mutate} parameter, the function exits, since there is
+nothing to mutate. The exit allows for the neuroevolutionary system to try another mutation
+operator on the NN system.</p>
+  </section>
+</section>
+<section class="detail" id="none/4">
+
+  <div class="detail-header">
+    <a href="#none/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">none(neural_parameters, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L92" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> none(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+
+      </div>
+
+<p>None plasticity function - no learning happens.</p><p>Returns the original InputPidPs to the caller.</p>
+  </section>
+</section>
+<section class="detail" id="ojas/1">
+
+  <div class="detail-header">
+    <a href="#ojas/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ojas(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L211" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ojas(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the ojas learning rule.</p><p>The parameter list for Oja's learning rule is a list composed of a single parameter 
+H: [H], used by the neuron for all its synaptic weights.</p>
+  </section>
+</section>
+<section class="detail" id="ojas/4">
+
+  <div class="detail-header">
+    <a href="#ojas/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ojas(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L238" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ojas([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}], [
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()
+]) :: [
+  {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}
+]</pre>
+
+      </div>
+
+<p>Oja's plasticity function with a global learning rate.</p><p>The function applies Oja's learning rule to all weights using a single,
+neuron-wide learning rate.</p>
+  </section>
+</section>
+<section class="detail" id="ojas_w/1">
+
+  <div class="detail-header">
+    <a href="#ojas_w/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ojas_w(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L176" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ojas_w(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the ojas_w learning rule.</p><p>The parameter list for Oja's learning rule is a list composed of a single parameter 
+H: [H] per synaptic weight.</p>
+  </section>
+</section>
+<section class="detail" id="ojas_w/4">
+
+  <div class="detail-header">
+    <a href="#ojas_w/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ojas_w(neural_parameters, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L200" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ojas_w(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}], [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) ::
+  [
+    {<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}
+  ]</pre>
+
+      </div>
+
+<p>Oja's plasticity function with weight-specific learning rates.</p><p>The function operates on each InputPidP, applying Oja's learning rule to each
+weight using its own specific learning rate.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v1/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v1/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v1(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L250" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v1(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v1 learning rule.</p><p>Version-1: where the secondary embedded neuron only outputs the H learning parameter, 
+with the parameter A set to some predetermined constant value within the neural_parameters 
+list, and B=C=D=0.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v1/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v1/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v1(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L277" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v1(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 1).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v2/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v2/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v2(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L289" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v2(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v2 learning rule.</p><p>Version-2: where A is generated randomly when generating the neural_parameters list, 
+and B=C=D=0.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v2/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v2/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v2(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L319" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v2(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 2).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v3/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v3/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v3(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L330" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v3(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v3 learning rule.</p><p>Version-3: where B, C, and D are also generated randomly in the neural_parameters list.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v3/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v3/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v3(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L362" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v3(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 3).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v4/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v4/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v4(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L375" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v4(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v4 learning rule.</p><p>Version-4: where the weight_parameters generates a list of length 2, thus allowing 
+the neuron to have 2 embedded modulatory neurons, one outputting a parameter we use 
+for H, and another outputting the value we can use as A, with B=C=D=0.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v4/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v4/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v4(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L401" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v4(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 4).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v5/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v5/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v5(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L415" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v5(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v5 learning rule.</p><p>Version-5: Where B, C, and D are generated randomly by the 
+PlasticityFunctionName(neural_parameters) function.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v5/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v5/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v5(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L446" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v5(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 5).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v6/1">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v6/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v6(arg1)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L460" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v6(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>() | Bardo.Models.neuron()</pre>
+
+      </div>
+
+<p>Returns parameters for the self_modulation_v6 learning rule.</p><p>Version-6: Where the weight_parameters produces a list of length 5, allowing the neuron 
+to have 5 embedded modulatory neurons, whose outputs are used for H, A, B, C, and D.</p>
+  </section>
+</section>
+<section class="detail" id="self_modulation_v6/4">
+
+  <div class="detail-header">
+    <a href="#self_modulation_v6/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">self_modulation_v6(list, i_acc, input_pidps, output)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/plasticity.ex#L488" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> self_modulation_v6(
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}],
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}],
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]
+) ::
+  [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]}]}]</pre>
+
+      </div>
+
+<p>Self modulation plasticity function (version 6).</p><p>Updates the synaptic weights of the neuron using a modulated Hebbian learning rule.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

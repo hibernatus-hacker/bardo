@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.38.0">
+    <meta name="project" content="Bardo v0.1.0">
+
+
+    <title>Bardo.AgentManager.SubstrateCPP — Bardo v0.1.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-J3PIVQVA.css" />
+
+    <script defer src="dist/sidebar_items-1E8677F2.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-DPJLHKSM.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="https://github.com/hibernatus-hacker/bardo" class="sidebar-projectName" translate="no">
+Bardo
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.1.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Bardo</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Bardo.AgentManager.SubstrateCPP</span> 
+      <small class="app-vsn" translate="no">(Bardo v0.1.0)</small>
+
+    </h1>
+
+      <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>The substrate polls the substrate_cpps (Substrate Coordinate PreProcessor), and then waits for the signals from the
+substrate_ceps (Substrate Connectivity Expression Producer) process, which tells it what the synaptic weight is between
+the two neurodes with which the substrate_cpps were called with, and whether the connection between these neurodes is
+expressed or not.</p><p>The substrate_cpp and substrate_cep processes are analogous to the sensors and actuators respectively, but
+driven and polled by the substrate when it wishes to calculate the synaptic weights and connectivity expression
+between its various neurodes.</p><p>The substrate will forward to its one or more substrate_cpps the coordinates of the two connected neurodes in question,
+the called substrate_cpp will process those coordinates based on its type and forward the processed vector to the NN. The
+substrate will then wait for the signals from its one or more substrate_ceps, which will provide it with the various signals
+which the substrate will then use to set its synaptic weights, connectivity expressions, or even plasticity based synaptic
+weight updates.</p><p>The substrate uses its substrate_cpps and substrate_ceps for every synaptic weight/expression it wishes to set or update. Unlike the
+sensors and actuators, the substrate_cpps and substrate_ceps do not need to sync up with the cortex because the substrate_cpps are
+not be triggered by the cortex, and because the signals from substrate_ceps are awaited by the substrate, and since the substrate
+itself only processes signals once it has received all the sensory signals from the sensors which themselves are triggered by the cortex,
+the whole system is synchronized.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/1" data-no-tooltip="" translate="no">init(exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Whenever a SubstrateCPP process is started via the start function this
+function is called by the new process to initialize.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init_phase2/9" data-no-tooltip="" translate="no">init_phase2(pid, exoself_pid, id, cx_pid, substrate_pid, cpp_name, vl, parameters, fanout_pids)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Initializes substrate_cpp.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#loop/1" data-no-tooltip="" translate="no">loop(exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Receive and handle messages.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#loop/8" data-no-tooltip="" translate="no">loop(id, exoself_pid, cx_pid, substrate_pid, cpp_name, vl, parameters, fanout_pids)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Receive and handle messages.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neurode_coordinates/4" data-no-tooltip="" translate="no">neurode_coordinates(pid, substrate_pid, presynaptic_coords, postsynaptic_coords)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The substrate sends the coordinates of the connected neurodes to the
+substrate_cpps it is connected to. The CPPs process the coordinates.
+The CPPs forward the processed coordinate vectors to the neurons they
+are connected to in the NN. The NN processes the coordinate signals.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#neurode_coordinates_iow/5" data-no-tooltip="" translate="no">neurode_coordinates_iow(pid, substrate_pid, presynaptic_coords, postsynaptic_coords, iow)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>IOW = Input, Output and Weight.
+The substrate sends the coordinates of the connected neurodes to the
+substrate_cpps it is connected to. The CPPs process the coordinates.
+The CPPs forward the processed coordinate vectors to the neurons they
+are connected to in the NN. The NN processes the coordinate signals.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start/2" data-no-tooltip="" translate="no">start(node, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Spawns a SubstrateCPP process belonging to the exoself process that
+spawned it and calls init to initialize.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop/2" data-no-tooltip="" translate="no">stop(pid, exoself_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Terminates substrate_cpp.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#terminate/1" data-no-tooltip="" translate="no">terminate(reason)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>This function is called to terminate the process. It performs
+any necessary cleaning up before exiting with the reason
+parameter that it was called with.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="init/1">
+
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init(exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L91" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> init(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Whenever a SubstrateCPP process is started via the start function this
+function is called by the new process to initialize.</p>
+  </section>
+</section>
+<section class="detail" id="init_phase2/9">
+
+  <div class="detail-header">
+    <a href="#init_phase2/9" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init_phase2(pid, exoself_pid, id, cx_pid, substrate_pid, cpp_name, vl, parameters, fanout_pids)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L55" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> init_phase2(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()
+]) :: :ok</pre>
+
+      </div>
+
+<p>Initializes substrate_cpp.</p>
+  </section>
+</section>
+<section class="detail" id="loop/1">
+
+  <div class="detail-header">
+    <a href="#loop/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">loop(exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L101" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> loop(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Receive and handle messages.</p>
+  </section>
+</section>
+<section class="detail" id="loop/8">
+
+  <div class="detail-header">
+    <a href="#loop/8" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">loop(id, exoself_pid, cx_pid, substrate_pid, cpp_name, vl, parameters, fanout_pids)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L112" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Receive and handle messages.</p>
+  </section>
+</section>
+<section class="detail" id="neurode_coordinates/4">
+
+  <div class="detail-header">
+    <a href="#neurode_coordinates/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">neurode_coordinates(pid, substrate_pid, presynaptic_coords, postsynaptic_coords)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L68" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neurode_coordinates(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: :ok</pre>
+
+      </div>
+
+<p>The substrate sends the coordinates of the connected neurodes to the
+substrate_cpps it is connected to. The CPPs process the coordinates.
+The CPPs forward the processed coordinate vectors to the neurons they
+are connected to in the NN. The NN processes the coordinate signals.</p>
+  </section>
+</section>
+<section class="detail" id="neurode_coordinates_iow/5">
+
+  <div class="detail-header">
+    <a href="#neurode_coordinates_iow/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">neurode_coordinates_iow(pid, substrate_pid, presynaptic_coords, postsynaptic_coords, iow)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L81" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> neurode_coordinates_iow(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()], [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">float</a>()]) :: :ok</pre>
+
+      </div>
+
+<p>IOW = Input, Output and Weight.
+The substrate sends the coordinates of the connected neurodes to the
+substrate_cpps it is connected to. The CPPs process the coordinates.
+The CPPs forward the processed coordinate vectors to the neurons they
+are connected to in the NN. The NN processes the coordinate signals.</p>
+  </section>
+</section>
+<section class="detail" id="start/2">
+
+  <div class="detail-header">
+    <a href="#start/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start(node, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L34" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">node</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
+      </div>
+
+<p>Spawns a SubstrateCPP process belonging to the exoself process that
+spawned it and calls init to initialize.</p>
+  </section>
+</section>
+<section class="detail" id="stop/2">
+
+  <div class="detail-header">
+    <a href="#stop/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stop(pid, exoself_pid)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L46" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stop(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Terminates substrate_cpp.</p>
+  </section>
+</section>
+<section class="detail" id="terminate/1">
+
+  <div class="detail-header">
+    <a href="#terminate/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">terminate(reason)</h1>
+
+
+        <a href="https://github.com/hibernatus-hacker/bardo/blob/main/lib/bardo/agent_manager/substrate_cpp.ex#L135" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> terminate(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>This function is called to terminate the process. It performs
+any necessary cleaning up before exiting with the reason
+parameter that it was called with.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/bardo/0.1.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/bardo/0.1.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Bardo.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.38.0) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>
