@@ -1,5 +1,9 @@
 # Bardo
 
+Archiving This is largely a failed AI slop experiment for educational purposes only!
+
+I'm working on a new library leveraging NX that will replace this work. Written painstakingly by hand using TDD.
+
 ## Status
 
 This is in beta... any feedback or contributions are welcome!
