@@ -1,15 +1,5 @@
 # Bardo
 
-Archiving This is largely a failed AI slop experiment for educational purposes only!
-
-I'm working on a new library leveraging NX that will replace this work. Written painstakingly by hand using TDD.
-
-## Status
-
-This is in beta... any feedback or contributions are welcome!
-
-I still don't fully understand substrate encoding so I would appreciate a technical review of this code.
-
 ## About
 
 Bardo is a focused neuroevolution library for Elixir that evolves neural networks through evolutionary algorithms. Built on the Erlang VM, it leverages concurrent processes for efficient neural network simulation and evolution.
